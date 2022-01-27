@@ -24,7 +24,6 @@ window.addEventListener("load",function(){
             txtInput.value += e.target.value;
         }
 
-
 // 더하기
     plusInput.onclick = function(e){
         e.preventDefault();
@@ -33,7 +32,6 @@ window.addEventListener("load",function(){
         value = parseInt(txtInput.value);
         txtInput.value = 0;
         
-        console.log(value);
         channel = 1;
     }
 
@@ -44,7 +42,7 @@ window.addEventListener("load",function(){
 
         value = parseInt(txtInput.value);
         txtInput.value = 0;
-
+        
         channel =2;
     }
 
