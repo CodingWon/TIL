@@ -199,7 +199,7 @@ var nums1 = new Array();
 
 ```
 
-
+![1_26캡쳐링](D:/capture/1_26캡쳐링.png)
 
 
 
