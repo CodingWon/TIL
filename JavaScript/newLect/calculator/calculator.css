@@ -1,0 +1,8 @@
+#calc div{
+    display: grid;
+    grid-template: repeat(6,50px) / repeat(4,50px);
+}
+
+#calc .text-area{
+    grid-area: 1 / 1 / 2 / -1;
+}

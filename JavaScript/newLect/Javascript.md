@@ -6,7 +6,7 @@
 
 
 변수
-
+S
 - 값형식이 없고 모든 변수가 참조변수다.
 - 참조형식으로 Boolean, Number, String이 있다.
 - var x =3 ; -> var x =Number(3) // Wapper 클래스로 인해 자동으로 오토박싱된다.
