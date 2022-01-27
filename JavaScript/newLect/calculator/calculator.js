@@ -6,13 +6,16 @@ window.addEventListener("load",function(){
     var minusInput = section.querySelector(".minus");
     var backInput = section.querySelector(".backspace");
     var resultInput = section.querySelector(".result");
+    var multipleInput = section.querySelector(".multiple");
+
+    )
     var value = 0;
     var channel = 0;
  
 // 전체 버튼
     calcdiv.onclick = function(e){
         e.preventDefault();
-
+ 
         if(e.target.nodeName != "INPUT")
             return;
 
@@ -27,7 +30,7 @@ window.addEventListener("load",function(){
         e.preventDefault();
         e.stopPropagation();
         
-        value += parseInt(txtInput.value);
+        value = parseInt(txtInput.value);
         txtInput.value = 0;
         
         console.log(value);
@@ -39,19 +42,41 @@ window.addEventListener("load",function(){
         e.preventDefault();
         e.stopPropagation();
 
-        
+        value = parseInt(txtInput.value);
+        txtInput.value = 0;
+
+        channel =2;
+    }
+
+    minusInput.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        value = parseInt(txtInput.value);
+        txtInput.value = 0;
+
+        channel =3;
     }
 
 // 결과
     resultInput.onclick = function(e){
         e.stopPropagation();
         e.preventDefault();
-        if(channel == 1){
-
-            value += parseInt(txtInput.value);
-            txtInput.value = value;
-            value = 0;
+        switch (channel){
+            case 1:
+                value += parseInt(txtInput.value);
+                txtInput.value = value;
+                value = 0;
+                break;
+            case 2:
+                value -= parseInt(txtInput.value);
+                txtInput.value = value;
+                value = 0;
+                console.log(channel);
+                break;
         }
+
+
     }
 
 // backspace
