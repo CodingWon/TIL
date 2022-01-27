@@ -8,7 +8,7 @@ window.addEventListener("load",function(){
     var resultInput = section.querySelector(".result");
     var multipleInput = section.querySelector(".multiple");
 
-    )
+    
     var value = 0;
     var channel = 0;
  
@@ -48,7 +48,8 @@ window.addEventListener("load",function(){
         channel =2;
     }
 
-    minusInput.onclick = function(e){
+    // 곱하기
+    multipleInput.onclick = function(e){
         e.preventDefault();
         e.stopPropagation();
 
@@ -72,7 +73,13 @@ window.addEventListener("load",function(){
                 value -= parseInt(txtInput.value);
                 txtInput.value = value;
                 value = 0;
-                console.log(channel);
+             
+                break;
+            case 3:
+                value *= parseInt(txtInput.value);
+                txtInput.value = value;
+                value = 0;
+              
                 break;
         }
 
