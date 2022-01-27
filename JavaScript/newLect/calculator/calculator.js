@@ -7,7 +7,7 @@ window.addEventListener("load",function(){
     var backInput = section.querySelector(".backspace");
     var resultInput = section.querySelector(".result");
     var multipleInput = section.querySelector(".multiple");
-
+    var divideInput = section.querySelector(".divide");
     
     var value = 0;
     var channel = 0;
@@ -59,6 +59,17 @@ window.addEventListener("load",function(){
         channel =3;
     }
 
+// 나누기
+    divideInput.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        value = parseInt(txtInput.value);
+        txtInput.value = 0;
+
+        channel =4;
+    }
+
 // 결과
     resultInput.onclick = function(e){
         e.stopPropagation();
@@ -73,13 +84,16 @@ window.addEventListener("load",function(){
                 value -= parseInt(txtInput.value);
                 txtInput.value = value;
                 value = 0;
-             
                 break;
             case 3:
                 value *= parseInt(txtInput.value);
                 txtInput.value = value;
                 value = 0;
-              
+                break;
+            case 4:
+                value /= parseInt(txtInput.value);
+                txtInput.value = value;
+                value = 0;
                 break;
         }
 
