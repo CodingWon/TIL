@@ -3,13 +3,13 @@ window.addEventListener("load",function(){
     var calcdiv = section.querySelector("div");
     var txtInput = section.querySelector(".text-area");
     var plusInput = section.querySelector(".plus");
+    var minusInput = section.querySelector(".minus");
     var backInput = section.querySelector(".backspace");
-  
     var resultInput = section.querySelector(".result");
-    var plus = 0;
+    var value = 0;
     var channel = 0;
  
-// +div 클릭시
+// 전체 버튼
     calcdiv.onclick = function(e){
         e.preventDefault();
 
@@ -18,32 +18,39 @@ window.addEventListener("load",function(){
 
         if(txtInput.value == "0")
             txtInput.value="";
-
-            var value =  txtInput.value += e.target.value;
+            txtInput.value += e.target.value;
         }
 
 
-// + 클릭시
+// 더하기
     plusInput.onclick = function(e){
         e.preventDefault();
         e.stopPropagation();
         
-        plus += parseInt(txtInput.value);
+        value += parseInt(txtInput.value);
         txtInput.value = 0;
         
-        console.log(plus);
+        console.log(value);
         channel = 1;
     }
 
-// = 클릭시
+// 빼기
+    minusInput.onclick = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        
+    }
+
+// 결과
     resultInput.onclick = function(e){
         e.stopPropagation();
         e.preventDefault();
         if(channel == 1){
 
-            plus += parseInt(txtInput.value);
-            txtInput.value = plus;
-            plus = 0;
+            value += parseInt(txtInput.value);
+            txtInput.value = value;
+            value = 0;
         }
     }
 
