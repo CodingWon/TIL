@@ -22,4 +22,15 @@
 
 - 부모 header 아래 div를 두어서 컨텐츠가 가운데 정렬 될 수 있게 조절한다.
 
-## 📘 선택자 (selector)
+## 📘 block , inline , inline-block
+
+- block
+
+  - 너비 100%를 차지한다.
+
+- inline
+
+  - 컨텐츠 너비 높이만 차지한다.
+
+- inline-block
+  - 너비 높이를 지정할 수 있다.
