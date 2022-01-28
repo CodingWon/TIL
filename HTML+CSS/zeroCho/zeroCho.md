@@ -11,9 +11,11 @@
 
 ## 📘 컨텐츠 가운데 정렬
 
-- <header>
+```
+<header>
      <div style="margin: 0 auto; width: 1080px;">
+```
 
-- 부모 <header> 아래 <div>를 두어서 컨텐츠가 가운데 정렬 될 수 있게 조절한다.
+- 부모 header 아래 div를 두어서 컨텐츠가 가운데 정렬 될 수 있게 조절한다.
 
 ## 📘 선택자 (selector)
