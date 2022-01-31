@@ -34,3 +34,23 @@
 
 - inline-block
   - 너비 높이를 지정할 수 있다.
+
+## 📘 vertical-align
+
+- 형제 태그끼리 height가 다를 경우 정렬을 맞을 때 사용
+- display 가 inline, inline-block 이어야만 적용된다.
+```
+<div id="header-search">
+    <a href="www.naver.com">
+       <h1>
+          네이버
+        </h1>
+        </a>
+     <h2 class="blind">검색창</h2>
+     <fieldset>
+        <legend class="blind">검색</legend>
+           <input type="text">
+           <button class="blind">검색</button>
+     </fieldset>
+  </div>
+```

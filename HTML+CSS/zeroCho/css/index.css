@@ -1,18 +1,48 @@
+*{
+  box-sizing: border-box;
+}
+
 #header-center {
   margin: 0 auto;
   width: 1080px;
 }
 
-#header-search > h1 {
-  width: 280px;
-  display: inline-block;
+#header-search a {
+  text-decoration: none;
+  vertical-align: middle;
 }
 
-#header-search h2 {
-  display: none;
+#header-search h1 {
+  width: 198px;
+  height: 48px;
+  display: inline-block;
+  background: url(../imgs/naver_main.png) no-repeat 0px -137px / 400px  ;
+  text-indent: -9999px;
+
 }
+
 
 #header-search fieldset {
+  padding: 12px 0 12px 10px ;
   width: 540px;
+  height: 49px;
   display: inline-block;
+
+  border: 2px solid #03cf5d;
+  vertical-align: middle;
+
+}
+
+#header-search fieldset input{
+  border: none;
+  outline: none;
+}
+
+.blind {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
 }
