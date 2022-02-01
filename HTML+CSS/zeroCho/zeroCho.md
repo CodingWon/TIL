@@ -54,3 +54,22 @@
      </fieldset>
   </div>
 ```
+## 📘 block format context
+(link - https://developer.mozilla.org/ko/docs/Web/Guide/CSS/Block_formatting_context)
+- 웹페이지를 렌더링하는 시각적 CSS의 일부로서, 블록 박스의 레이아웃이 발생하는 지점과 플로팅 요소의 상호작용 범위를 결정하는 범위
+
+🎨 예제 - 내부 플로팅 가두기
+```
+<section>
+    <div class="box" style="overflow:auto">
+        <div class="float">I am a floated box!</div>
+        <p>I am content inside the <code>overflow:auto</code> container.</p>
+    </div>
+</section>
+<section>
+    <div class="box" style="display:flow-root">
+        <div class="float">I am a floated box!</div>
+        <p>I am content inside the <code>display:flow-root</code> container.</p>
+    </div>
+</section>
+```
