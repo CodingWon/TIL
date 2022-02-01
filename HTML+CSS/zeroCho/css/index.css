@@ -63,7 +63,7 @@ header{
 #header-search{
     clear: both;
     padding-top: 18px;
-    margin-left: 60px;
+    margin-left: 58px;
 }
 
 #header-search a {
@@ -97,6 +97,35 @@ header{
     vertical-align: top;
     width: 405px;
     height: 23px;
+}
+
+#header-search .search-history{
+    background-image: url(https://s.pstatic.net/static/www/img/uit/sp_main_dba1af.png);
+    background-size: 457px 434px;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 87%;
+    width: 10px;
+    height: 5px;
+    background-position: -408px -77px;
+    background-repeat: no-repeat;
+    vertical-align: top;
+}
+
+#header-search .search-keyboard{
+    background-image: url(https://s.pstatic.net/static/www/img/uit/sp_main_dba1af.png);
+    background-size: 457px 434px;
+    position: absolute;
+    top: 50%;
+    left: 82.7%;
+    display: inline-block;
+    width: 20px;
+    height: 12px;
+    background-position: -420px -395px;
+    background-repeat: no-repeat;
+    vertical-align: top;
+    margin: -6px 0 0 -10px;
 }
 
 #header-search fieldset button {
