@@ -25,3 +25,12 @@
     border: 1px solid black;
     background-color: #0007;
 }
+
+.width-input{
+    display: block;
+ 
+}
+
+.radius-input{
+    display: block;
+}
