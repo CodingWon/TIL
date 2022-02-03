@@ -11,7 +11,8 @@
 }
 
 #s7 .box .dst-item-list{
-    flex-grow: 1;    
+    flex-grow: 1;
+    cursor: pointer;    
 }
 
 
@@ -61,4 +62,9 @@
 #s7 .dst-item-list .item:nth-child(3){    
     left : 550px;
     top: 250px;
+}
+
+#s7 .dst-item-list .item:hover{
+    border-style: dashed;
+    border-color: red;
 }
