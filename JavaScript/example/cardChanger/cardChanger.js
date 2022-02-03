@@ -7,12 +7,9 @@ window.addEventListener("load",function(){
     btnNext.onclick = function(e){
         e.preventDefault();
 
-        lis[0].style.left = "calc(100% - 100px)";
-     
-        lis[1].style.left = "0px";
-        
-        lis[2].style.left = "calc(50% - 50px)";
-        lis[2].style.backgroundColor = "#ff0000";
+        lis[0].className = "card-3th";
+        lis[1].className = "card-1th";
+        lis[2].className = "card-2th";
     };
     
 });

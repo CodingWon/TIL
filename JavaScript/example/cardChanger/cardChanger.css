@@ -47,7 +47,7 @@
     position: absolute;
 
     /* effect */
-    transition: left 1s;
+    transition: 1s;
 }
 
 #container .btn-list{
@@ -55,18 +55,20 @@
     bottom: 0;
 }
 
-#container li:nth-child(1){
+#container li.card-1th{
     /* transform: scale(1.2); */
     left: 0;
 }
 
-#container li:nth-child(2){
+#container li.card-2th{
     /* transform: scale(1.2); */
 
     left: calc(50% - 50px);
+    transform: scale(1.2);
+    background-color: crimson;
 }
 
-#container li:nth-child(3){
+#container li.card-3th{
     /* transform: scale(1.2); */
     left: calc(100% - 100px);
 }
