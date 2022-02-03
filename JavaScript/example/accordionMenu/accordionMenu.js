@@ -13,10 +13,11 @@ window.addEventListener("load",function(){
         if(!valid)
             return;
 
+
         if(current != null)
-            current.classList.remove("active")
+            current.classList.toggle("active")
     
-        e.target.classList.add("active");
+        e.target.classList.toggle("active");
         current = e.target;
     };
 
