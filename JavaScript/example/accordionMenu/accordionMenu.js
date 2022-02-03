@@ -8,11 +8,8 @@ window.addEventListener("load",function(){
         var valid = e.target.nodeName =="H2"
                     || e.target.classList.contains("accordion-header");
 
-     
-
         if(!valid)
             return;
-
 
         if(current != null)
             current.classList.toggle("active")
