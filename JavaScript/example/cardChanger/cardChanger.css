@@ -66,6 +66,7 @@
     left: calc(50% - 50px);
     transform: scale(1.2);
     background-color: crimson;
+    z-index: 3;
 }
 
 #container li.card-3th{
