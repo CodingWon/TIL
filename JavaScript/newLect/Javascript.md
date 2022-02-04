@@ -208,7 +208,7 @@ var nums1 = new Array();
 
 #  1.7(금)
 
-##  DeQueue 
+###  DeQueue 
 
 양쪽으로 넣고 빼기 가능
 
@@ -224,7 +224,7 @@ var nums1 = new Array();
 
 ​        - 삭제 : pop
 
-## \- splice 
+### \- splice 
 
 -: 배열의 중간 데이터를 지우고 추가할 수 있다.
 
