@@ -1,12 +1,21 @@
+# INDEX
+- [01.06 정리](#0106---)
+  * [1. 전송하는 데이터에 대한 유효성 검사의 필요성](#1-------------------------)
+  * [2. 윈도우 객체](#2-------)
+  * [2. 브라우저 엔진](#2--------)
+  * [3. 코드 작성하기](#3--------)
+    + [# undefined](#--undefined)
+  * [4.배열](#4--)
+    + [#배열의 초기화](#--------)
+    + [#스택 기능 활용하기](#-----------)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+
+
 # 01.06 정리
 
-## 
-
-- 값 형식이 없고 모든 변수가 참조 변수다.
-
-
 변수
-S
 - 값형식이 없고 모든 변수가 참조변수다.
 - 참조형식으로 Boolean, Number, String이 있다.
 - var x =3 ; -> var x =Number(3) // Wapper 클래스로 인해 자동으로 오토박싱된다.
@@ -196,9 +205,4 @@ var nums1 = new Array();
         for(var i = 0; i<4; i++){
             console.log("shift : " + nums3.shift());
         }
-![_26캡쳐링](D:/capture/1_26캡쳐링.png)
-```
 
-![20220125215857](D:/capture/20220125213953.png)
-
-![20220125215944](D:\capture\20220125215944.png)
