@@ -191,9 +191,4 @@ var nums1 = new Array();
         for(var i = 0; i<4; i++){
             console.log("shift : " + nums3.shift());
         }
-![_26캡쳐링](D:/capture/1_26캡쳐링.png)
-```
 
-![20220125215857](D:/capture/20220125213953.png)
-
-![20220125215944](D:\capture\20220125215944.png)
