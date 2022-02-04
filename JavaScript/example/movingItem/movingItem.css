@@ -84,3 +84,7 @@
 
     border: 1px dashed red;
 }
+#s7 .src-item.finished{
+    background-color: lightgreen;
+    color:#fff;
+}
