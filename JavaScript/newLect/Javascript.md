@@ -202,3 +202,38 @@ var nums1 = new Array();
             console.log("shift : " + nums3.shift());
         }
 
+
+
+```
+
+#  1.7(금)
+
+##  DeQueue 
+
+양쪽으로 넣고 빼기 가능
+
+​    - 정방향
+
+​        - 삽입 : push
+
+​        - 삭제 :  shift
+
+​    - 역방향
+
+​        - 삽입 : unshift
+
+​        - 삭제 : pop
+
+## \- splice 
+
+-: 배열의 중간 데이터를 지우고 추가할 수 있다.
+
+​    - nums.splice(인덱스 , 삭제 데이터 개수, 추가data,추가data...)
+
+​    - *var* nums = Array(1,2,3,4);
+
+​        - nums.splice(2,0,6,7,8,9); ⇒ 1 2 6 7 8 9 3 4
+
+​        - nums.splice(3,1,6,7,8,9); ⇒ 1 2 3 6 7 8 9
+
+​        - nums.splice(2,1);  ⇒ 1 2 3
