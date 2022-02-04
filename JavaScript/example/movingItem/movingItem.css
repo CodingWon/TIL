@@ -1,21 +1,21 @@
+
 #s7 .box{
     height: 400px;
     background-color: #c5c5c5;
     position: relative;
 
     display: flex;
+   
 }
 
 #s7 .box .src-item-list{
     width:400px;
+    
 }
 
 #s7 .box .dst-item-list{
-    flex-grow: 1;
-    cursor: pointer;    
+    flex-grow: 1;    
 }
-
-
 
 #s7 .box .item{
     font-size: 30px;
@@ -32,6 +32,13 @@
     display:flex;
     align-items: center;
     justify-content: center;
+    
+}
+
+#s7 .src-item{
+    z-index: 1;
+    transform: rotate(0deg);
+    transition: left 1s, top 1s, transform 1s;
 }
 
 #s7 .src-item-list .item:nth-child(1){    
@@ -46,7 +53,7 @@
 
 #s7 .src-item-list .item:nth-child(3){    
     left : 0px;
-    top: 250px;
+    top: 300px;
 }
 
 #s7 .dst-item-list .item:nth-child(1){    
@@ -64,7 +71,16 @@
     top: 250px;
 }
 
-#s7 .dst-item-list .item:hover{
-    border-style: dashed;
-    border-color: red;
+#s7 .src-item.selected{
+    background-color: red;
+    color:#fff;
+}
+
+#s7 .dst-item-list .item{  
+    cursor: pointer;
+}
+
+#s7 .dst-item-list .item:hover{    
+
+    border: 1px dashed red;
 }
