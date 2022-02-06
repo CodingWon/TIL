@@ -50,8 +50,8 @@
 ![20220206195826](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220206195826.png)
 
 ```javascript
-var x = 3;
-var x = new Number(3);
+var x = 3; // JSON 방식
+var x = new Number(3); // Javascript Object 방식
 ```
 
 ### undefiend 와 null
@@ -65,15 +65,6 @@ console.log(x); // undefiend
 
 var y = null;
 console.log(y); // null
-```
-
-- 할당하는 객체에 따라서 사용할 수 있는 메소드가 달라진다.
-
-```javascript
-var num;
-num = 3.4 // new Number(3.4);
-num = 3   // new Number(3);
-num = "3" // new String("3");
 ```
 
 ## 6. Array 객체
@@ -97,6 +88,8 @@ console.log(nums) // 빈 배열
 
 ### 인덱스를 이용한 데이터 관리 : List
 
+- 인덱스 형식으로 값을 저장할 수 있다.
+
 ```js
 var nums = new Array();
 
@@ -106,6 +99,7 @@ nums[2] = 21;
 ```
 
 - 중간 부터 넣어도 오류가 나지 않는다.
+- `nums[0] , nums[1]` 에 undefined 으로 출력된다.
 
 ```js
 var nums = new Array();
