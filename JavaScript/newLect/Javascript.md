@@ -198,3 +198,139 @@ cosole.log(exam[key]);
 
 ```
 
+## 8.JSON
+
+### Javascript 데이터 객체와 JSON 생성 방법
+
+- JSON 표현 방식이 이해하기 쉽다.
+
+|         | JavaScript Object            | JavaScript Object Notation(JSON)                             |
+| ------- | ---------------------------- | ------------------------------------------------------------ |
+| Boolean | var n = new Boolean(true);   | var n = true;                                                |
+| Number  | var n = new Number(3);       | var n = 3;                                                   |
+| String  | var s = new String("hello"); | var s = "hello";    or   var s = 'hello'; <br />HTML 에서 " "(큰따음표)와 충돌이 생길 수 있어 <br />' '(작은따음표)를 많이 사용 |
+| Array   | var ar = new Array();        | var ar = [ ];                                                |
+| Object  | var ob = new Object();       | var ob = { };                                                |
+
+- 예제
+
+```js
+var exam = {'kor':30 , 'eng' : 50, 'math' : 80};
+var ar = [3,4,5,6,exam,[7,8,9]]; // 배열안에 객체와 배열을 포함 시킬 수 있다.
+console.log(ar[4]['kor']) // 30
+```
+
+### JSON  중첩 표현
+
+```js
+var notices = [
+			{'id':1, 'title':'hello'},
+			{'id':2, 'title:'hi json'},
+			{'id':3, 'title:'json is..'}
+			];
+			
+console.log(notices[0].id) // 1
+console.log(notices[0].title) // hello
+console.log(notices[1].id) // 2
+console.log(notices[1].title) // hi json
+```
+
+### 데이터를 구분하기 위한 표현방법
+
+#### XML, CSV, JSON
+
+- XML
+  -  태그 기법으로 데이터를 표현
+
+```
+<notices>
+	<notice id ="1" title = "hello" />
+	<notice id ="2" title = "hi json" />
+	<notice id ="3" title = "json is.."/>
+</notices>
+```
+
+- CSV
+  - 콤마로 데이터를 구분
+
+```
+1, hello
+2, hi json
+3, json is..
+```
+
+- JSON
+  - 가벼우면서도 복잡한 데이터를 표현
+
+```
+[
+{'id':1, 'title':'hello'},
+{'id':2, 'title:'hi json'},
+{'id':3, 'title:'json is..'}
+];
+```
+
+## 9.JSON 파싱하기
+
+- 서울 열린 데이터광장(https://data.seoul.go.kr/) 에서 JSON 형식의 파일을 받을 수 있다.
+- javascript 으로 원격에 있는 데이터를 읽어 올때 문자열 형식으로 읽어온다.
+- \ (역슬래쉬) 를 이용하여 문자열로 만든다 (ECMS5 방식)
+
+```json
+var data ='[ \
+{"author":"가미오카 마사아키 지음","loca":"서울도서관","title":"(부자들의) 초격차 독서법 :부자들의 지식은 복리로 쌓인다","indt":"20220204","publisher_year":"2021","type":"단행본","publisher":"쌤앤파커스"}, \
+{"author":"김장섭 지음","loca":"서울도서관","title":"내일의 부 :세상에서 가장 빨리 99.9% 부자 되는 법 : 통합본 =Riches of tomorrow","indt":"20220204","publisher_year":"2021","type":"단행본","publisher":"트러스트북스"}, \
+{"author":"최민지 지음","loca":"서울도서관","title":"이럴 거면 혼자 살라고 말하는 당신에게 :관계를 고민하는 이들을 위한 새로운 개인주의 사용설명서","indt":"20220204","publisher_year":"2022","type":"단행본","publisher":"남해의봄날"} \
+			]';
+```
+
+### eval() : JSON 형식의 문자열 변환
+
+- 문자열 형식을 eval를 통해 변환하여 30이 출력된다.
+
+```js
+eval('var x = 30;');
+console.log(x); // 30
+```
+
+- JSON 예제
+
+```JS
+var data ='[ \
+{"author":"가미오카 마사아키 지음","loca":"서울도서관","title":"(부자들의) 초격차 독서법 :부자들의 지식은 복리로 쌓인다","indt":"20220204","publisher_year":"2021","type":"단행본","publisher":"쌤앤파커스"}, \
+{"author":"김장섭 지음","loca":"서울도서관","title":"내일의 부 :세상에서 가장 빨리 99.9% 부자 되는 법 : 통합본 =Riches of tomorrow","indt":"20220204","publisher_year":"2021","type":"단행본","publisher":"트러스트북스"}, \
+{"author":"최민지 지음","loca":"서울도서관","title":"이럴 거면 혼자 살라고 말하는 당신에게 :관계를 고민하는 이들을 위한 새로운 개인주의 사용설명서","indt":"20220204","publisher_year":"2022","type":"단행본","publisher":"남해의봄날"} \
+			]';
+
+eval("var ar = " + data + ";"); // var ar = data;
+console.log(ar[0].author); // 가미오카 마사아키 지음
+```
+
+### JSON.parse()
+
+- Object의 Key는 javascript에서 묵시적으로 문자열로 인식해서 " ",' ' 생략가능하다.
+
+```js
+var data = {id:1, title:"aaa"};
+console.log(data.title);
+```
+
+- JSON.parse();
+  - JSON.parse를 쓸때는 엄격히 형식을 지켜줘야 한다.
+  - Key에 반드시 " " 으로 묶어줘야 한다.
+
+```js
+var data = JSON.parse('{"id":1 , "title":"aaa"}');
+console.log(data.title);
+```
+
+### JSON.stringify
+
+- 객체를 문자열로 바꿔준다.
+
+```js
+var data = {id:1, title:"aaa"};
+var json = JSON.stringify(data);
+console.log(json);
+```
+
