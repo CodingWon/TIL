@@ -7,7 +7,7 @@
 
 
 
-## 1. 자바 스크립트와 입/출력 플랫폼
+## 1.자바 스크립트와 입/출력 플랫폼
 
 ![20220206140010](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220206140010.png)
 
@@ -16,7 +16,7 @@
 
 ![20220206144703](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220206144703.png)
 
-## 2. 자바 스크립트의 탄생
+## 2.자바 스크립트의 탄생
 
 - NetscapteNaviator 사에서 서버에 불필요한 요청을 제어하기 위해 폼 객체의 유효성 검사를 만들었다.
 
@@ -24,14 +24,14 @@
 
   ![20220206194312](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220206194312.png)
 
-## 3. 스크립트 코드 작성 영역
+## 3.스크립트 코드 작성 영역
 
 -  script 태그로 감싸서 실행 영역안에서 코드를 작성한다.
 - script 위치는 head , body 어디든 끼어 넣을 수 있다.
 
 ![20220206194621](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220206194621.png)
 
-## 4. 값의 종류와 변수
+## 4.값의 종류와 변수
 
 - 변수를 선언할 때 정수, 실수, 문자, 문자열 자료형식에 상관없이 var 라는 키워드로 선언한다.
 
@@ -45,7 +45,7 @@
 
 ## 5. Wrapper 클래스와 Wrapping 방식
 
-### - Boolean , Number, String
+### Boolean , Number, String
 
 ![20220206195826](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220206195826.png)
 
@@ -54,7 +54,7 @@ var x = 3;
 var x = new Number(3);
 ```
 
-### - undefiend 와 null
+### undefiend 와 null
 
 - undefiend 개발자가 의도하지 않는 빈값
 - null : 개발자가 의도한 빈값
@@ -78,7 +78,7 @@ num = "3" // new String("3");
 
 ## 6. Array 객체
 
-### - push / pop 메소드를 이용한 데이터 관리 : Stack
+### push / pop 메소드를 이용한 데이터 관리 : Stack
 
 - LIFO(후입선출) : 가장 먼저 삽입되어 스택에 들어간 요소가 가장 마지막에 삭제
 - pop 을 사용하면 값이 삭제 된다.
@@ -95,7 +95,7 @@ console.log(nums.pop()); // 5
 console.log(nums) // 빈 배열
 ```
 
-### - 인덱스를 이용한 데이터 관리 : List
+### 인덱스를 이용한 데이터 관리 : List
 
 ```js
 var nums = new Array();
@@ -114,7 +114,7 @@ console.log(nums[0]) // undefiend
 console.log(nums[1]) // undefiend
 ```
 
-### - 배열 객체 초기화
+### 배열 객체 초기화
 
 - Array를 생성할 때 한개의 인자를 넣어주면 인자의 갯수로 배열의 크기가 정해진다.
 
@@ -143,7 +143,7 @@ var nums = new Array(5,10,21"hello",new Array(2,4,5));
 console.log(nums[4][0]); // 2 
 ```
 
-### - splice() 메소드를 이용한 데이터 관리
+### splice() 메소드를 이용한 데이터 관리
 
 - splice(index , 지우는 갯수, 추가 , 추가 , ...);
 
@@ -157,4 +157,44 @@ nums.splice(3,1,"hoho") // [5,10,21, "hoho"];
 nums.splice(3,0,"hoho") // [5,10,21,"hello", "hoho"];
 ```
 
-## 
+## 7.Object
+
+### 정적인 객체 , 동적인 객체 정의
+
+> 정적인 객체 - class
+
+- C++ , C#, Java 는 정의를 하고 객체를 만든다.
+
+> 동적인 객체 - prototype 
+
+- 객체를 만들고 정의한다.
+
+### 객체 정의하기
+
+```js
+var exam = new Object();
+exam.kor = 30;
+exam.eng = 70;
+exam.math = 80;
+
+console.log(exam.kor + exam.math); // 110
+```
+
+### 키를 이용한 데이터 관리 : Map
+
+- key를 통해 값을 꺼내오고 싶을 때 사용 방법
+
+```js
+var exam = new Object();
+
+exam["kor"] = 30;
+exam["eng"] = 70;
+exam["math"] = 80;
+
+console.log(exam["kor"]);
+
+var key = "eng";
+cosole.log(exam[key]);
+
+```
+
