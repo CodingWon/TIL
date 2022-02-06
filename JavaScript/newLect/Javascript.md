@@ -45,7 +45,7 @@
 
 ## Wrapper 클래스와 Wrapping 방식
 
-> Boolean , Number, String
+> **Boolean , Number, String**
 
 ![20220206195826](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220206195826.png)
 
@@ -54,7 +54,7 @@ var x = 3;
 var x = new Number(3);
 ```
 
-> undefiend 와 null
+> **undefiend 와 null**
 
 - undefiend 개발자가 의도하지 않는 빈값
 - null : 개발자가 의도한 빈값
@@ -78,7 +78,7 @@ num = "3" // new String("3");
 
 ## Array 객체
 
-> push / pop 메소드를 이용한 데이터 관리 : Stack
+> **push / pop 메소드를 이용한 데이터 관리 : Stack**
 
 - LIFO(후입선출) : 가장 먼저 삽입되어 스택에 들어간 요소가 가장 마지막에 삭제
 - pop 을 사용하면 값이 삭제 된다.
@@ -95,7 +95,7 @@ console.log(nums.pop()); // 5
 console.log(nums) // 빈 배열
 ```
 
-> 인덱스를 이용한 데이터 관리 : List
+> **인덱스를 이용한 데이터 관리 : List**
 
 ```js
 var nums = new Array();
@@ -114,7 +114,7 @@ console.log(nums[0]) // undefiend
 console.log(nums[1]) // undefiend
 ```
 
-> 배열 객체 초기화
+> **배열 객체 초기화**
 
 - Array를 생성할 때 한개의 인자를 넣어주면 인자의 갯수로 배열의 크기가 정해진다.
 
@@ -143,7 +143,7 @@ var nums = new Array(5,10,21"hello",new Array(2,4,5));
 console.log(nums[4][0]); // 2 
 ```
 
-> splice() 메소드를 이용한 데이터 관리
+> **splice() 메소드를 이용한 데이터 관리**
 
 - splice(index , 지우는 갯수, 추가 , 추가 , ...);
 
