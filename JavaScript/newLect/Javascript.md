@@ -45,7 +45,7 @@
 
 ## Wrapper 클래스와 Wrapping 방식
 
-- Boolean , Number, String
+> Boolean , Number, String
 
 ![20220206195826](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220206195826.png)
 
@@ -79,3 +79,82 @@ num = "3" // new String("3");
 ## Array 객체
 
 > push / pop 메소드를 이용한 데이터 관리 : Stack
+
+- LIFO(후입선출) : 가장 먼저 삽입되어 스택에 들어간 요소가 가장 마지막에 삭제
+- pop 을 사용하면 값이 삭제 된다.
+
+```js
+var nums = new Array();
+
+nums.push(5);
+nums.push(10);
+nums.push(21);
+console.log(nums.pop()); // 21
+console.log(nums.pop()); // 10
+console.log(nums.pop()); // 5
+console.log(nums) // 빈 배열
+```
+
+> 인덱스를 이용한 데이터 관리 : List
+
+```js
+var nums = new Array();
+
+nums[0] = 5;
+nums[1] = 10;
+nums[2] = 21;
+```
+
+- 중간 부터 넣어도 오류가 나지 않는다.
+
+```js
+var nums = new Array();
+nums[2] = 10;
+console.log(nums[0]) // undefiend
+console.log(nums[1]) // undefiend
+```
+
+> 배열 객체 초기화
+
+- Array를 생성할 때 한개의 인자를 넣어주면 인자의 갯수로 배열의 크기가 정해진다.
+
+```js
+var nums = new Array(5); 
+```
+
+- 여러개의 인자를 넣으면 넣은 인자대로 배열을 생성한다.
+
+```js
+var nums = new Array(5,10,21);
+```
+
+- 같은 형식이 아니어도 배열에 담을 수 있다.
+- typeof 로 형식을 확인해야 한다.
+
+```js
+var nums = new Array(5,10,21,"hello");
+console.log(typeof nums[3]); // 타입 확인
+```
+
+- 배열에 또 다른 배열을 담을 수 있다.
+
+```js
+var nums = new Array(5,10,21"hello",new Array(2,4,5));
+console.log(nums[4][0]); // 2 
+```
+
+> splice() 메소드를 이용한 데이터 관리
+
+- splice(index , 지우는 갯수, 추가 , 추가 , ...);
+
+``` js
+var nums = new Array(5, 10, 21, "hello");
+nums.splice(1); // [5] 
+nums.splice(2); // [5,10]
+nums.splice(1,1); // [5,21,"hello"]
+nums.splice(1,2); // [5,"hello"]
+nums.splice(3,1,"hoho") // [5,10,21, "hoho"];
+nums.splice(3,0,"hoho") // [5,10,21,"hello", "hoho"];
+```
+
+## 
