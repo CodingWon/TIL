@@ -54,9 +54,10 @@ var x = 3;
 var x = new Number(3);
 ```
 
-- undefiend 와 null
-  - undefiend 개발자가 의도하지 않는 빈값
-  - null : 개발자가 의도한 빈값
+> undefiend 와 null
+
+- undefiend 개발자가 의도하지 않는 빈값
+- null : 개발자가 의도한 빈값
 
 ```javascript
 var x;
@@ -75,3 +76,6 @@ num = 3   // new Number(3);
 num = "3" // new String("3");
 ```
 
+## Array 객체
+
+> push / pop 메소드를 이용한 데이터 관리 : Stack
