@@ -1163,3 +1163,232 @@ window.addEventListener("load",function(){
 });
 ```
 
+## 25.Node의 종류
+
+- NODE 트리 안에서 객체가 존재하기 위해서는 개체(형식)가 존재 해야한다.
+
+### NODE 의  TYPE()
+
+- Element, Attr, Text, Document  를 많이 사용한다.
+
+![NODE](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/NODE.png)
+
+## 26.Node 인터페이스
+
+- https://www.w3.org/TR (W3C 공식 사이트)
+
+### Node Interface
+
+- `ELEMENT_NODE = 1`과 `TEXT_NODE = 3` 을 주로 사용
+- `nodeType` nodeType을 알아볼 때 사용
+- `nodeName` 은 `ELEMENT_NODE`로 사용할 때 태그명을 알아낼 수 있다.
+
+```
+[Exposed=Window]
+interface Node : EventTarget {
+  const unsigned short ELEMENT_NODE = 1;
+  const unsigned short ATTRIBUTE_NODE = 2;
+  const unsigned short TEXT_NODE = 3;
+  const unsigned short CDATA_SECTION_NODE = 4;
+  const unsigned short ENTITY_REFERENCE_NODE = 5; // historical
+  const unsigned short ENTITY_NODE = 6; // historical
+  const unsigned short PROCESSING_INSTRUCTION_NODE = 7;
+  const unsigned short COMMENT_NODE = 8;
+  const unsigned short DOCUMENT_NODE = 9;
+  const unsigned short DOCUMENT_TYPE_NODE = 10;
+  const unsigned short DOCUMENT_FRAGMENT_NODE = 11;
+  const unsigned short NOTATION_NODE = 12; // historical
+  readonly attribute unsigned short nodeType;
+  readonly attribute DOMString nodeName;
+```
+
+### Node 순회
+
+```
+  readonly attribute Document? ownerDocument;
+  readonly attribute Node? parentNode;
+  readonly attribute Element? parentElement;
+  boolean hasChildNodes();
+  [SameObject] readonly attribute NodeList childNodes;
+  readonly attribute Node? firstChild;
+  readonly attribute Node? lastChild;
+  readonly attribute Node? previousSibling;
+  readonly attribute Node? nextSibling;
+```
+
+### nodeValue
+
+- `TEXT_NODE = 3;` 일 때 값을 알아내기 위해서 사용된다.
+
+### textContent
+
+- `ELEMENT_NODE = 1;` 일때 태그가 감싸고 있는 내용을 얻을 때 사용
+
+### Node 조작
+
+```
+[CEReactions] Node insertBefore(Node node, Node? child);
+[CEReactions] Node appendChild(Node node);
+[CEReactions] Node replaceChild(Node node, Node child);
+[CEReactions] Node removeChild(Node child);
+```
+
+## 27.Document Interface
+
+- Node 로부터 기능을 물려받아 확장하고 있다.
+- Node를 create , select 해주는 기능들을 갖고 있다.
+
+```
+[Constructor,
+Exposed=Window]
+interface Document : Node {
+[SameObject] readonly attribute DOMImplementation implementation;
+readonly attribute USVString URL;
+readonly attribute USVString documentURI;
+readonly attribute USVString origin;
+readonly attribute DOMString compatMode;
+readonly attribute DOMString characterSet;
+readonly attribute DOMString charset; // for legacy use, alias of .characterSet
+readonly attribute DOMString inputEncoding; // for legacy use, alias of .characterSet
+readonly attribute DOMString contentType;
+
+readonly attribute DocumentType? doctype;
+readonly attribute Element? documentElement;
+HTMLCollection getElementsByTagName(DOMString localName);
+HTMLCollection getElementsByTagNameNS(DOMString? namespace, DOMString localName);
+HTMLCollection getElementsByClassName(DOMString classNames);
+
+[CEReactions, NewObject] Element createElement(DOMString localName, optional ElementCreationOptions options);
+[CEReactions, NewObject] Element createElementNS(DOMString? namespace, DOMString qualifiedName, optional ElementCreationOptions options);
+[NewObject] DocumentFragment createDocumentFragment();
+[NewObject] Text createTextNode(DOMString data);
+[NewObject] CDATASection createCDATASection(DOMString data);
+[NewObject] Comment createComment(DOMString data);
+[NewObject] ProcessingInstruction createProcessingInstruction(DOMString target, DOMString data);
+
+[CEReactions, NewObject] Node importNode(Node node, optional boolean deep = false);
+[CEReactions] Node adoptNode(Node node);
+
+[NewObject] Attr createAttribute(DOMString localName);
+[NewObject] Attr createAttributeNS(DOMString? namespace, DOMString qualifiedName);
+
+[NewObject] Event createEvent(DOMString interface);
+
+[NewObject] Range createRange();
+
+// NodeFilter.SHOW_ALL = 0xFFFFFFFF
+[NewObject] NodeIterator createNodeIterator(Node root, optional unsigned long whatToShow = 0xFFFFFFFF, optional NodeFilter? filter = null);
+[NewObject] TreeWalker createTreeWalker(Node root, optional unsigned long whatToShow = 0xFFFFFFFF, optional NodeFilter? filter = null);
+};
+
+[Exposed=Window]
+interface XMLDocument : Document {};
+
+dictionary ElementCreationOptions {
+DOMString is;
+};
+```
+
+## 28.엘리먼트 노드의 속성 다루기
+
+![20220207194346](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207194346.png)
+
+### Image 변경 예제 - 1 : textbox
+
+- input에 입력 된 내용으로 img 변경
+
+> HTML
+
+```HTML
+<section id="section5">
+    <h1>Ex5 : 엘리먼트 노드의 속성 변경 </h1>
+    <div>
+        <input class="src-input">
+        <input class="change-btn" type="button" value="변경하기">
+    </div>
+    <div>
+        <img class="img" >
+    </div>
+</section>
+```
+
+> JS
+
+- `img.src`로 Node 속성에 경로값을 입력받아 img를 변경 시켜준다.
+
+```JS
+// Ex5 : 엘리먼트 노드의 속성 변경
+window.addEventListener("load",function(){
+    var section5 = document.querySelector("#section5");
+    var srcInput = section5.querySelector(".src-input");
+    var changeBtn = section5.querySelector(".change-btn");
+    var img = section5.querySelector(".img")
+    
+    changeBtn.onclick = function(){
+        var name = srcInput.value;
+        img.src = "imgs/"+name;
+        
+    };
+});
+```
+
+![Ex5_js](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/Ex5_js.gif)
+
+### Image 변경 예제 - 2 : select
+
+- `select` 태그를 활용하여 img 변경하기
+
+> HTML
+
+```html
+<section id="section5">
+    <h1>Ex5 : 엘리먼트 노드의 속성 변경 </h1>
+    <div>
+        <input class="src-input">
+        <select class="img-select">
+            <option value="img1.jfif">img1</option>
+            <option value="img2.jfif">img2</option>
+            <option value="img3.jfif">img3</option>
+        </select>
+        <input class="change-btn" type="button" value="변경하기">
+    </div>
+    <div>
+        <img class="img"  >
+    </div>
+</section>
+```
+
+> JS
+
+```JS
+// Ex5 : 엘리먼트 노드의 속성 변경
+window.addEventListener("load",function(){
+    var section5 = document.querySelector("#section5");
+    var srcInput = section5.querySelector(".src-input");
+    var changeBtn = section5.querySelector(".change-btn");
+    var img = section5.querySelector(".img")
+    var imgSelect = section5.querySelector(".img-select");
+    
+    changeBtn.onclick = function(){
+        // var name = srcInput.value;
+        // img.src = "imgs/"+name;
+        var name = imgSelect.value;
+        img.src = "imgs/" + name;
+    };
+});
+```
+
+![Ex5_js2](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/Ex5_js2.gif)
+
+> 
+
+## 29.스타일  변경하기
+
+### style  속성을 이용해서 스타일  변경하기
+
+- css style 속성은 `element.style.속성` 으로 style 이 갖고 있다.
+- 속성에 입력되는 값은 모두 문자열 이어서 width와 height 등에 값을 줄때도 문자열 입력해야 한다.
+- `txt1.style.border-width` 속성명에 '-'(대시)가 있으면 안된다. 
+- 그래서 `txt1.style.borderWidth` 으로 사용하거나  `txt1.style['border-width']`
+
+![20220207214813](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207214813.png)
