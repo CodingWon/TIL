@@ -969,3 +969,56 @@ var li = sec1.getElementsByTagName("li");
 lis[0].textContent = "Hello";
 ```
 
+> HTML
+
+- id 는 엘리먼트를 독립적으로 식별하기위한 selector 이므로 class로 바꿨다.
+- `section id = ex2`으로 선택해서 엘리먼트를 갖고 올 수 있게 수정했다.
+
+```html
+<body>
+    <section id="ex2">
+        <h1>Ex2 : 엘리먼트 선택방법 개선하기</h1>
+        <div>
+            <input class="txt-x" type="text" value="0" dir="rtl">
+            +
+            <input class="txt-y" type="text" value="0" dir="rtl">
+            <input class="btn-add" type="button" value="=">
+            <input class="txt-sum" type="text" value="0" readonly dir="rtl">
+        </div>
+    </section>
+</body>
+```
+
+> JS
+
+- `.getElementsByTagName("input");`로 엘리먼트들을 갖고와서 `var txtX = inputs[0];` 순서대로 대입할 수 있지만, 
+  태그의 순서는 언제든 바뀔 위험이 있으므로 않좋은 방법이다.
+- class명 갖고 왔는데 `.getElementsByClassName("txt-x")[0];`는 여러개의 엘리먼트를 갖고오는 형태여서 
+  끝에 인덱스가 있어야 한다.
+
+```js
+// EX2 :엘리먼트 선택방법 개선하기
+window.addEventListener("load",function(){
+    var section2 = document.getElementById("ex2");
+    var txtX = document.getElementsByClassName("txt-x")[0];
+    var txtY = document.getElementsByClassName("txt-y")[0];
+    var btnAdd = document.getElementsByClassName("btn-add")[0];
+    var txtSum = document.getElementsByClassName("txt-sum")[0];
+
+    /*
+    var inputs = section2.getElementsByTagName("input");
+    var txtX = inputs[0];
+    var txtY = inputs[1];
+    var btnAdd = inputs[2];
+    var txtSum = inputs[3];
+    */
+
+    btnAdd.onclick = function (){
+        var x = parseInt(txtX.value);
+        var y = parseInt(txtY.value);
+
+        txtSum.value = x + y;
+    };
+});
+```
+
