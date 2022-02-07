@@ -1387,8 +1387,8 @@ window.addEventListener("load",function(){
 ### style  속성을 이용해서 스타일  변경하기
 
 - css style 속성은 `element.style.속성` 으로 style 이 갖고 있다.
-- 속성에 입력되는 값은 모두 문자열 이어서 width와 height 등에 값을 줄때도 문자열 입력해야 한다.
+- 속성에 입력되는 값은 모두 문자열 이어서 width와 height 등에 값을 줄때도 문자열을 입력해야 한다.
 - `txt1.style.border-width` 속성명에 '-'(대시)가 있으면 안된다. 
-- 그래서 `txt1.style.borderWidth` 으로 사용하거나  `txt1.style['border-width']`
+- 그래서 `txt1.style.borderWidth` 으로 사용하거나  `txt1.style["border-width"]` 으로 사용할 수 있다.
 
 ![20220207214813](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207214813.png)
