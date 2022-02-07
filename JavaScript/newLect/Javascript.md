@@ -430,3 +430,207 @@ function add (x,y) {
 console.log(add(3,4)); // 7
 ```
 
+### 함수 인자(arguments)
+
+- 매개변수는 `(x,y)`로 정해져 있는데 `add(2,3, "hello",3, 4, 5, 6);` 여러 인자를 넘겨주고 있다.
+
+```js
+function add (x,y){
+	return x + y;
+}
+var sum1 = add(2,3);
+var sum2 = add(2,3, "hello",3, 4, 5, 6);
+```
+
+- 매개변수는 참조 이름의 역할만 하고, 내부에서 가변으로 받을 수 있는 컬렉션을 갖고 있다.
+
+```js
+function add(x,y){
+	console.log(arguments.length); // 7
+	console.log(arguments[2]); // hello 
+	return x + y;
+}
+
+var sum2 = add(2,3, "hello",3, 4, 5, 6);
+```
+
+## 13.변수의 가시영역과 전역 변수
+
+### 변수 선언과 정의
+
+- 선언은 코드가 실행되기전에 미리 준비된다. 
+- `console.log(a);` 코드는 값이 아직 할당되지 않아 `undefined`가 출력된다.
+
+```js
+<script>
+	console.log(a); // undefiend
+	var a = 1;
+</script>
+```
+
+- 선언하지 않고 a에 대입하면 브라우저상에 있는 `window`객체에 속성으로 대입된다.
+
+```js
+<script>
+	a = 1;
+	console.log(a);
+<script>
+```
+
+- 아래 코드에서 변수 `a`는 선언 되어 있지 않고, 전역객체 속성도 아니기 때문에 `console.log(a);`오류가 뜬다. 
+- 전역 객체 속성은 대입될 때 생성된다.
+
+```js
+<script>
+    console.log(a);
+    a = 1;
+</script>
+```
+
+### 전역 변수
+
+- 선언하지 않고 사용하는 변수는 전역변수 이다.
+- 함수내부에서 변수명이 같더라도 선언하지 않은 `a = 1` 은 전역변수이고,  선언한 `var a = 3` 은 지역변수 이다.
+- `a++` 지역변수가 우선순위가 더 높아 지역변수의 값이 증감된다. 
+
+```js
+<script>
+    var f1 = function(){
+        a = 1;		// 전역변수 window.a
+        var a = 3;	// 지역변수 
+        a++;		// 4 (지역변수가 우선순가 높다.)
+        console.log(a);
+    }
+    f1();
+</script>
+```
+
+### 변수 생명주기
+
+- 중괄호 내부의 `var a = 1;` 가 중괄호 밖에서 출력이 잘된다. 그래서 { } 민 사용할 경우에는 의미가 없다.
+
+```js
+<script>
+	{
+		var a = 1;
+	}
+	console.log(a); // 1
+</script>
+```
+
+#### 함수 내부 지역화
+
+- 함수 내부에서만 변수를 지역화 해서 사용할 수 있다.
+
+```js
+<script>
+	function f1(){
+    	var a = 1;
+	}
+	f1();
+	console.log(a); // 오류
+</script>
+```
+
+#### 외부 함수와 내부 함수
+
+- 함수 안에 함수를 사용할 수 있다. 
+- `f3()`함수의  a변수가 `f2()`의  a변수를 사용하고 있어서 `f2()`함수는 종료할 수가 없다. 이것을 클로저라고 한다.
+
+```js
+function f1 (){
+	var a = 1;
+	f2();
+	function f2(){
+		var a =2;
+		function f3(){
+			 a = 3;
+		}
+	}
+}
+f1();
+console.log(a);
+```
+
+## 14.클로저
+
+- `f1()`함수는 return 하고 스택에서 제거 되야된다.
+- 그런데 , `f1()`의 `var a = 1`를 내부 함수 `f2()`가 사용하고 있어서 제거되지 않는다.
+- `f2()`함수에 의해 `f1()`의 생명주기가 정해진다. 이럴 때 `f2()`함수를 클로저라고 한다.
+
+```js
+function f1(){
+	var a = 1;
+	return function f2(){
+		return a;
+	}
+}
+
+var f = f1();
+console.log(f()); // 1
+```
+
+- 클로저가 대입된 `f`변수를 출력해보면 `f2()`함수가 출력된다.
+
+```js
+function f1(){
+	var a = 1;
+	return function f2(){
+		return a;
+	}
+}
+var f = f1();
+console.log(f); 
+
+/* 출력결과
+ƒ f2(){
+		return a;
+	}
+*/
+
+```
+
+## 15.브라우저 플랫폼
+
+### HTML5에서 확장된 플랫폼의 기능
+
+- 동적 문서를 활용해여 window상에 있는 element 들을 사용할수 있다.
+
+![HTML5에서 확장된 플랫폼의 기능](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/HTML5%EC%97%90%EC%84%9C%20%ED%99%95%EC%9E%A5%EB%90%9C%20%ED%94%8C%EB%9E%AB%ED%8F%BC%EC%9D%98%20%EA%B8%B0%EB%8A%A5.png)
+
+### window 객체 
+
+- window.location : 페이지 링크의 위치를 조작할 수 있다.
+- window.history : 사용자가 검색했던 기록 (뒤로가기)
+- window.documnet : html 를 이용하여 브라우저를 조작할 수 있다.
+
+![20220207123617](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207123617.png)
+
+### parseInt( )  : 정수로 변환
+
+- Javascript 에서 입력된 값은 전부 문자열이다.
+
+```js
+var a ;
+a = prompt("a의 값을 입력해주세요",a); // 1 입력
+console.log(typeof a); // string
+```
+
+- parseInt() 를 통해서 변환해서 값을 사용해야 한다.
+
+```js
+var a ;
+a = prompt("a의 값을 입력해주세요",a); // 1 입력
+a = parseInt(a);
+console.log(typeof a); // number
+```
+
+- 변환하려는 변수에 문자가 있을 경우 자동으로 삭제 해준다.
+
+```js
+var a = parseInt("123abc");
+console.log(a);
+```
+
+## 
+
