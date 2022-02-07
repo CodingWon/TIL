@@ -325,6 +325,108 @@ console.log(data.title);
 ```js
 var data = {id:1, title:"aaa"};
 var json = JSON.stringify(data);
-console.log(json);
+console.log(json); // '{"id":1, "title":"aaa"};'
+```
+
+## 10.연산자
+
+![20220207095039](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207095039.png)
+
+![20220207102219](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207102219.png)
+
+### 동등 연산자(== , ===)
+
+- == 은 값을 비교
+- === 값과 데이터 형식, 참조를 비교
+
+> 예제
+
+- 자바스크립트의 변수는 값이 아닌 참조 변수로 주소를 갖고 있다.
+- `x === y`로 동등비교 하면 x와 y의 참조가 달라 false라고 생각할 수 있다.
+- 그러나 , 자바 스크립트에서는 값이 같으면  참조가 같다.
+
+```js
+var x = 3;
+var y = 3;
+console.log(x == y); // true
+console.log(x === y); // true;
+```
+
+- `var y = new Number(3)` 으로 y변수를 정의하면 다른 `var x`와 다른 참조 값을 같는다.
+
+```js
+var x = 3;
+var y = new Number(3);
+console.log(x == y); // true
+console.log(x === y); // fasle
+```
+
+### 애매한 연산
+
+`console.log(3+ "4")` 컴파일러가 3을 문자열로 변환시켜 "34" 가 출력된다.
+
+`console.log(3.5 - "2")` 컴파일러가 2를 숫자로 변환 시켜 1.5가 출력된다.
+
+`console.log("32" > "4")` 사전식 비교를 한다.
+
+`console.log("32" > 4)` 32를 숫자로 변환시켜 비교한다.
+
+```js
+console.log(3 + "4") // 34
+console.log(3.5 - "2") // 1.5
+console.log("32" > "4") // false
+console.log("32" > 4) // true
+```
+
+## 11.제어구조
+
+![20220207102340](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207102340.png)
+
+### for-in 문
+
+- 인덱스, key를 순회한다.
+
+```js
+var ar = ["hello", "hi", "greeting"];
+for(var i in ar)
+	cosole.log(ar[i]);
+	
+var ob = {id:1, title:"hello", writedId:"newlec"};
+for (var i in ob)
+	console.log(ob[i]);
+```
+
+## 12.함수
+
+### 함수와  표현식
+
+> 표현 방법 1
+
+- 자바스크립트에서는 함수를 정의하지 않고 만들어 사용한다.
+- 함수는 객체이므로 대입이 가능하다.
+
+```js
+var add = new Function("x,y","return x+y;");
+console.log(add(3,4)); // 7
+```
+
+> 표현 방법 2
+
+`var add = function(x,y){...};` 은 add의 변수에 대입 되는 것이어서 끝에 **;**를 꼭 붙여야 한다.
+
+```js
+var add = function (x,y){
+			return x+y;
+		};
+console.log(add(3,4)); // 7
+```
+
+> 표현 방법 3
+
+```js
+function add (x,y) {
+	return x + y;
+}
+console.log(add(3,4)); // 7
 ```
 
