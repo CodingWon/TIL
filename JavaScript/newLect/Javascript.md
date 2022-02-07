@@ -403,7 +403,7 @@ for (var i in ob)
 > 표현 방법 1
 
 - 자바스크립트에서는 함수를 정의하지 않고 만들어 사용한다.
-- 함수는 객체이므로 대입이 가능하다.
+- 함수는 **객체**이므로 대입이 가능하다.
 
 ```js
 var add = new Function("x,y","return x+y;");
@@ -412,7 +412,7 @@ console.log(add(3,4)); // 7
 
 > 표현 방법 2
 
-`var add = function(x,y){...};` 은 add의 변수에 대입 되는 것이어서 끝에 **;**를 꼭 붙여야 한다.
+`var add = function(x,y){...};` 은 add의 변수에 대입 되는 것이어서 끝에 `;(세미콜론)` 를 꼭 붙여야 한다.
 
 ```js
 var add = function (x,y){
