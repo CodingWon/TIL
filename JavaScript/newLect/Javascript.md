@@ -908,4 +908,64 @@ window.addEventListener("load",function(){
 });
 ```
 
-## 
+## 21.계산기 프로그램
+
+> HTML
+
+- `dir = rtl` 오른쪽 정렬
+- `readonly` 읽기만 가능
+
+```html
+<body>
+    <section>
+        <h1>Ex1 : 계산기 프로그램</h1>
+        <div>
+            <input id="txt-x" type="text" value="0" dir="rtl">
+            +
+            <input id="txt-y" type="text" value="0" dir="rtl">
+            <input id="btn-add" type="button" value="=">
+            <input id="txt-sum" type="text" value="0" readonly dir="rtl">
+        </div>
+    </section>
+    <hr/>
+</body>
+```
+
+> JS
+
+```js
+window.addEventListener("load",function(){
+    var txtX = document.getElementById("txt-x");
+    var txtY = document.getElementById("txt-y");
+    var btnAdd = document.getElementById("btn-add");
+    var txtSum = document.getElementById("txt-sum");
+
+    btnAdd.onclick = function (){
+        var x = parseInt(txtX.value);
+        var y = parseInt(txtY.value);
+
+        txtSum.value = x + y;
+    };
+});
+```
+
+## 22.노드 선택 방법 개선하기
+
+### 하위 엘리먼트 선택하기
+
+- `section`태그에 id를 부여하여 엘리먼트를 찾을 수 있다.
+
+![20220207155400](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207155400.png)
+
+#### .getElementsByTagName();
+
+#### getElementsClassName();
+
+- 여러 개의 엘리먼트들을 갖고 올때 사용할 수 있다.
+- `textContent` 웹 표준 텍스트 속성
+
+```js
+var li = sec1.getElementsByTagName("li");
+lis[0].textContent = "Hello";
+```
+
