@@ -1076,3 +1076,90 @@ window.addEventListener("load",function(){
 - 엘리먼트가 객체로 로드 되면 NODE의 계보가 생긴다.
 
 ![20220207171735](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207171735.png)
+
+### .childNodes
+
+- `.childNodes`는 모든 자식태그의 노드들을 갖고 온다.
+
+예제 1 - node 객체 이용하기
+
+> HTML 예제 .childNodes
+
+```html
+<section id="section4">
+    <h1>Ex4 : childNodes를 이용한 노드 선택 </h1>
+    <div class="box">
+        <input />
+        <input />
+    </div>
+</section>
+```
+
+> JS 예제 .childNodes
+
+- `.box`를 갖고와서 box안에 있는 `.childNodes[0];` `.childNodes[1];` 를 객체를 얻은 후에 문자를 대입시켰다.
+
+```JS
+// Ex4 : Selectors API level1
+window.addEventListener("load",function(){
+    var section4 = document.querySelector("#section4");
+    var box = section4.querySelector(".box");
+
+    var input1 = box.childNodes[0];
+    var input2 = box.childNodes[1];
+
+    input1.value = "hello";
+    input2.value = "okay";
+});
+```
+
+- 원하는 결과는 `input1`에는 "hello" `input2`에 "okay"를 생각 했지만 결과가 이상하게 나왔다.
+
+![20220207172837](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207172837.png)
+
+#### WHY?
+
+- NODE 계보에서 `text`도 NODE의 자식에 포함되어 `input` 태그의 사이에 공백으로 인해 원치 않은 결과가 나왔다.
+- 밑에 코드 처럼 box 빈공백이 모두 제거되어야 원하는 결과를 얻을 수 있다.
+
+```html
+<section id="section4">
+    <h1>Ex4 : childNodes를 이용한 노드 선택 </h1>
+    <div class="box"><input /><input />
+    </div>
+</section>
+```
+
+### children
+
+- 태그 형태 NODE만 갖고 온다.
+
+> HTML 예제 .children
+
+```HTML
+<section id="section4">
+    <h1>Ex4 : childNodes를 이용한 노드 선택 </h1>
+    <div class="box">
+        <input />
+        <input />
+    </div>
+</section>
+<hr/>
+```
+
+> JS  예제 .children
+
+```JS
+// Ex4 : Selectors API level1
+window.addEventListener("load",function(){
+    var section4 = document.querySelector("#section4");
+    var box = section4.querySelector(".box");
+
+    var input1 = box.children[0];
+    var input2 = box.children[1];
+
+    input1.value = "hello";
+    input2.value = "okay";
+});
+```
+
