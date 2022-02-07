@@ -832,6 +832,7 @@ function init(){
 
 - javascript는 자유도가  높아서 아무 곳에서나 함수를 정의할 수 있다.
 - 이벤트 함수의 이름 `init` `printResult` 을 제거 하여 코드를 수정했다.
+- `btnPrint`변수를 함수 내부에 둬서 지역화 할 수 있다.
 
 ```js
 window.onload = function() {
@@ -852,5 +853,59 @@ window.onload = function() {
 
 ```
 
-## 
+## 20.코드 분리와 이벤트 바인딩
 
+### view와 Controller을 나누기
+
+- script 문서를 분리
+
+```js
+<script src="Ex_js.js"></script>   
+```
+
+> 분리 했을 때 문제점
+
+- 여러 스크립트를 포함 시킬 수 있는데 , 로드 되는 순서에 따라 작동을 안할 수 있다.
+- 여기서는 마지막에 있는 `test_js.js` 가  `Ex_js.js`를 덮어쓰기 해서   `test_js.js` 만 실행된다.
+
+```js
+<script src="Ex_js.js"></script>  
+<script src="test_js.js"></script>   
+```
+
+![test1](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/test1.png)
+
+### addEventListener( ) 
+
+- 이벤트를 추가 시켜주는 함수를 사용하여 script가 덮어 씌우기 되는 문제점을 해결 할 수 있다.
+
+  > Ex_js.js
+
+```js
+window.addEventListener("load",function(){
+    var btnPrint = document.getElementById("btn-print");
+
+    btnPrint.onclick =  function (){
+        var x,y;
+        x = prompt("x 값을 입력하세요.",0);
+        y = prompt("y 값을 입력하세요.",0);
+        
+        x = parseInt(x);
+        y = parseInt(y);
+
+        btnPrint.value = x + y;
+        spanPrint.innerText = x + y;
+    };
+});
+
+```
+
+> test_js
+
+```js
+window.addEventListener("load",function(){
+    alert("안녕하세요");
+});
+```
+
+## 
