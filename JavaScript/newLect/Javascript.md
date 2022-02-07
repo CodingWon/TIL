@@ -632,5 +632,225 @@ var a = parseInt("123abc");
 console.log(a);
 ```
 
+## 16.이벤트 기반의  윈도우 프로그래밍
+
+### 또 다른 스크립트 코드 영역
+
+> 이벤트 호출 방법 1 : 태그안에 직접 넣기
+
+- 태그 안에 이벤트를 넣어 이벤트가 발생할 때 실행된다.
+
+```js
+<input onXXX = " "/>
+
+<input onclick = " " />
+<input onmouseover = " "/>
+```
+
+- `button`이 클릭 되면 "안녕하세요" 출력
+- `<span>` 가 클릭 되면 'hello' 출력
+
+```js
+<input type="button" value="클릭" onclick="console.log('안녕하세요');"/><br/>
+<span onclick="console.log('hello')">스팬입니다.</span>
+```
+
+- 태그안에 직접넣는 방법은 가독성이 떨어진다.
+
+> 이벤트 호출 방법 2 : 함수를 정의하여 이벤트 호출하기
+
+- 태그가 클릭 됬을 때 `printResult()` 함수가 호출된다.
+
+```js
+<script>	
+    function printResult(){
+        var x,y;
+        x = prompt("x 값을 입력하세요.",0);
+        y = prompt("y 값을 입력하세요.",0);
+        
+        x = parseInt(x);
+        y = parseInt(y);
+
+       alert(x+y);
+    }
+</script>
+<body>
+	<input type ="button" value = "출력" onclick = "printResult();" />
+</body>
+```
+
+## 17.엘리먼트 객체 이용하기
+
+### NODE
+
+- 브라우저에 HTML 파일들이 로드될때 메모리상에 올라간다.
+- 메모리에 올라간것을 node라고 부르고
+- 태그는 엘리먼트 노드 객체 라고 하고
+- text는 텍스트 노드 객체 라고 한다.
+
+![20220207140506](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207140506.png)
+
+### 문서 객체의 속성 사용하기
+
+- 메모리상에 올라간 노드들 #document 부터 body 아래로 꼬리를 물며 맞물려 있다.
+- 노드를 이용할 때 태그에 id를 부여하여 이용할 수 있다.
+- `input`태그에는 value 속성 있지만
+- `span` 태그에는 value 속성이 없다. 그래서 innerText 를 사용해서 출력해야 한다.
+
+```js
+<script>	
+    function printResult(){
+        var x,y;
+        x = prompt("x 값을 입력하세요.",0);
+        y = prompt("y 값을 입력하세요.",0);
+        
+        x = parseInt(x);
+        y = parseInt(y);
+
+       btnPrint.value = x + y;
+       spanPrint.innerText = x + y;
+    }
+</script>
+<body>
+	<input type ="button" value = "출력" onclick = "printResult();" id = "btnPrint" />
+     <span id = "spanPrint" onclick = "printResult();">스팬</span>
+</body>
+```
+
+- 출력 형태
+
+![20220207141837](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207141837.png)
+
+> `<scipt>`에서 이벤트 호출 하기
+
+- HTML 태그 내부에서 onclick 를 지우고 `<script>`내부에서 클릭시 이벤트가 호출 될 수 있게 했다.
+- html 과 로직을 분리할 수 있다.
+- script 가 html 의 body보다 위에 있어서 html이 로드가 되지 않은 상태에서 이벤트를 호출하여 오류가 발생한다.
+
+```js
+<script>	
+    function printResult(){
+        var x,y;
+        x = prompt("x 값을 입력하세요.",0);
+        y = prompt("y 값을 입력하세요.",0);
+        
+        x = parseInt(x);
+        y = parseInt(y);
+
+       btnPrint.value = x + y;
+       spanPrint.innerText = x + y;
+    }
+    
+    btnPrint.onclick = printResult;
+
+</script>
+<body>
+	<input type ="button" value = "출력" id = "btnPrint" />
+     <span id = "spanPrint">스팬</span>
+</body>
+```
+
+- html 태그가 먼저 로드 된 후에 script가 실행이 되어야 한다.
+
+```js
+<body>
+	<input type ="button" value = "출력" id = "btnPrint" />
+     <span id = "spanPrint">스팬</span>
+     <script>	
+    function printResult(){
+        var x,y;
+        x = prompt("x 값을 입력하세요.",0);
+        y = prompt("y 값을 입력하세요.",0);
+        
+        x = parseInt(x);
+        y = parseInt(y);
+
+       btnPrint.value = x + y;
+       spanPrint.innerText = x + y;
+    }
+    btnPrint.onclick = printResult;
+</script>
+</body>
+```
+
+## 18.코드 초기화와 엘리먼트 객체 선택하기
+
+### window.onload();
+
+- window의 노드 객체가 로드가 된 이후에 script가 실행 될 수 있게 해야한다.
+  - 문서 외 자원들을 사용하기 위해서는 body가 아닌 window가 load가 됬을 때 script가 실행될 수 있게 해야한다.
+  - ![20220207143343](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207143343.png) 
+
+```js
+<script>	
+    function printResult(){
+        var x,y;
+        x = prompt("x 값을 입력하세요.",0);
+        y = prompt("y 값을 입력하세요.",0);
+        
+        x = parseInt(x);
+        y = parseInt(y);
+
+       btnPrint.value = x + y;
+       spanPrint.innerText = x + y;
+    }
+    function init(){
+    	btnPrint.onclick = printResult;
+    }
+    	
+	window.onload = init; // window가 로드 되었을 때
+</script>
+<body>
+	<input type ="button" value = "출력" id = "btnPrint" />
+     <span id = "spanPrint">스팬</span>
+</body>
+```
+
+### 객체  id 명명 방법
+
+- id를 `btnPrint` 카멜 표기법으로 쓰는 것은 옳바른 방법이 아니다.
+- `btn-print`로 사용해야하는데 script 영역에서 오류가 발생한다.
+
+### 엘리먼트 객체 선택하기
+
+- `document`객체에서 element를 갖고 와서 사용한다.
+- `btnPrint` 엘리먼트로 갖고온 객체를 전역에서 사용하기 위해 전역변수로 둘 수 있지만 좋은 방법이 아니다.
+- 전역화의 문제는 19장에서 스크립트의 지역화에서 다룰것이다. 
+
+```js
+function init(){
+		btnPrint = document.getElementById("btn-print");
+    	btnPrint.onclick = printResult;
+    }
+```
+
+## 19.스크립트 코드의 지역화
+
+- 이벤트 함수들은 함수명으로 호출할 필요가 없다.
+
+![20220207145158](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207145158.png)
+
+- javascript는 자유도가  높아서 아무 곳에서나 함수를 정의할 수 있다.
+- 이벤트 함수의 이름 `init` `printResult` 을 제거 하여 코드를 수정했다.
+
+```js
+window.onload = function() {
+        var btnPrint = document.getElementById("btn-print");
+
+        btnPrint.onclick =  function (){
+            var x,y;
+            x = prompt("x 값을 입력하세요.",0);
+            y = prompt("y 값을 입력하세요.",0);
+            
+            x = parseInt(x);
+            y = parseInt(y);
+
+            btnPrint.value = x + y;
+            spanPrint.innerText = x + y;
+        };
+    }
+
+```
+
 ## 
 
