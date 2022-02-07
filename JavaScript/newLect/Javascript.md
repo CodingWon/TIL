@@ -1022,3 +1022,57 @@ window.addEventListener("load",function(){
 });
 ```
 
+## 23.Selector API
+
+### querySelector (  ) , querySelectorAll( )
+
+- querySelector( ) , querySelectorAll( ) 을 이용하면 css의 selector (class, id , tag)를 활용하여 객체를 갖고 올 수 있다.
+- 속성으로 `.querySelector("input[name='x']");` 엘리먼트 객체를 갖고 올 수 있다.
+- class로 `.querySelector(".btn-add");`엘리먼트 객체를 갖고 올 수 있다.
+
+> JS
+
+```js
+// Ex3 : Selectors API level1
+window.addEventListener("load",function(){
+    var section3 = document.getElementById("section3");
+    var txtX = section3.querySelector("input[name='x']");
+    var txtY = section3.querySelector("input[name='y']");
+    var btnAdd = section3.querySelector(".btn-add");
+    var txtSum = section3.querySelector(".txt-sum");
+
+    btnAdd.onclick = function (){
+        var x = parseInt(txtX.value);
+        var y = parseInt(txtY.value);
+
+        txtSum.value = x + y;
+    };
+});
+
+```
+
+> HTML
+
+- form 태그에 안에서 호스트 할때는 반드시 `name`속성이 필요하다. 
+- `name`은 값을 전달할 때 key 값으로 사용된다.
+
+```HTML
+    <section id="section3">
+        <h1>Ex3 : Selectors API level1 </h1>
+        <div>
+            <input name="x" type="text" value="0" dir="rtl">
+            +
+            <input name="y" type="text" value="0" dir="rtl">
+            <input class="btn-add" type="button" value="=">
+            <input class="txt-sum" type="text" value="0" readonly dir="rtl">
+        </div>
+    </section>
+```
+
+## 24.Node와 Element Node , 또 다른 노드 선택방법
+
+### NODE 계보
+
+- 엘리먼트가 객체로 로드 되면 NODE의 계보가 생긴다.
+
+![20220207171735](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207171735.png)
