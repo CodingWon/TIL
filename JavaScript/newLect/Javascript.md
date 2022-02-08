@@ -1392,3 +1392,93 @@ window.addEventListener("load",function(){
 - 그래서 `txt1.style.borderWidth` 으로 사용하거나  `txt1.style["border-width"]` 으로 사용할 수 있다.
 
 ![20220207214813](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220207214813.png)
+
+## 30.텍스트 노드 추가 / 삭제하기
+
+- 엘리먼트를 추가하는 것은 document 의 기능을 통해 만들 수 있다.
+
+![20220208142347](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220208142347.png)
+
+- 노드에 연결되어 있지 않으면 메모리에는 있지만  화면에 않보인다. 그래서 노드를 조작하여 연결시켜 줘야 한다.
+
+![20220208142609](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220208142609.png)
+
+### 노드  추가  순서
+
+1) 텍스트 노드 생성
+
+   ```
+   var txt = document.createTextNode("안녕하세요.");
+   ```
+
+   
+
+![20220208142726](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220208142726.png)
+
+2) 텍스트 노드를 추가할 엘리먼트 노드 선택 및 추가
+
+   - 선택
+
+   ```
+   var div1 = document.getElementById("div1");
+   ```
+
+   - 추가
+
+   ```
+   div1.appendChild(txt);
+   ```
+
+   ![20220208142817](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220208142817.png)
+
+### 예제 - 텍스트 노드 추가/삭제
+
+- input 에 입력 받은 값을 menu-list에 출력하기
+
+> HTML
+
+```HTML
+<section id="section6">
+    <h1>Ex6 - 노드조작 : 메뉴추가(createTextNode,Element)</h1>
+    <div>
+        <input class="title-input" name="title" />
+        <input type="button" class="add-button" value="추가">
+        <input type="button" class="del-button" value="삭제">
+    </div>
+    <div class="menu-list"></div>
+</section>
+```
+
+> JS
+
+- addButton 클릭시
+  - ` var txtNode = document.createTextNode(title);` txtNode 생성
+  - `menuListDiv.appendChild(txtNode);` : txtNode 연결
+
+```JS
+// Ex6 - 노드조작 : 메뉴추가(createTextNode,Element)
+window.addEventListener("load",function(){
+    var section6 = document.querySelector("#section6");
+    var titleInput = section6.querySelector(".title-input");
+    var menuListDiv = section6.querySelector(".menu-list");
+    var addButton = section6.querySelector(".add-button");
+    var delButton = section6.querySelector(".del-button");
+
+    addButton.onclick =function(){
+        var title = titleInput.value;
+        var txtNode = document.createTextNode(title);
+        menuListDiv.appendChild(txtNode);
+    }
+
+    delButton.onclick = function(){
+        var txtNode = menuListDiv.childNodes[0];
+        menuListDiv.removeChild(txtNode);
+    };
+});
+```
+
+- 결과
+
+  - Node 입력값을 받을 수 있지만, 추가 되는 컨텐츠들이 태그로 묶여있지 않다. 태그 없이 문자열로만 나열되여 있는 방법으로 사용하면 안된다.
+
+  ![EX6](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/EX6.png)
