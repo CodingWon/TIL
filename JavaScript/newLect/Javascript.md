@@ -1628,12 +1628,12 @@ window.addEventListener("load",function(){
 
 - 추가
   - 과거 `.appendChild()`는 일반적인 문자열을 자식으로 대입 할 수 없었다.
-  - `.append()` 는 가변길이의 매개변수를 지원하고, 문자열도 대입할 수 있어 문자열을 텍스트 노드로 변환해준다.
+  - `.append()` 는 가변길이의 매개변수를 지원하고, 문자열도 대입할 수 있다. 내부적으로 문자열을 텍스트 노드로 변환해준다.
 - 삭제
   - 기존 `menuListUl.removeChild(liNode);` 에서 부모를 통해서 자식을 삭제 하는 방법이었다.
   - `liNode.remove` 는 자식의 입장에서 스스로 삭제하는 방법이다.
 
-```
+```js
 window.addEventListener("load",function(){
     var section6 = document.querySelector("#section6");
     var titleInput = section6.querySelector(".title-input");
@@ -1643,7 +1643,6 @@ window.addEventListener("load",function(){
 
     addButton.onclick =function(){
         var title = titleInput.value;
-        <!-- innerHTML 으로 노드를 추가 할 수 있다-->
         var html = '<a href="">'+ title +'</a>'
         var li = document.createElement("li");
         li.innerHTML = html;
