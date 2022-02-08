@@ -1657,3 +1657,186 @@ window.addEventListener("load",function(){
 });
 ```
 
+## 32.노드 복제와 템플릿
+
+### 예제_ 노드 복제하기-1 : 복제
+
+>  HTML
+
+```HTML
+    <section id="section7">
+        <h1>Ex7-노드 복제와 템플릿 태그</h1>            
+        <div>                
+            <input type="button" class="clone-button" value="복제" />                
+            <input type="button" class="template-button" value="템플릿 복제" />
+        </div>
+        <table border="1" class="notice-list">
+            <thead>
+                <tr>
+                    <td>번호</td>
+                    <td>제목</td>
+                    <td>작성일</td>
+                    <td>작성자</td>
+                    <td>조회수</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: lightblue;">
+                    <td>1</td>
+                    <td><a href="1">자바스크립트란..</a></td>
+                    <td>2019-01-25</td>
+                    <td>newlec</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><a href="2">유투브에 끌려다니지 않으려고 했는데....ㅜㅜ..</a></td>
+                    <td>2019-01-25</td>
+                    <td>newlec</td>
+                    <td>0</td>
+                </tr>
+                <tr>                        
+                    <td>3</td>
+                    <td><a href="3">기본기가 튼튼해야....</a></td>
+                    <td>2019-01-25</td>
+                    <td>newlec</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><a href="4">근데 조회수가 ㅜㅜ..</a></td>
+                    <td>2019-01-25</td>
+                    <td>newlec</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <hr />
+```
+
+> JS
+
+- 복제할 `tr` 객체를 얻어 온다.
+- `cloneNode`를 생성한다. `.cloneNode()`는 껍데기만 복제하는 것이고 `.cloneNode(true)`은 태그안에 모든 요소를 복제한다.
+- `tobody`에 추가한다.
+
+```JS
+//Ex7 : 노드 복제와 템플릿 태그
+window.addEventListener("load", function(){
+    var notices = [
+        {id:5, title:"퐈이야~~~", regDate:"2019-01-26", writerId:"newlec", hit:0},
+        {id:6, title:"나 좀 복제해줘~", regDate:"2019-01-26", writerId:"newlec", hit:17}
+    ];
+    var section = document.querySelector("#section7");
+    var noticeList =section.querySelector(".notice-list"); 
+    var tbodyNode = noticeList.querySelector("tbody");
+    var cloneButton = section.querySelector(".clone-button");
+    var templateButton = section.querySelector(".template-button");
+    
+    cloneButton.onclick = function(){
+        var trNode = noticeList.querySelector("tbody tr");
+        var cloneNode = trNode.cloneNode(true);
+        tbodyNode.append(cloneNode);
+    };
+    templateButton.onclick = function(){
+    };
+});
+
+```
+
+### 예제 _노드 복제하기-2 : 데이터 대입
+
+- 복제 및 삽입하기
+
+> JS
+
+- `tds`는 `cloneNode` 의 `td` 요소들을 갖고 있다.
+- `tds` 배열에 담긴 `td` 요소들에 `notices` 안에 있는 객체의 정보를 넘겨준다.
+- `a`tag는 href 속성에 id값을 갖고 있어서 복잡하지만 
+  `tds[1].innerHTML = '<a href="'+notices[0].id+'">' + notices[0].title +'</a>';` 방법으로 대입해야 한다.
+
+```js
+window.addEventListener("load", function(){
+    var notices = [
+        {id:5, title:"퐈이야~~~", regDate:"2019-01-26", writerId:"newlec", hit:0},
+        {id:6, title:"나 좀 복제해줘~", regDate:"2019-01-26", writerId:"newlec", hit:17}
+    ];
+
+    var section = document.querySelector("#section7");
+    
+    var noticeList =section.querySelector(".notice-list"); 
+    var tbodyNode = noticeList.querySelector("tbody");
+    var cloneButton = section.querySelector(".clone-button");
+    var templateButton = section.querySelector(".template-button");
+    
+
+    cloneButton.onclick = function(){
+        var trNode = noticeList.querySelector("tbody tr");
+        var cloneNode = trNode.cloneNode(true);
+
+        var tds = cloneNode.querySelectorAll("td");
+        tds[0].textContent = notices[0].id;
+        tds[1].innerHTML = '<a href="'+notices[0].id+'">' + notices[0].title +'</a>';
+        tds[2].textContent = notices[0].regDate;
+        tds[3].textContent = notices[0].writerId;
+        tds[4].textContent = notices[0].hit;
+
+        tbodyNode.append(cloneNode);
+    };
+    templateButton.onclick = function(){
+        
+    };
+});
+```
+
+### 예제 _노드 복제하기-3  : templete 이용
+
+- 데이터가 하나도 없을 때 복제할게 없어서 복제가 안될 수 있다.
+
+> HTML
+
+- `template`태그를 사용하여 값이 없는 태그 구조를 만든다.
+- 데이터가 입력이 되어도 화면에 안보인다.
+
+```HTML
+<template>
+    <tr>
+        <td></td>
+        <td><a href=""></a></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</template>
+```
+
+
+
+> JS - 템플릿 복제
+
+- 기본 로직은 2번째 예제와 같은데, 이번 예제에서는 `var cloneNode = document.importNode(template.content, true);` 으로 
+  import 하여 clone 해야한다.
+- `tds[1].innerHTML = '<a href="'+notices[0].id+'">' + notices[0].title +'</a>';` 가 복잡해 보인다면
+- `aNode`를 얻어와서 `aNode`의 `href`와 내용에 각각 값을 대입하면 된다.
+
+```js
+templateButton.onclick = function(){
+    var template = section.querySelector("template");
+    var cloneNode = document.importNode(template.content, true);
+
+    var tds = cloneNode.querySelectorAll("td");
+    tds[0].textContent = notices[0].id;
+    // tds[1].innerHTML = '<a href="'+notices[0].id+'">' + notices[0].title +'</a>';
+    var aNode = tds[1].children[0];
+    aNode.href = notices[0].id;
+    aNode.textContent = notices[0].title;
+
+    tds[2].textContent = notices[0].regDate;
+    tds[3].textContent = notices[0].writerId;
+    tds[4].textContent = notices[0].hit;
+
+    tbodyNode.append(cloneNode);
+};
+```
+
