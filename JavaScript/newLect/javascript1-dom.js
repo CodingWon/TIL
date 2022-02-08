@@ -8,23 +8,17 @@ window.addEventListener("load",function(){
 
     addButton.onclick =function(){
         var title = titleInput.value;
-        var txtNode = document.createTextNode(title);
-        var aNode = document.createElement("a");
-        aNode.href = "";
-        aNode.appendChild(txtNode);
-
-        var liNode = document.createElement("li");
-        liNode.appendChild(aNode);
+      
+        var html = '<a href="">'+ title +'</a>';
+        var li = document.createElement("li");
+        li.innerHTML = html;
         
-        menuListUl.appendChild(liNode);
-        // var title = titleInput.value;
-        // var txtNode = document.createTextNode(title);
-        // menuListDiv.appendChild(txtNode);
+        menuListUl.appendChild(li);
     }
 
     delButton.onclick = function(){
-        var txtNode = menuListDiv.childNodes[0];
-        menuListDiv.removeChild(txtNode);
+        var liNode = menuListUl.children[0];
+        liNode.remove();
     };
 });
 
