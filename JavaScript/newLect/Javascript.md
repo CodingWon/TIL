@@ -1877,3 +1877,165 @@ templateButton.onclick = function(){
 
 ### 노드 객체 선택하기
 
+|                  | Node 전체       | Node 엘리먼트          |
+| ---------------- | --------------- | ---------------------- |
+| 부모 노드        | parentNode      |                        |
+| 첫번째 자식      | firstChild      | firstElementChild      |
+| 마지막 자식 노드 | lastChild       | lastElementChild       |
+| 이전 형제 노드   | previousSibling | previousElementSibling |
+| 다음 형제 노드   | nextSibling     | nextElementSibling     |
+
+> HTML
+
+```HTML
+<section id="section8">
+        <h1>Ex8-노드 삽입과 바꾸기</h1>          
+        <div>                
+            <input type="button" class="up-button" value="위로" />                
+            <input type="button" class="down-button" value="아래로" />
+        </div>
+        <table border="1" class="notice-list">
+            <thead>
+                <tr>
+                    <td>번호</td>
+                    <td>제목</td>
+                    <td>작성일</td>
+                    <td>작성자</td>
+                    <td>조회수</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: lightblue;">
+                    <td>1</td>
+                    <td><a href="1">자바스크립트란..</a></td>
+                    <td>2019-01-25</td>
+                    <td>newlec</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><a href="2">유투브에 끌려다니지 않으려고 했는데....ㅜㅜ..</a></td>
+                    <td>2019-01-25</td>
+                    <td>newlec</td>
+                    <td>0</td>
+                </tr>
+                <tr>                        
+                    <td>3</td>
+                    <td><a href="3">기본기가 튼튼해야....</a></td>
+                    <td>2019-01-25</td>
+                    <td>newlec</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><a href="4">근데 조회수가 ㅜㅜ..</a></td>
+                    <td>2019-01-25</td>
+                    <td>newlec</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <hr />
+```
+
+> JS
+
+- `tbody` 에서 현재 노드를 가지고 온다.
+- down 버튼
+  - down 버튼을 누르면 현재 노드가 이동하는 것으로 `.nextElementSibling;`으로 다음 노드를 얻어온다.
+  - 노드를 끝까지 내렸을 때 이동할 수 없으므로 `if(preNode == null)` 으로 조건 처리한다.
+  - ` tbodyNode.removeChild(nextNode);` 는 메모리상에서 제거하는 것이 아니라 화면에서만 안보이게 한다. 
+  - 다음 노드가 화면에서 지워진 후에 `currentNode`이전에 배치한다.
+  - `.insertBefore(삽입 시킬 node , 기준 node);` 함수를 이용한다. 
+- up 버튼
+  - 로직이 거이 비슷한데 `insertBefore`와 대치되는 `insertAfter` 이란 함수가 없다.
+  - 그래서 배치 방법이 down버튼과 조금 다르다 `currentNode`를 삭제하고 이전 노드에 배치한다.
+
+```JS
+//Ex Ex8-노드 삽입과 바꾸기
+window.addEventListener("load",function(){
+    var section = document.querySelector("#section8");
+    var tbodyNode = section.querySelector("tbody");
+    var upButton = section.querySelector(".up-button");
+    var downButton = section.querySelector(".down-button");
+
+    var currentNode = tbodyNode.firstElementChild;
+
+    upButton.onclick = function (){
+        var preNode = currentNode.previousElementSibling;
+
+        if(preNode == null){
+            alert("더 이상 이동할 수 없습니다.");
+            return;
+        }
+
+        tbodyNode.removeChild(currentNode);
+        tbodyNode.insertBefore(currentNode , preNode);
+    };
+
+    downButton.onclick = function (){
+        var nextNode = currentNode.nextElementSibling;
+
+        if(nextNode == null){
+            alert("더 이상 이동할 수 없습니다.");
+            return;
+        }
+
+        tbodyNode.removeChild(nextNode);
+        tbodyNode.insertBefore(nextNode , currentNode);
+    };
+});
+```
+
+### 인접 노드 객체 선택하기
+
+- beforebegin
+- afterbegin
+- beforeend
+- afterend
+
+![20220209153549](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220209153549.png)
+
+> JS
+
+- 인접 노드 객체 선택하기 방법 적용
+  - up버튼 :   `currentNode.insertAdjacentElement("afterend" , preNode);` 
+  - down 버튼 :  ` currentNode.insertAdjacentElement("beforebegin",nextNode);`
+  - 현재 노드를 기준으로 이동시키는 것이라 코드가 더 직관적이다.
+
+```js
+//Ex Ex8-노드 삽입과 바꾸기
+window.addEventListener("load",function(){
+    var section = document.querySelector("#section8");
+    var tbodyNode = section.querySelector("tbody");
+    var upButton = section.querySelector(".up-button");
+    var downButton = section.querySelector(".down-button");
+
+    var currentNode = tbodyNode.firstElementChild;
+
+    upButton.onclick = function (){
+        var preNode = currentNode.previousElementSibling;
+
+        if(preNode == null){
+            alert("더 이상 이동할 수 없습니다.");
+            return;
+        }
+
+        currentNode.insertAdjacentElement("afterend" , preNode);
+    };
+
+    downButton.onclick = function (){
+        var nextNode = currentNode.nextElementSibling;
+
+        if(nextNode == null){
+            alert("더 이상 이동할 수 없습니다.");
+            return;
+        }
+
+        currentNode.insertAdjacentElement("beforebegin",nextNode);
+        
+    };
+});
+```
+

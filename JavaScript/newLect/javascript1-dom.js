@@ -1,16 +1,37 @@
 //Ex Ex8-노드 삽입과 바꾸기
 window.addEventListener("load",function(){
     var section = document.querySelector("#section8");
-    var tbody = section.querySelector("tbody");
+    var tbodyNode = section.querySelector("tbody");
     var upButton = section.querySelector(".up-button");
     var downButton = section.querySelector(".down-button");
 
-    upButton.onclick = function (){
+    var currentNode = tbodyNode.firstElementChild;
 
+    upButton.onclick = function (){
+        var preNode = currentNode.previousElementSibling;
+
+        if(preNode == null){
+            alert("더 이상 이동할 수 없습니다.");
+            return;
+        }
+
+        // tbodyNode.removeChild(currentNode);
+        // tbodyNode.insertBefore(currentNode , preNode);
+        currentNode.insertAdjacentElement("afterend" , preNode);
     };
 
     downButton.onclick = function (){
+        var nextNode = currentNode.nextElementSibling;
 
+        if(nextNode == null){
+            alert("더 이상 이동할 수 없습니다.");
+            return;
+        }
+
+        // tbodyNode.removeChild(nextNode);
+        // tbodyNode.insertBefore(nextNode , currentNode);
+        currentNode.insertAdjacentElement("beforebegin",nextNode);
+        
     };
 });
 
