@@ -1,3 +1,19 @@
+//Ex Ex8-노드 삽입과 바꾸기
+window.addEventListener("load",function(){
+    var section = document.querySelector("#section8");
+    var tbody = section.querySelector("tbody");
+    var upButton = section.querySelector(".up-button");
+    var downButton = section.querySelector(".down-button");
+
+    upButton.onclick = function (){
+
+    };
+
+    downButton.onclick = function (){
+
+    };
+});
+
 //Ex7 : 노드 복제와 템플릿 태그
 window.addEventListener("load", function () {
     var notices = [

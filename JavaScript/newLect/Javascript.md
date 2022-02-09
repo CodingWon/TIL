@@ -4,6 +4,8 @@
 
 # 목차
 
+[TOC]
+
 
 
 
@@ -1839,4 +1841,39 @@ templateButton.onclick = function(){
     tbodyNode.append(cloneNode);
 };
 ```
+
+### 과제 -  notices 전부 클론하기
+
+- for문 안에 `cloneNode` 와 `tds` 를 포함 시켜야 한다.
+
+```js
+    templateButton.onclick = function () {
+      
+        var template = section.querySelector("template");
+       
+        for (var i = 0; i < notices.length; i++) {
+            var cloneNode = document.importNode(template.content, true);
+            var tds = cloneNode.querySelectorAll("td");
+            tds[0].textContent = notices[i].id;
+            // tds[1].innerHTML = '<a href="'+notices[0].id+'">' + notices[0].title +'</a>';
+            var aNode = tds[1].children[0];
+            aNode.href = notices[i].id;
+            aNode.textContent = notices[i].title;
+
+            tds[2].textContent = notices[i].regDate;
+            tds[3].textContent = notices[i].writerId;
+            tds[4].textContent = notices[i].hit;
+            tbodyNode.append(cloneNode);
+        }
+          
+    };
+```
+
+## 33.노드 삽입 및 대체하기
+
+- 위로, 아래로 버튼 클릭시 선택된 행이 이동을 한다.
+
+![20220209144224](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220209144224.png)
+
+### 노드 객체 선택하기
 
