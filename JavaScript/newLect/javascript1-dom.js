@@ -1,3 +1,4 @@
+
 //Ex Ex8-노드 삽입과 바꾸기
 window.addEventListener("load",function(){
     var section = document.querySelector("#section8");
@@ -15,8 +16,6 @@ window.addEventListener("load",function(){
             return;
         }
 
-        // tbodyNode.removeChild(currentNode);
-        // tbodyNode.insertBefore(currentNode , preNode);
         currentNode.insertAdjacentElement("afterend" , preNode);
     };
 
@@ -28,8 +27,6 @@ window.addEventListener("load",function(){
             return;
         }
 
-        // tbodyNode.removeChild(nextNode);
-        // tbodyNode.insertBefore(nextNode , currentNode);
         currentNode.insertAdjacentElement("beforebegin",nextNode);
         
     };

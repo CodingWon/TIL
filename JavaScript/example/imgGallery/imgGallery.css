@@ -1,0 +1,50 @@
+/* --- #s9 ---------------------------------------------- */
+
+#s9 .img-list-box ul{
+    /* reset */
+    margin:0;
+    padding: 0;
+
+    display: flex;
+}
+
+#s9 .img-list-box li{
+    /* reset */
+    list-style: none;
+
+    box-sizing: border-box;
+    width: 100px;
+    height: 100px;
+
+    opacity: 0.6;
+
+    transition:opacity 1s, border-bottom 1s;
+}
+
+#s9 .img-list-box li.active{
+    opacity: 1;
+    border-bottom: 3px solid red;
+}
+
+#s9 .img-list-box img{
+    width: 100%;
+    height: 100%;
+}
+
+#s9 .show-room{
+    height: 400px;
+    background-color: gray;
+
+    /* item layout */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+#s9 .show-room img{
+    height: 50%;
+    box-shadow: 0px 0px 13px rgb(83, 83, 83);
+
+    transition: transform 400ms;
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script>
+            //클로저 설명
+            window.addEventListener("load", function () {
+                var func = [];
+
+                func[0] = function () {
+                    console.log(0);
+                };
+
+                func[1] = function () {
+                    console.log(1);
+                };
+
+                func[0]();
+                func[1]();
+
+                // 반복문
+
+                for (var i = 0; i < 2; i++) 
+                    func[i] = function () {
+                        console.log("클로저:" + i);
+                    };
+                
+                func[0]();
+                func[1]();
+
+                // 익명 함수 바로 호출
+                for (var i = 0; i < 2; i++) 
+                    (function (x) {
+                        console.log("익명함수 바로 호출: " + x);
+                    })(i);
+                
+                // 함수 리턴
+                for (var i = 0; i < 2; i++) 
+                    func[i] = (function (x) {
+                        return function () {
+                            console.log("함수리턴 : " + x);
+                        }
+                    })(i);
+                
+                console.log(func[0]);
+
+                func[0]();
+                func[1]();
+
+                // 정리
+
+                for (var i = 0; i < 3; i++) {
+                    func[i] = (function (x) {
+                        return function () {
+                            console.log(x);
+                        }
+                    })(i);
+                }
+
+                for (var i = 0; i < 3; i++) {
+                    func[i]();
+                }
+
+                //객체지향
+                console.log("객체지향-----------------------------------------------------------");
+                function Exam(){
+                    this.kor = 30;
+                    this.eng = 20;
+                    console.log(window.kor); // Exam은 객체를 넘겨 받았다. undefined
+                    console.log(this.kor);
+                }
+                var exam = new Exam(); // 객체 전달
+
+                function Grade(){
+                    this.jiwon = "A";
+                    this.apple = "B";
+                    console.log(window.jiwon); // 전역 객체 
+                    console.log(this.jiwon);   // 전역 객체
+                }
+                
+                Grade(); // 함수 호출
+
+                
+            });
+           
+        </script>
+    </head>
+    <body></body>
+</html>
