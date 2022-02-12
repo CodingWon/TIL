@@ -1,3 +1,47 @@
+/* 4. 스타일 다루기 : 값 입력과 동적으로 박스 스타일 변경하기 */
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s4");
+    var box = section.querySelector(".box");
+    var styleBox =  box.querySelector(".style-box");
+    var widthInput = box.querySelector(".width-input");
+    var item = box.querySelector(".item");
+    var radiusInput = box.querySelector(".radius-input");
+    var colorInput = box.querySelector(".color-input");
+    var styleFigure = box.querySelector(".style-figure");
+    var widthFigure = box.querySelector(".width-figure");
+    var radiusFigure = box.querySelector(".radius-figure");
+    var colorFigure = box.querySelector(".color-figure");
+    var cssStyle = box.querySelector(".cssStyle");
+
+  
+    styleBox.oninput = function(e){
+        item.style.borderStyle = styleBox.value;
+        styleFigure.textContent = styleBox.value;       
+    };
+    widthInput.oninput =function(e){
+        item.style.borderWidth = widthInput.value+"px";
+        widthFigure.textContent = widthInput.value+"px";
+    };
+
+    radiusInput.oninput = function(e){
+        item.style.borderRadius = radiusInput.value+"px";
+        radiusFigure.textContent = radiusInput.value+"px";
+        cssStyle.value = item.style.cssText;
+        
+    };
+
+    colorInput.oninput = function(e){
+        item.style.backgroundColor = colorInput.value;
+        colorFigure.textContent = colorInput.value;
+        cssStyle.value = item.style.cssText;
+        
+        item.addEventListener('change',function(){
+            console.log(item.style.cssText);
+        });
+    };
+
+});
+
 // 3. 이벤트 객체 : 개선된 계산기 (캡쳐링, 버블링, preventDefault(), stopPropagation())
 window.addEventListener("load",function(){
     var section = document.querySelector("#s3-1");
