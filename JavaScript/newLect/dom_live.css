@@ -13,6 +13,7 @@
 
 #s7 .box .dst-item-list{
     flex-grow: 1;
+    cursor: pointer;
 }
 
 #s7 .box .item{
@@ -57,6 +58,12 @@
     left: 550px;
     top: 250px;
 }
+
+#s7 .box .dst-item-list .item:hover{
+    border: 1px dotted red;
+}
+
+
 /* ------6. 스타일 다루기 : 아코디언------------------------------------------------ */
 #s6>div,
 .accordion-box{
