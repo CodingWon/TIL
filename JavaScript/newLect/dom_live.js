@@ -1,3 +1,71 @@
+// <h1>5. 스타일 다루기 : 아이템 이동하기</h1>
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s5");
+    var btnNext = section.querySelector(".btn-next");
+    var btnPrev = section.querySelector(".btn-prev");
+    var lis = section.querySelectorAll("li");
+    var ul = section.querySelector(".box>ul");
+    var card1th = section.querySelector(".card-1th");
+    var card2th = section.querySelector(".card-2th");
+    var card3th = section.querySelector(".card-3th");
+    
+    var i =3;
+    ul.onclick = function(e){
+
+        if(e.target.nodeName != "LI")
+        return;
+       
+        
+        if (e.target.className == "card-1th") {
+            //전체 오른쪽으로 이동
+            console.log("1번 스타일");
+            lis[i % 3].className = "card-2th";
+            lis[(i + 1) % 3].className = "card-3th";
+            lis[(i + 2) % 3].className = "card-1th";
+
+            i--;
+
+            if (i < 0) 
+                i = 3;
+            }
+ 
+        if(e.target.className == "card-3th"){
+            //전체 왼쪽으로 이동
+            console.log("3번 스타일");
+            lis[i%3].className = "card-3th";
+            lis[(i+1)%3].className = "card-1th";
+            lis[(i+2)%3].className = "card-2th";
+    
+            i++;
+        }
+    }
+
+    btnNext.onclick = function(e){
+        e.preventDefault();
+        
+        lis[i%3].className = "card-3th";
+        lis[(i+1)%3].className = "card-1th";
+        lis[(i+2)%3].className = "card-2th";
+
+        i++;
+    }
+
+    btnPrev.onclick = function(e){
+        e.preventDefault();
+
+        lis[i%3].className = "card-2th";
+        lis[(i+1)%3].className = "card-3th";
+        lis[(i+2)%3].className = "card-1th";
+
+        i--;
+
+        if(i<0)
+            i=3;
+    }
+
+});
+
+
 /* 4. 스타일 다루기 : 값 입력과 동적으로 박스 스타일 변경하기 */
 window.addEventListener("load",function(){
     var section = document.querySelector("#s4");
