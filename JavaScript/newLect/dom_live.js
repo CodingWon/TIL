@@ -5,10 +5,6 @@ window.addEventListener("load",function(){
     var btnPrev = section.querySelector(".btn-prev");
     var lis = section.querySelectorAll("li");
     var ul = section.querySelector(".box>ul");
-    var card1th = section.querySelector(".card-1th");
-    var card2th = section.querySelector(".card-2th");
-    var card3th = section.querySelector(".card-3th");
-    
     var i =3;
     ul.onclick = function(e){
 
