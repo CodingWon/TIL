@@ -1,3 +1,33 @@
+//6. 스타일 다루기 : 아코디언
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s6");
+    var box = section.querySelector(".accordion-box");
+    var current = section.querySelector(".active");
+
+    box.onclick = function(e){
+        // 유효성 검사 1 : 태그명으로 비교
+        // if(e.target.nodeName !== "H2")
+        // return;
+
+        // 유효성 검사 2 : 클래스명으로 비교
+        // if(!e.target.classList.contains(".accordion-header"))
+        // return;
+
+        //유효성 검사 3 : 조건으로 1,2 포함
+        var valid = e.target.nodeName == "H2" 
+                    || e.target.classList.contains("accordion-header");
+
+        if(!valid)
+            return;
+        
+        if(current != null)
+            current.classList.toggle("active");
+
+        e.target.classList.toggle("active");
+        current = e.target;
+    };
+});
+
 // <h1>5. 스타일 다루기 : 아이템 이동하기</h1>
 window.addEventListener("load",function(){
     var section = document.querySelector("#s5");
