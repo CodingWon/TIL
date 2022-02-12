@@ -1,3 +1,63 @@
+/* -----7. 스타일 다루기(ComputedStyle/transitionend) : 선택된 아이템 이동-----7. */
+#s7 .box{
+    height: 400px;
+    background-color: #c5c5c5;
+    position: relative;
+
+    display: flex;
+}
+
+#s7 .box .src-item-list{
+    width: 400px;
+}
+
+#s7 .box .dst-item-list{
+    flex-grow: 1;
+}
+
+#s7 .box .item{
+    font-size: 30px;
+    font-weight: bold;
+
+    box-sizing: border-box;
+    width: 100px;
+    height: 100px;
+
+    border: 1px solid gray;
+    border-radius: 10px;
+
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#s7 .box .src-item-list .item:nth-child(1){
+    left: 0px;
+    top: 10px;
+}
+#s7 .box .src-item-list .item:nth-child(2){
+    left: 0px;
+    top: 150px;
+}
+#s7 .box .src-item-list .item:nth-child(3){
+    left: 0px;
+    top: 250px;
+}
+
+#s7 .box .dst-item-list .item:nth-child(1){
+    left: 450px;
+    top: 10px;
+}
+#s7 .box .dst-item-list .item:nth-child(2){
+    left: 350px;
+    top: 130px;
+}
+#s7 .box .dst-item-list .item:nth-child(3){
+    left: 550px;
+    top: 250px;
+}
+/* ------6. 스타일 다루기 : 아코디언------------------------------------------------ */
 #s6>div,
 .accordion-box{
     height: 400px;
