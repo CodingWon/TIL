@@ -1,3 +1,38 @@
+//8-1. 8-1. 이벤트 다루기(focus/blur/tabindex/key) : 탭으로 선택하는 박스
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s8-1");
+    var box = section.querySelector(".box");
+
+    box.onclick = function(e){
+        if(e.target.classList.contains("box"))
+            return;
+    };
+
+    box.onkeydown = function(e){
+        if(e.target.classList.contains("box"))
+            return;
+
+        if(e.code == "Delete"){
+            e.target.classList.add("delete");
+            console.log(e.code);
+        }
+    };
+
+});
+//8. 이벤트 다루기(focus/blur/tabindex/key), 스타일(:valid,..) : 입력 값 유효성 검사하기
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s8");
+    var form = section.querySelector("form");
+    var unameInput = form.querySelector("input[name=uname]");
+    form.onsubmit = function(){
+        e.preventDefault();
+
+        if(unameInput.value.length > 3)
+            unameInput.setCustomValidity("이름으로 2자 이상");
+
+        console.log("submit");
+    };
+});
 // 7. 스타일 다루기(ComputedStyle/transitionend) : 선택된 아이템 이동
 window.addEventListener("load",function(){
     var section = document.querySelector("#s7");

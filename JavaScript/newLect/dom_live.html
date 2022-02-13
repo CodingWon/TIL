@@ -9,15 +9,44 @@
         <script src="dom_live.js"></script>
     </head>
     <body>
+        <section id="s8-1">
+            <h1>8-1. 이벤트 다루기(focus/blur/tabindex/key) : 탭으로 선택하는 박스</h1>
+            <div>
+                <input >
+                <input >
+                <input >
+            </div>
+            <div class="box">
+                <div tabindex="0">1</div>
+                <div tabindex="0">2</div>
+                <div tabindex="0">3</div>
+            </div>
+        </section>
+        <hr>    
         <section id="s8">
-            <h1>8. 이벤트 다루기(focus/blur/tabindex),tmxkdf(:valid) :입력 값 유효성 검사</h1>
-            <form>
+            <h1>8. 이벤트 다루기(focus/blur/tabindex/key), 스타일(:valid,..) : 입력 값 유효성 검사하기</h1>
+            <form novalidate>
                 <fieldset>
                     <legend>회원정보입력</legend>
                     <div>
                         <div>
-                            <label>이름 : </label>
-                            <input type="text" placeholder="2자 이상 문자를 입력하세요" required>
+                            <label>*이름:</label>
+                            <input name="uname" type="text" minlength="2" placeholder="2자 이상의 문자를 입력하세요." required>
+                        </div>
+                        <div>
+                            <label>*연락처:</label>
+                            <input type="text" placeholder="구분자(-)를 포함해주세요. 예)010-2222-3333" required pattern="^010-\d{4}-\d{4}$">
+                        </div>
+                        <div>
+                            <label>*연락처:</label>
+                            <div contenteditable="true" class="input">te<b>st</b> text</div>                      
+                            <input type="color" >
+                        </div>
+                        <div>
+                            <label>*레벨:</label>
+                            <input type="radio" name="level" required><span>상</span>
+                            <input type="radio" name="level" checked><span>중</span>
+                            <input type="radio" name="level"><span>하</span>                        
                         </div>
                     </div>
                     <div>
