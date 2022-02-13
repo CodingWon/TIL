@@ -1,3 +1,43 @@
+// 7. 스타일 다루기(ComputedStyle/transitionend) : 선택된 아이템 이동
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s7");
+    var box = section.querySelector(".box");
+    var srcItme = section.querySelector(".src-item-list");
+    var current = section.querySelector(".selected");
+    
+
+    box.onclick = function(e){
+        var validItem = e.target.classList.contains("src-item")
+                    || e.target.classList.contains("dst-item");
+        if(!validItem)
+            return;
+
+        if(e.target.classList.contains("src-item")){
+            if(current != null)
+                current.classList.toggle("selected");
+            
+
+             e.target.classList.toggle("selected");
+             current = e.target;
+        }else if(e.target.classList.contains("dst-item")){
+            var targetStyle = window.getComputedStyle(e.target);
+            var left = targetStyle.getPropertyValue("left");
+            var top = targetStyle.getPropertyValue("top");
+
+            current.style.left = left;
+            current.style.top = top;
+            current.style.transform = "rotate(360deg)";
+
+            current.ontransitionend = function(){
+                current.classList.add("finished");
+
+                current.ontransitionend = null;
+            }
+        }
+
+    }
+});
+
 //6. 스타일 다루기 : 아코디언
 window.addEventListener("load",function(){
     var section = document.querySelector("#s6");

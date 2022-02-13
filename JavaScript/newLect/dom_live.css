@@ -59,6 +59,21 @@
     top: 250px;
 }
 
+#s7 .src-item{
+    z-index: 1;
+    transition: left 1s, top 1s , transform 1s, background-color 1s;
+}
+
+#s7 .src-item.selected{
+    background-color: red;
+    color: #fff;   
+}
+
+#s7 .src-item.finished{
+    background-color: lightblue;
+    color: #fff;   
+}
+
 #s7 .box .dst-item-list .item:hover{
     border: 1px dotted red;
 }
