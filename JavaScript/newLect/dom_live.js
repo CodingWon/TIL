@@ -1,3 +1,80 @@
+//9. 이미지 쇼룸
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s9");
+    var imgListBox = section.querySelector(".img-list-box");
+    var showRoom = section.querySelector(".show-room");
+    var img = showRoom.querySelector("img");
+
+    var current = imgListBox.querySelector(".active");
+    var isWorking = false;
+
+    section.onkeydown = function(e){
+        if(e.code == "ArrowLeft"){
+            var prevNode = current.previousElementSibling;
+            current.classList.remove("active");
+            prevNode.classList.add("active");
+            current = prevNode;
+        }else if(e.code == "ArrowRight"){
+            var nextNode = current.nextElementSibling;
+            current.classList.remove("active");
+            nextNode.classList.add("active");
+            current = nextNode;
+        }
+        img.src = current.firstElementChild.src;
+    };
+
+    imgListBox.onwheel = function(e){
+        e.preventDefault();
+        
+        if(isWorking)
+            return;
+
+        if(e.deltaY < 0){ // 왼쪽
+            var prevNode = current.previousElementSibling;
+            current.classList.remove("active");
+            prevNode.classList.add("active");
+            current = prevNode;
+         
+        }else{ // 오른쪽
+            var nextNode = current.nextElementSibling;
+            current.classList.remove("active");
+            nextNode.classList.add("active");
+            current = nextNode;
+        }
+        isWorking = true;
+
+        img.src = current.firstElementChild.src;
+  
+        current.ontransitionend = function(e){
+            // img.src = current.firstElementChild.src;
+            isWorking = false;
+        };
+    };
+
+    var scale = 1;
+    img.onwheel = function(e){
+        var min =1;
+        var max =2;
+        var current = 1;
+        e.preventDefault();  
+    
+            scale += e.deltaY*0.001;
+       
+            if(scale < min){
+                scale = min;
+                return
+            } 
+
+            if(scale > max){
+                scale = max;
+                return
+            }
+            
+        img.style.transform = "scale("+scale+")";
+    };
+
+});
+
 //8-1. 8-1. 이벤트 다루기(focus/blur/tabindex/key) : 탭으로 선택하는 박스
 window.addEventListener("load",function(){
     var section = document.querySelector("#s8-1");
