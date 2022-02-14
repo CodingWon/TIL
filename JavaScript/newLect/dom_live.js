@@ -1,3 +1,77 @@
+// 9-1 이벤트 다루기 (수업)
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s9-1");
+    var box = section.querySelector(".page-box");
+    var pages = section.querySelectorAll(".page");
+    var current = section.querySelector(".active");
+    var index = 0;
+    var isWoring = false;
+
+    box.onwheel = function(e){
+        e.preventDefault();
+
+        if(isWoring)
+            return;
+
+        if(e.deltaY > 0){
+            index++;
+            pages[index].classList.add("active");
+            isWoring = true;
+        }else{
+            pages[index].classList.remove("active");
+            index--;
+            isWoring = true;
+        }
+
+        pages[index].ontransitionend = function(e){
+            isWoring = false;
+        };
+
+    };
+});
+
+// 9-1 이벤트 다루기 (실패)
+window.addEventListener("load",function(){
+//     var section = document.querySelector("#s9-1");
+//     var pageBox = section.querySelector(".page-box");
+
+//     var current = pageBox.lastElementChild;
+
+//     var isWorking = false;
+    
+//     pageBox.onwheel = function(e){
+//         e.preventDefault();
+     
+
+//         if(isWorking)
+//             return;
+        
+//         // if(e.deltaY && current.classList.contains("active")){ //
+           
+//         // }
+       
+//         if(e.deltaY > 0){
+//             var prevNode = current.previousElementSibling;
+//             current.classList.add("active");
+//             current = prevNode;
+//         } 
+
+//         // if(e.deltaY < 0){
+//             var nextNode = current.nextElementSibling;
+//         //     current.classList.remove("active");
+//         //     current = nextNode;
+//         // }
+        
+//         isWorking = true;
+//         console.log(nextNode);
+//         var target = window.getComputedStyle(nextNode);
+//         var top = target.getPropertyValue("top");
+//         console.log(top);
+//     };
+    
+});
+
+
 //9. 이미지 쇼룸
 window.addEventListener("load",function(){
     var section = document.querySelector("#s9");
@@ -49,6 +123,7 @@ window.addEventListener("load",function(){
             // img.src = current.firstElementChild.src;
             isWorking = false;
         };
+        
     };
 
     var scale = 1;

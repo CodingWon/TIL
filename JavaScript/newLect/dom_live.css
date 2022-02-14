@@ -8,20 +8,25 @@
     position: relative;
     overflow: hidden;
 }
-
 #s9-1 .page-box .page{
     height: 100%;
     width: 100%;
 
     position: absolute;
     left: 0;
-    top: 0;
-}
+    top: 100%;
 
+    transition: top 1s;
+}
+#s9-1 .page-box .page.active{
+    top: 0%;
+    
+}
 #s9-1 .page-box .page img{
     width: 100%;
     height: 100%;
     object-fit: cover;
+   
 }
 /* 9. 이미지 쇼룸*/
 #s9 {

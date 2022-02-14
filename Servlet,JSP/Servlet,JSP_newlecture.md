@@ -197,4 +197,119 @@ import javax.servlet.http.*;
 
      ![20220212220408](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220212220408.png)
 
+## 8.Servlet 객체 생성과 실행
+
+### 톰캣에 의해서 서블릿 코드가 실행되도록 코드 배치와 요청
+
+- 컴파일된 Nana.class 파일은 예약된 폴더에 보관해야 한다.
+- 경로 (apache-tomcat-9.0.58\webapps\ROOT\WEB-INF\classes) 에서 classes 폴더에 보관한다.
+- WEB-INF\classes 폴더 안에 내용은 서버 쪽에서만 사용할 수 있다. 클라이언트는 요청, 탐색 권한이 없다.
+- 클라이언트에서는 특별한 방법으로 요청해야 한다.
+
+### 서블릿이 실행되는 시점과 방식
+
+- 사용자가 요청할 때 사용하는 이름을 .class 파일과 매핑 해야한다.
+- 사용자는 클래스 파일 이름이 아닌 다른 이름으로 요청할 수 있다.
+
+### 서블릿 코드를 URL과 매핑하기
+
+- 사용자에게 Servlet 이름을 제공하고 제공된 이름으로 서버에 요청하게 되면 매핑된 내용이 실행 되도록 톰캣에 설정한다.
+
+![20220214193227](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220214193227.png)
+
+### 실습
+
+- classes 폴더 만들고 .class 파일 옮기기
+
+ ![20220214193722](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220214193722.png)
+
+- WEB-INF 에 있는 web.xml 을 편집한다.
+
+![20220214193955](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220214193955.png)
+
+- web.xml 에 맵핑 내용을 적어준다.
+
+```html
+ <servlet>
+	<servlet-name>na</servlet-name>  // na 은 Nana 클래스를 의미
+	<servlet-class>Nana</servlet-class> // 클래스가 패키지안에 있다면 패키지명도 적어준다.
+</servlet>
+
+ <servlet-mapping>
+	<servlet-name>na</servlet-name>   // na를 실행시킨다.
+	<url-pattern>/hello</url-pattern> // hello 라는 url 경로로 오면 
+ </servlet-mapping>
+```
+
+![20220214194904](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220214194904.png)
+
+- 톰캣을 다시 실행 시키면 startup.bat  프로그램에 Nana.class 실행되어 내용이 출력된다.
+
+## 9.Annotation을 이용한 URL 매핑
+
+- 어노테이션을 이용하면 컴파일 할때 주석정보를 사용할 수 있다.
+- metadata-complete="false"  false로 바꿔야 Annotation 에서 맵핑 정보를 찾는다.
+- @Webservlet("/hi") 어노테이션 설정
+- 어노테이션을 사용하려면 import javax.servlet.annotation.WebServlet; 을 import 해줘야 한다.
+
+```java
+package com.newlecture.web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/hi")
+public class Nana extends HttpServlet{
+	
+	@Override
+	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
+		PrintWriter out = arg1.getWriter();
+		out.println("Hello~ asdf");
+	}
+}
+
+```
+
+## 10. Servlet 출력 형식의 이해
+
+- 클라이언트에서 웹기반으로 요청 했을 때 결과를 웹문서로 인식한다. 코드에서 println 을하여 띄어쓰기를 했지만 웹문서로 인식 했기 때문에 띄어쓰기가 되면 안된다.
+- 웹문서 이므로 띄어쓰기를 하려면 `<br>`로 해야 한다.
+
+```java
+package com.newlecture.web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/hi")
+public class Nana extends HttpServlet{
+	
+	@Override
+	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
+		PrintWriter out = arg1.getWriter();
+		
+		for(int i =0; i<100; i++) {
+			out.println((i+1) + ": Hello Servlet!!");
+		}
+	}
+}
+
+```
+
+- 브라우저는 자의적인 해석을 한다.
+- 문서 형식을 알려줘야한다.
+
+![20220214221229](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220214221229.png)
 
