@@ -313,3 +313,268 @@ public class Nana extends HttpServlet{
 
 ![20220214221229](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220214221229.png)
 
+## 11. 한글과 콘텐츠 형식 출력하기
+
+### 서버에서 한글을 지원하지 않는 문자코드로 인코딩한 경우
+
+- 웹 서버에서 클라이언트로 보낼 때  IOS-8859-1 로 인코딩 해서 보내는데 1byte로 나눠져서 한글이 깨져서 출력된다.
+
+![20220215162254](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220215162254.png)
+
+### 서버에서는 UTF-8로 인코딩해서 보냈지만 브라우저가 다른 코드로 잘못 해석한 경우
+
+- UTF-8로 보내면 웹브라우저가 잘못 해석한 경우 깨져서 나온다.
+
+![20220215162330](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220215162330.png)
+
+### UTF로 인코딩해서 보내기
+
+- UTF-8로 인코딩하고 웹브라우저 인코딩 설정도 UTF로 바꿔줘야 한다.
+- 웹브라우저에서 설정을 바꿀 수 있지만, 받을 때 어떻게 받을 지 코드로 설정 할 수 있다.
+
+```JAVA
+response.setCharacterEncoding("UTF-8");  // 보낼 때 인코딩 방식
+response.setContentType("text/html; charset = UTF-8"); // 받을 때 인코딩
+```
+
+![20220215162845](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220215162845.png)
+
+## 12. GET 요청과 쿼리 스트링
+
+### 무엇을 달라고 하는 요청에는 옵션이 있을 수 있다.
+
+- 쿼리스트링 : 문서를 요청할 때 옵션을 선택할 수 있다.
+
+![20220215164241](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220215164241.png)
+
+- 쿼리스트링을 주고 받을 때 약속이 있어야 한다.
+
+```java
+@WebServlet("/hi")
+public class Nana extends HttpServlet{
+	
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) 
+        throws ServletException, IOException {
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset = UTF-8");
+		
+		PrintWriter out = response.getWriter();
+		
+		int cnt = Integer.parseInt(request.getParameter("cnt"));
+		
+        
+		for(int i = 0; i<cnt; i++)
+			out.println("안녕 Servlet </br>");
+	}
+}
+```
+
+## 13. 기본 값 사용하기
+
+- 쿼리 스트링의 옵션을 전달 해야 제대로 된 결과를 얻을 수 있다.
+
+### 전달 되는 입력 값의 형태
+
+- 입력에 따른 값 형태
+
+```
+http://../hello?cnt = 3 	 => "3"
+http://../hello?cnt =		 => ""
+http://../hello?			=> null
+http://../hello				=> null
+```
+
+- 조건 검사해서 입력값이 제대로 전달 되게 한다.
+- 웹상에서 주고 받는 값은 문자열이다.
+
+```java
+@WebServlet("/hi")
+public class Nana extends HttpServlet{
+	
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) 
+        throws ServletException, IOException {
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset = UTF-8");
+		
+		PrintWriter out = response.getWriter();
+		
+		String cnt_ = request.getParameter("cnt"); // 임시 변수 cnt_
+		
+		int cnt = 100;
+		
+		if(cnt_ !=null && !cnt_.equals(""))
+			cnt = Integer.parseInt(cnt_);
+		
+		for(int i = 0; i<cnt; i++)
+			out.println("안녕 Servlet </br>");
+	}
+}
+
+```
+
+### index.html 을 이용해서 입력값 전달하기
+
+- 톰캣 webapps\ROOT 에 있는 index.html 에 링크를 걸어서 NaNa.class를 실행 시킬 수 있다.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+	<body>
+		환영합니다.</br>
+		<a href = "hi">인사하기</a><br>
+		<a href = "hi?cnt=3">세번 인사하기</a>
+	</body>
+</html>
+```
+
+- 링크에 옵션을 선택해서 원하는 결과를 받을 수 있다.
+
+![INDEX1](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/INDEX1.png)
+
+## 14.사용자 입력을 통한 GET 요청
+
+### 사용자의 입력을 받을 수 있는 입력폼 준비
+
+![20220215172636](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220215172636.png)
+
+- 코드 hello.html
+- submit 을하면 hi로 요청이 간다. 브라우저는 `<form action = "hi">` 의 action 명을 보고 URL 을 작성한다.
+- 입력된 값이 있으면 name 에 대한 cnt 가 키값이 되고 사용자가 입력된 값이 전달된다.
+- `http:// .. / hi?cnt = 3` 
+
+```html
+<body>
+	<div>
+		<form action = "hi">  
+			<div>
+				<label>"안녕하세요"를 몇 번 듣고 싶으세요?</label>
+			</div>
+			<div>
+				<input type = "text" name = "cnt" />
+				<input type = "submit" value = "출력" />
+			</div>
+		</form>
+	</div>
+</body>
+```
+
+- 입력한 값만큼의 출력 결과를 얻을 수 있다.
+
+![value](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/value.png)
+
+### UTF-8 기본설정하기
+
+- window - Preferences - Web 
+
+![20220215173755](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220215173755.png)
+
+## 15. 입력할 내용이 많은 경우는 POST 요청
+
+### 두단계로 나눠서 일을  처리하려고 할때 두 가지 요청
+
+- 주문할 내용이 많으면 받는 쪽에서 힘들다 ..ㅠ
+- 폼에 기록해서 일괄적으로 전달 하는 방법을 사용할 수 있다.
+- GET 요청과 POST 요청을 나눠서 할 수 있는데 
+  - GET 요청은 입력 폼을 받기 위핸 GET 요청을 하고
+  - POST 요청으로 일괄적으로 요청할 수 있다.
+
+![POST](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/POST.png)
+
+### 예제
+
+#### 코드
+
+> HTML
+
+```HTML
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div>
+		<form action="notice-reg">
+			<div>
+				<label>제목 : </label><input name="title" type ="text">
+			</div>
+			<div>
+				<label>내용 : </label>
+				<textarea name = "content"></textarea>
+			</div>
+			<div>
+				<input type = "submit" value = "등록"/>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+```
+
+> JAVA
+
+```java
+package com.newlecture.web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/notice-reg")
+public class NoticeReg extends HttpServlet {
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse respone) 
+			throws ServletException, IOException {
+		
+		respone.setCharacterEncoding("UTF-8");
+		respone.setContentType("text.html; charset = UTF-8");
+		
+		PrintWriter out = respone.getWriter();
+		
+		String title = request.getParameter("title");
+		String content = request.getParameter("content");
+			
+		out.println(title);
+		out.println(content);
+		
+	}
+}
+
+```
+
+#### 예제 결과
+
+- `notice-reg?title=hi&content=Hello` 웹브라우저가 `<form action="notice-reg"> ` 을 보고 notice-reg URL 을 작성한다.
+- `name="title"` `name="content"` title, content가 키값으로 입력 받은 값을 서버에 요청한다.
+- 서버에서는 요청한 값을 받아 출력했다.
+
+![helllo](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/helllo.png)
+
+#### 문제점 : GET 을 사용 할 때
+
+1. URL 길이에 제한이 있다.
+2. 쿼리 스트링은 알맞은 옵션에 대한 값을 전달해야한다. 밑에 사진 처럼 장문의 글을 보내는 것은 적절치 않다.
+
+![20220215190305](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220215190305.png)
+
+#### 해결방법 : POST  방식 사용
+
+- `<form action="notice-reg" method = "post">` post 방법으로 바꾸면 쿼리스트링이 요청 body에 붙어서 전달된다.
+- 요청 body는 크기에 제한이 없다.
+
+![20220215191719](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220215191719.png)
+
