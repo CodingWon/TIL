@@ -1,5 +1,11 @@
+// ver2
 window.addEventListener("load",function(){
-    var section = document.querySelector("#calc");
+
+});
+
+// ver1------------------------------------------------------------------------------
+window.addEventListener("load",function(){
+    var section = document.querySelector("#calc1");
     var calcdiv = section.querySelector("div");
     var txtInput = section.querySelector(".text-area");
     var plusInput = section.querySelector(".plus");

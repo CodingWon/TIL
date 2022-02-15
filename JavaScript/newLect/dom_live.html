@@ -9,8 +9,29 @@
         <script src="dom_live.js"></script>
     </head>
     <body>
+        <section id="s11">
+            <h1>11. 이벤트 다루기(drag and drop) : 데이터 드래그</h1>
+            <div class="box">
+            </div>
+        </section> 
+        <hr>
+        <section id="s10">
+            <h1>10. 이벤트 다루기(mouse over/move/up/down) : 박스 드래그</h1>
+            <div class="box">
+                <div class="item">1</div>
+                <div class="item">2</div>
+                <div class="item">3</div>
+                <div class="item">4</div>
+                <div class="item">5</div>
+                <div class="item">6</div>
+                <div class="item">7</div>
+                <div class="item">8</div>
+            </div>
+        </section>
+        <hr>
         <section id="s9-1">
-            <h1>9-1. 이벤트 다루기(wheel/노드순회) : </h1>
+            <h1>9-1. 이벤트 다루기(wheel/노드순회) :
+            </h1>
             <div class="page-box">
                 <div class="page active"><img src="imgs/img1.jfif" alt=""></div>
                 <div class="page"><img src="imgs/img2.jfif" alt=""></div>
@@ -27,7 +48,7 @@
             <h1>9. 이미지 쇼룸</h1>
             <div class="img-list-box">
                 <ul>
-                    <li><img src="imgs/img1.jfif" alt=""  ></li>
+                    <li><img src="imgs/img1.jfif" alt=""></li>
                     <li class="active"><img src="imgs/img2.jfif" alt=""></li>
                     <li><img src="imgs/img3.jfif" alt=""></li>
                     <li><img src="imgs/img1.jfif" alt=""></li>
@@ -57,31 +78,44 @@
                 <div tabindex="0">3</div>
             </div>
         </section>
-        <hr>    
+        <hr>
         <section id="s8">
             <h1>8. 이벤트 다루기(focus/blur/tabindex/key), 스타일(:valid,..) : 입력 값 유효성 검사하기</h1>
-            <form novalidate>
+            <form novalidate="novalidate">
                 <fieldset>
                     <legend>회원정보입력</legend>
                     <div>
                         <div>
                             <label>*이름:</label>
-                            <input name="uname" type="text" minlength="2" placeholder="2자 이상의 문자를 입력하세요." required>
+                            <input
+                                name="uname"
+                                type="text"
+                                minlength="2"
+                                placeholder="2자 이상의 문자를 입력하세요."
+                                required="required">
                         </div>
                         <div>
                             <label>*연락처:</label>
-                            <input type="text" placeholder="구분자(-)를 포함해주세요. 예)010-2222-3333" required pattern="^010-\d{4}-\d{4}$">
+                            <input
+                                type="text"
+                                placeholder="구분자(-)를 포함해주세요. 예)010-2222-3333"
+                                required="required"
+                                pattern="^010-\d{4}-\d{4}$">
                         </div>
                         <div>
                             <label>*연락처:</label>
-                            <div contenteditable="true" class="input">te<b>st</b> text</div>                      
-                            <input type="color" >
+                            <div contenteditable="true" class="input">te<b>st</b>
+                                text</div>
+                            <input type="color">
                         </div>
                         <div>
                             <label>*레벨:</label>
-                            <input type="radio" name="level" required><span>상</span>
-                            <input type="radio" name="level" checked><span>중</span>
-                            <input type="radio" name="level"><span>하</span>                        
+                            <input type="radio" name="level" required="required">
+                            <span>상</span>
+                            <input type="radio" name="level" checked="checked">
+                            <span>중</span>
+                            <input type="radio" name="level">
+                            <span>하</span>
                         </div>
                     </div>
                     <div>
@@ -112,31 +146,36 @@
                 <h2>제목1</h2>
                 <div>
                     <p>
-                        Magna dolores et dolore sanctus sed labore tempor et, ipsum tempor vero sit sed dolore amet magna clita sea. Eirmod.
+                        Magna dolores et dolore sanctus sed labore tempor et, ipsum tempor vero sit sed
+                        dolore amet magna clita sea. Eirmod.
                     </p>
                 </div>
                 <h2>제목2</h2>
                 <div>
                     <p>
-                        Native did not pilgrimage one alas fathers or loved suits. Along smile longed knew his muse would sing to. Where.
+                        Native did not pilgrimage one alas fathers or loved suits. Along smile longed
+                        knew his muse would sing to. Where.
                     </p>
                 </div>
                 <h2>제목3</h2>
                 <div>
                     <p>
-                        Couronne» l'art les ce ou air surprise que, me abondent extase fleuve de, robuste mince visage qu'elle qu'elle charmer pauvre.
+                        Couronne» l'art les ce ou air surprise que, me abondent extase fleuve de,
+                        robuste mince visage qu'elle qu'elle charmer pauvre.
                     </p>
                 </div>
                 <h2>제목4</h2>
                 <div>
                     <p>
-                        Lâche d'or clabaudeurs comme cru exquise sais haleurs. Courais je de ces hystériques en freles et ces les. Éblouies des.
+                        Lâche d'or clabaudeurs comme cru exquise sais haleurs. Courais je de ces
+                        hystériques en freles et ces les. Éblouies des.
                     </p>
                 </div>
                 <h2>제목5</h2>
                 <div>
                     <p>
-                        Eos sit rebum ipsum sanctus sanctus amet lorem dolore erat. Amet labore est accusam elitr labore lorem at. Amet lorem.
+                        Eos sit rebum ipsum sanctus sanctus amet lorem dolore erat. Amet labore est
+                        accusam elitr labore lorem at. Amet lorem.
                     </p>
                 </div>
             </div>
@@ -187,10 +226,10 @@
                     </div>
                     <div>
                         <label for="">css style</label>
-                        <div class="cssStyle-style" ></div>
-                        <div class="cssStyle-width" ></div>
-                        <div class="cssStyle-radius" ></div>
-                        <div class="cssStyle-color" ></div>
+                        <div class="cssStyle-style"></div>
+                        <div class="cssStyle-width"></div>
+                        <div class="cssStyle-radius"></div>
+                        <div class="cssStyle-color"></div>
                     </div>
                 </div>
                 <div class="preview-box">

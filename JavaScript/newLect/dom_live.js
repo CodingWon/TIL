@@ -1,3 +1,72 @@
+// --- <h1>11. 이벤트 다루기(drag and drop) : 데이터 드래그</h1> ----------------------------------
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s11");
+    var box = section.querySelector(".box");
+    
+    box.ondragenter = function(e){
+        console.log("enter")
+       
+    };
+    box.ondragleave = function(e){
+        box.classList.remove("over");
+        console.log("leave")
+    };
+    box.ondragover = function(e){
+        box.classList.add("over");
+        e.preventDefault();
+        console.log("over");
+       
+    };
+    box.ondrop = function(e){
+        e.preventDefault();
+        console.log("drop")
+    };
+
+});
+
+// --- <h1>10. 이벤트 다루기(mouse over/move/up/down) : 박스 드래그</h1> ----------------------------------
+window.addEventListener("load", function(){
+    var section = document.querySelector("#s10");    
+    var box = section.querySelector(".box");
+    var item = box.querySelector(".item");
+    var mouseDown = false;
+    var offset = {x:0, y:0};
+    var current = null
+    //mousemove/mousedown/mouseup/mouseover
+
+    section.onmousemove = function(e){
+        if(!mouseDown)
+            return;
+
+        current.style.left = e.pageX - box.offsetLeft -offset.x +"px";
+        current.style.top = e.pageY - box.offsetTop - offset.y +"px";
+
+        console.log("x "+ offset.x );
+        console.log("y "+ offset.y );
+
+    };
+    section.onmousedown = function(e){
+        if(!e.target.classList.contains("item"))
+            return;
+
+        mouseDown = true;
+        current = e.target;
+
+        offset.x = e.offsetX;
+        offset.y = e.offsetY;
+    };
+    section.onmouseup = function(e){
+        if(!e.target.classList.contains("item"))
+        return;
+
+        mouseDown = false;
+        current = null;
+
+        offset.x = e.offsetX;
+        offset.y = e.offsetY;
+    };
+});
+
 // 9-1 이벤트 다루기 (수업)
 window.addEventListener("load",function(){
     var section = document.querySelector("#s9-1");

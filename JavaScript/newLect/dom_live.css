@@ -1,6 +1,54 @@
+/*  */
+#s11 .box {
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+
+    background: url("imgs/upload-box.svg") no-repeat center top 140px, 
+                url("imgs/upload.svg") no-repeat center top 100px;
+    background-color: gray;
+}
+
+#s11 .box.over {
+    background: url("imgs/upload-box.svg") no-repeat center top 140px, 
+                url("imgs/upload.svg") no-repeat center top 120px;
+    background-color: #ff0000;
+
+}
+
+/* 10. 이벤트 다루기(mouse over/move/up/down) : 박스 드래그 */
+#s10 .box {
+    height: 300px;
+    background-color: gray;
+
+    position: relative;
+    overflow: hidden;
+
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+}
+
+#s10 .item {
+    font-size: 30px;
+    font-weight: bold;
+    color: #fff;
+
+    position: absolute;
+    box-sizing: border-box;
+    width: 100px;
+    height: 100px;
+    background-color: lightgreen;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
 /* 9-1  */
 
-#s9-1 .page-box{
+#s9-1 .page-box {
     height: 500px;
     width: 100%;
     background-color: gray;
@@ -8,7 +56,7 @@
     position: relative;
     overflow: hidden;
 }
-#s9-1 .page-box .page{
+#s9-1 .page-box .page {
     height: 100%;
     width: 100%;
 
@@ -18,22 +66,22 @@
 
     transition: top 1s;
 }
-#s9-1 .page-box .page.active{
-    top: 0%;
-    
+#s9-1 .page-box .page.active {
+    top: 0;
+
 }
-#s9-1 .page-box .page img{
+#s9-1 .page-box .page img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-   
+
 }
 /* 9. 이미지 쇼룸*/
 #s9 {
     outline: none;
 }
 
-#s9 .img-list-box ul{
+#s9 .img-list-box ul {
     /* reset */
     margin: 0;
     padding: 0;
@@ -41,7 +89,7 @@
     display: flex;
 }
 
-#s9 .img-list-box li{
+#s9 .img-list-box li {
     /* reset */
     list-style: none;
 
@@ -54,20 +102,18 @@
     transition: opacity 1s, box-shdow 1s;
 }
 
-#s9 .img-list-box li.active{
+#s9 .img-list-box li.active {
     opacity: 1;
     box-shadow: 0 0 15px #000;
 }
 
-
-#s9 .img-list-box img{
+#s9 .img-list-box img {
     width: 100%;
     height: 100%;
 
-   
 }
 
-#s9 .show-room{
+#s9 .show-room {
     height: 400px;
     background-color: gray;
 
@@ -78,30 +124,30 @@
     overflow: hidden;
 }
 
-#s9 .show-room img{
+#s9 .show-room img {
     height: 50%;
-    box-shadow: 0px 0px 15px black;
+    box-shadow: 0 0 15px black;
 
     transition: transform 100ms;
 }
 
 /* 8-1 이벤트 다루기(focus/blur/tabindex) :탭으로 선택하는 박스  */
-#s8-1 .box{
+#s8-1 .box {
     height: 300px;
-    background-color: gray;    
+    background-color: gray;
 
-    display: flex;    
+    display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
-#s8-1 .box>div{
+#s8-1 .box > div {
     font-weight: bold;
     font-size: 30px;
-    color:white;
+    color: white;
 
     outline: none;
-    width:100px;
+    width: 100px;
     height: 100px;
     background-color: lightgreen;
 
@@ -110,24 +156,23 @@
     align-items: center;
 }
 
-#s8-1 .box>div:focus{
+#s8-1 .box > div:focus {
     background-color: lightsalmon;
 }
 
-#s8-1 .box>div.delete{
+#s8-1 .box > div.delete {
     display: none;
 }
 
 /* >8. 이벤트 다루기(focus/blur/tabindex),tmxkdf(:valid) :입력 값 유효성 검사 */
-#s8 input[type=text],
-#s8 input[type=submit]
-{
+#s8 input[type=submit],
+#s8 input[type=text] {
     outline: none;
     box-sizing: border-box;
-    width:100%;
+    width: 100%;
     height: 40px;
-    padding:0 20px;
-    border:1px solid gray;
+    padding: 0 20px;
+    border: 1px solid gray;
     border-radius: 20px;
 
     /* background: url("default.svg") no-repeat right -10px center; */
@@ -135,24 +180,23 @@
     transition: background-image 1s;
 }
 
-#s8 input[type=text]:valid{
+#s8 input[type=text]:valid {
     background-color: lightgreen;
     /* background: url("valid.svg") no-repeat right -10px center; */
 }
 
-#s8 input[type=radio]:default+span{
-    color:red;
+#s8 input[type=radio]:default+span {
+    color: red;
 }
 
-#s8 .input{
+#s8 .input {
     height: 30px;
-    border:1px solid gray;
+    border: 1px solid gray;
     border-radius: 15px;
 }
 
-
 /* -----7. 스타일 다루기(ComputedStyle/transitionend) : 선택된 아이템 이동-----7. */
-#s7 .box{
+#s7 .box {
     height: 400px;
     background-color: #c5c5c5;
     position: relative;
@@ -160,16 +204,16 @@
     display: flex;
 }
 
-#s7 .box .src-item-list{
+#s7 .box .src-item-list {
     width: 400px;
 }
 
-#s7 .box .dst-item-list{
+#s7 .box .dst-item-list {
     flex-grow: 1;
     cursor: pointer;
 }
 
-#s7 .box .item{
+#s7 .box .item {
     font-size: 30px;
     font-weight: bold;
 
@@ -186,84 +230,83 @@
     justify-content: center;
 }
 
-#s7 .box .src-item-list .item:nth-child(1){
-    left: 0px;
+#s7 .box .src-item-list .item:nth-child(1) {
+    left: 0;
     top: 10px;
 }
-#s7 .box .src-item-list .item:nth-child(2){
-    left: 0px;
+#s7 .box .src-item-list .item:nth-child(2) {
+    left: 0;
     top: 150px;
 }
-#s7 .box .src-item-list .item:nth-child(3){
-    left: 0px;
+#s7 .box .src-item-list .item:nth-child(3) {
+    left: 0;
     top: 250px;
 }
 
-#s7 .box .dst-item-list .item:nth-child(1){
+#s7 .box .dst-item-list .item:nth-child(1) {
     left: 450px;
     top: 10px;
 }
-#s7 .box .dst-item-list .item:nth-child(2){
+#s7 .box .dst-item-list .item:nth-child(2) {
     left: 350px;
     top: 130px;
 }
-#s7 .box .dst-item-list .item:nth-child(3){
+#s7 .box .dst-item-list .item:nth-child(3) {
     left: 550px;
     top: 250px;
 }
 
-#s7 .src-item{
+#s7 .src-item {
     z-index: 1;
     transition: left 1s, top 1s , transform 1s, background-color 1s;
 }
 
-#s7 .src-item.selected{
+#s7 .src-item.selected {
     background-color: red;
-    color: #fff;   
+    color: #fff;
 }
 
-#s7 .src-item.finished{
+#s7 .src-item.finished {
     background-color: lightblue;
-    color: #fff;   
+    color: #fff;
 }
 
-#s7 .box .dst-item-list .item:hover{
+#s7 .box .dst-item-list .item:hover {
     border: 1px dotted red;
 }
 
-
 /* ------6. 스타일 다루기 : 아코디언------------------------------------------------ */
-#s6>div,
-.accordion-box{
+#s6 > div,
+.accordion-box {
     height: 400px;
     display: flex;
     flex-direction: column;
 }
 
-#s6>div>h2,
-.accordion-header
-{
+#s6 > div > h2,
+.accordion-header {
     /* reset */
     padding: 0;
-    margin: 0;/* text */
+    margin: 0;
+    /* text */
     font-size: 100%;
     font-weight: normal;
     color: #454545;
     /* layout */
     cursor: pointer;
     height: 20px;
-    margin: 2px 0 0 0;
+    margin: 2px 0 0;
     padding: 0.5em 0.5em 0.5em 0.7em;
     border: 1px solid #c5c5c5;
     border-bottom-right-radius: 3px;
     background: #f6f6f6;
-    
+
     /* effect */
-    transition: background-color 1s;    
+    transition: background-color 1s;
 }
 
-#s6>div>div,
-.accordion-content{
+#s6 > div > div,
+.accordion-content {
     /* reset */
     margin: 0;
     line-height: 1.3;
@@ -279,27 +322,25 @@
     /* padding: 1em 2.2em; */
     border-top: 0;
     overflow: auto;
-    height: 0px;
+    height: 0;
     /* effect */
-    transition: flex-grow 1s, padding 
+    transition: flex-grow 1s, padding;
 }
 
-#s6>div>h2.active,
-.accordion-header.active{
-    background-color: lightgreen;    
+#s6 > div > h2.active,
+.accordion-header.active {
+    background-color: lightgreen;
 }
 
-#s6>div>h2.active+div,
-.accordion-header.active+.accordion-content{
+#s6 > div > h2.active+div,
+.accordion-header.active+.accordion-content {
     flex-grow: 1;
 }
 
-
-
 /* --- #s5 ------------------------- */
-#s5 .box{
+#s5 .box {
     height: 300px;
-    background-color: gray;    
+    background-color: gray;
 
     /* item layout */
     display: flex;
@@ -308,7 +349,7 @@
     position: relative;
 }
 
-#s5 ul{
+#s5 ul {
     /* reset */
     margin: 0;
     padding: 0;
@@ -321,8 +362,8 @@
     height: 100%;
 }
 
-#s5 li{
-    /* reset */ 
+#s5 li {
+    /* reset */
     list-style: none;
 
     /* text */
@@ -330,16 +371,15 @@
     font-weight: bold;
     font-size: 36px;
 
-
     /* layout */
     box-sizing: border-box;
-    width:100px;
+    width: 100px;
     height: 150px;
-    border:3px solid white;
+    border: 3px solid white;
     border-radius: 10px;
     background-color: #ffffff77;
     position: absolute;
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -347,31 +387,32 @@
     transition: left 1s, background-color 1s;
 }
 
-#s5 li.card-1th{
+#s5 li.card-1th {
     left: 0;
-    height: 150px; /* 가운데와 사이드 이동시 크기*/
+    height: 150px;
+    /* 가운데와 사이드 이동시 크기*/
     z-index: 1;
 }
 
-#s5 li.card-2th{
+#s5 li.card-2th {
     transform: scale(1.2, 1.2);
     background-color: #ff0000;
     left: calc(50% - 50px);
     z-index: 2;
 }
 
-#s5 li.card-3th{
+#s5 li.card-3th {
     left: calc(100% - 100px);
     z-index: 0;
 }
 
-#s5 .btn-list{
+#s5 .btn-list {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
 }
 
 /* 4. 스타일 다루기 : 값 입력과 동적으로 박스 스타일 변경하기 */
- #s4 .box{
+#s4 .box {
     height: 300px;
     background-color: gray;
     display: flex;
@@ -381,11 +422,11 @@
     padding: 30px;
 }
 
-#s4 .tool-box{
+#s4 .tool-box {
     flex-basis: 300px;
 }
 
-#s4 .preview-box{
+#s4 .preview-box {
     border-left: 1px solid black;
     flex-basis: 300px;
     flex-grow: 1;
@@ -395,12 +436,12 @@
     justify-content: center;
 }
 
-#s4 .preview-box .item{
+#s4 .preview-box .item {
     width: 200px;
     height: 100px;
     border: 1px solid black;
     background-color: #00000070;
-} 
+}
 
 /* #s4 .box{
     height: 300px;
