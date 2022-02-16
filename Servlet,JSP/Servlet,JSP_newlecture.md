@@ -144,7 +144,7 @@
 
 - 서블릿 클래스들은 WAS를 통해 로드가 되고 실행되서 결과를 돌려준다.
 - 클래스명은 중요하지 않고 약속된 인터페이스 , 추상클래스로 servlet 을 참조 하고 있다.
-- service 함수는 인터페이서, 추상클래스의 약속된 이름으로 service를 통해 프로그램을 만든다.
+- service 함수는 인터페이스, 추상클래스의 약속된 이름으로 service를 통해 프로그램을 만든다.
 
 ![20220212215124](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220212215124.png)
 
@@ -577,4 +577,401 @@ public class NoticeReg extends HttpServlet {
 - 요청 body는 크기에 제한이 없다.
 
 ![20220215191719](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220215191719.png)
+
+## 16. 한글 입력 문제
+
+### 한글이 전달 되는 것을 서버에서 받지 못하는 문제
+
+- 서버에서 출력 할 때 발생한 문제인지 클라이언트에서 요청할 때 깨져서 보냈는지 확인 해봐야한다.
+
+### 멀티 바이트 문자 전송문제
+
+- 문자는 실제로 숫자와 대칭 되 있는데 
+  영문자인 경우 알파벳 하나당 1byte 를 사용하는데
+  중국어, 한국어, 일본어 는 하나당 2byte를 사용한다.
+- 한국어로 전송할 경우 인코딩 되어 가는 문자는 2byte로 전송 된다.
+- 서버에서는 문자를 기본적으로 ISO-8859-1 의 인코딩 방식을 이용한다. ISO-8859-1 인코딩 방식은 2byte 로 받은 문자를 1byte로 쪼개서 인식한다. 그래서 결국엔 클라이언트와 서버의 인코딩 방식이 달라서 한글이 깨진다.
+
+![인코딩](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/%EC%9D%B8%EC%BD%94%EB%94%A9.png)
+
+- 서버에서 사용자가 전송한 값을 읽기전에 UTF 로 읽기위한 코드를 작성하고 parameter 을 받아야한다.
+- 톰캣에 환경설정에서 인코딩 방식을 UTF-8로 바꿀 수 있다.
+  - 💥 톰캣 서버에는 여러개의 서버를 돌릴 수 있어서 톰캣 설정을 바꾸면 다른 서버에 까지 영향을 줄 수 있다. 그래서 일반적으로 
+    톰캣의 설정을 건드리지 않는다. 
+
+```JAVA
+request.setCharacterEncoding("UTF-8"); 
+```
+
+## 17. 서블릿 필터
+
+### 필터 개념
+
+#### 기본 동작 방식
+
+- 사용자로부터 요청이 들어오면 서버에서 적절한 SW 선택해서 돌려준다.
+- 서블릿을 실행하게 되면 SW가 메모리상에 존재하게 된다. 그때 메모리 공간으로 Servlet Container 라고 한다.
+- 서블릿 컨테이너에서 존재하고 있는 SW가 실행되고 결과를 반환한 후에 컨테이너에서 삭제 된다.
+
+#### 필터 동작 방식
+
+- 요청이 들어 올때 필터를 통해서 실행 할지 안할지를 결정 할 수 있고 Servlet의 기본설정을 지정할 수 있다.
+- 요청이 받고 난 후 결과를 반환한 때도 필터를 거친다.
+
+![20220216134858](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220216134858.png)
+
+### 필터 만들기
+
+- 인터페이스에 Servlet의 Filter 을 추가해서 클래스를 생성
+
+![20220216135208](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220216135208.png)
+
+- servlet 설정 하기 방법 1 :  XML 수정방식 
+
+  web.xml에 아래 필터 등록하는 코드를 추가한다.
+
+  ```html
+  <filter>
+      <filter-name>characterEncodingFilter</filter-name>
+      <filter-class>com.newlecture.web.filter.CharacterEncodingFilter</filter-class> 
+  </filter>
+  
+  <filter-mapping>
+      <filter-name>characterEncodingFilter</filter-name>
+      <url-pattern>/*</url-pattern>   // 모든 URL를 포함
+  </filter-mapping>
+  ```
+
+  - 필터 코드
+    - 클라이언트로부터 요청이 들어올때 before filter 가 출력 되고 
+    - chain 에 의해 다음 서블릿, 필터가 실행되고 
+    - 그 다음에 after fillter 가 실행된다.
+
+  ```JAVA
+  package com.newlecture.web.filter;
+  import java.io.IOException;
+  import javax.servlet.Filter;
+  import javax.servlet.FilterChain;
+  import javax.servlet.ServletException;
+  import javax.servlet.ServletRequest;
+  import javax.servlet.ServletResponse;
+  
+  public class CharacterEncodingFilter implements Filter {
+  
+  	@Override
+  	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+  			throws IOException, ServletException {
+  		
+           request.setCharacterEncoding("UTF-8"); // chain 전에 request 를 추가하면 모든 서블릿에 설정을 줄 수 있다.
+  		System.out.println("before filter");
+  		chain.doFilter(request, response);
+  		System.out.println("after fillter");
+  	}
+  
+  }
+  ```
+
+- servlet 설정 하기 방법 2 :  어노테이션 설정하기
+  - 필터 클래스에 `@WebFilter("/*")`을 추가한다.
+
+```
+@WebFilter("/*")
+public class CharacterEncodingFilter implements Filter {
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		
+		
+		request.setCharacterEncoding("UTF-8");
+		chain.doFilter(request, response);
+		
+	}
+
+}
+```
+
+## 18. 여러 개의 Submit 버튼
+
+- 덧셈, 뺼셈 버튼의 기능 식별하기
+
+![20220216150236](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220216150236.png)
+
+> HTML
+
+- 버튼에 name 값을 넣을 수 있다. 버튼은 2개를 한번에 클릭할 일이 없기 때문에 name을 같이 할 수 있다.
+
+```HTML
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	</head>
+	<body>
+		<div>계산할 값을 입력 하세요.</div>
+		<form action = "calc" method = "POST">
+			<div>
+				<label>x : </label>
+				<input type ="text" name = "x">
+			</div>
+			<div>
+				<label>y : </label>
+				<input type ="text" name = "y">
+			</div>
+			<div>
+				<input type ="submit" name="operator" value ="덧셈">
+				<input type ="submit" name="operator" value ="뺄셈">
+			</div>
+		</form>
+	</body>
+</html>
+```
+
+- operator 키값으로 "덧셈" 이 확인 된다.
+
+![20220216154657](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220216154657.png)
+
+> Java
+
+- 덧셈과 뺄셈을 확인하여 연산한다.
+
+```Java
+package com.newlecture.web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/calc")
+public class Calc extends HttpServlet{
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse respone) 
+			throws ServletException, IOException {
+		
+		PrintWriter out = respone.getWriter();
+		
+		respone.setCharacterEncoding("UTF-8");
+		respone.setContentType("text.html; charset=UTF-8");
+		
+		String x_ = request.getParameter("x");
+		String y_ = request.getParameter("y");
+		String op = request.getParameter("operator");
+		
+		int x = 0;
+		int y = 0;
+		
+		if(x_ !=null && !x_.equals("") && x_ !=null && !x_.equals("")) {
+			x = Integer.parseInt(x_);
+			y = Integer.parseInt(y_);
+		}
+
+		int result;
+		
+		if(op.equals("덧셈"))
+			result = x + y;
+		else
+			result = x - y;
+		
+		
+		out.println( result);
+	}
+	
+}
+
+```
+
+## 19. 입력 데이터 배열로 보내기
+
+- 반복적인 데이터를 일일히 name을 부여하면 관리하기 힘들다.
+
+> HTML
+
+- name 의 키값을 같게 설정하면 배열로 요청이 가능하다.
+
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	</head>
+	<body>
+		<div>계산할 값을 입력 하세요.</div>
+		<form action = "add" method = "POST">
+			<input type ="text" name = "num">
+			<input type ="text" name = "num">
+			<input type ="text" name = "num">
+			<input type ="text" name = "num">
+			<input type ="submit" value = "덧셈">
+		</form>
+	</body>
+</html>
+```
+
+> Java
+
+```java
+package com.newlecture.web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/add2")
+public class Add2 extends HttpServlet{
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse respone) 
+			throws ServletException, IOException {
+		
+		PrintWriter out = respone.getWriter();
+		
+		respone.setCharacterEncoding("UTF-8");
+		respone.setContentType("text.html; charset=UTF-8");
+		
+		int result = 0;
+		
+		String[] nums_ = request.getParameterValues("num");
+		
+		for(int i = 0; i<nums_.length; i++) {
+			int num = Integer.parseInt(nums_[i]);
+			result += num;
+		}
+	
+		out.print(result);
+	}
+	
+}
+
+```
+
+## 20. 상태를 유지의 필요성
+
+- 웹 어플리케이션이 조각나 있는 상태에서  공통된 값을 같게 하기 위한 전역변수가 필요할 떄가 있다.
+- 개별적으로 값을 입력 할 때 입력된 내용은 서버 프로그램에서 올라왔다가 또 다시 요청이 가면 사라진다.
+- 그래서, 값을 담고 서블릿 끼리 값을 공유할 수 있는 기억공간이 필요하다.
+
+![20220216162421](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220216162421.png)
+
+### 상태 유지를 위한 5가지 방법
+
+1. application
+2. session
+3. cookie
+4. hidden input
+5. querystring
+
+## 21. Application 객체
+
+### 서블릿 컨텍스트
+
+- 요청이 들어오면 servlet 프로그램이 잠깐 실행 되었다가 메모리에서 제거된다.
+- 앞에서 처리 했던 내용을 다음 servlet 이 처리할 수가 없다.
+- 서블릿 컨텍스트는 자원을 공유하여 문맥을 유지할 수 있게 해준다.
+
+> HTML
+
+```HTML
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	</head>
+	<body>
+		<div>계산할 값을 입력 하세요.</div>
+		<form action = "calc2" method = "POST">
+			<div>
+				<label>입력 : </label>
+				<input type ="text" name = "v" />
+			</div>
+			<div>
+				<input type ="submit" name="operator" value ="+">
+				<input type ="submit" name="operator" value ="-">
+				<input type ="submit" name="operator" value ="=">
+			</div>
+			<div>
+				결과 : 0
+			</div>
+		</form>
+	</body>
+</html>
+```
+
+> Java
+
+```java
+package com.newlecture.web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/calc2")
+public class Calc2 extends HttpServlet{
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse respone) 
+			throws ServletException, IOException {
+		
+        //ServletContext 생성
+		ServletContext application = request.getServletContext();
+        
+		PrintWriter out = respone.getWriter();
+		respone.setCharacterEncoding("UTF-8");
+		respone.setContentType("text.html; charset=UTF-8");
+		
+		String v_ = request.getParameter("v");
+		String op = request.getParameter("operator");
+
+		int v = 0;
+		if(!v_.equals("")) v = Integer.parseInt(v_);
+		
+		// 계산
+		if(op.equals("=")) {
+			// 처음 서버로 요청된 값이 x에 담긴다.
+			int x = (Integer)application.getAttribute("value");
+            
+            // 두번째 요청된 값이 y에 담긴다.
+			int y = v;
+			int result = 0;
+            
+            // 처음에 서버로 요청된 연산자를 담는다.
+			String operator = (String) application.getAttribute("op");
+			
+			if(operator.equals("+"))
+				result = x+y;
+			else
+				result = x-y;
+			out.print(result);
+		}
+		// 값을 저장
+		else {
+			application.setAttribute("value", v);
+			application.setAttribute("op", op);
+		}
+		
+	}
+	
+}
+
+```
 

@@ -2,24 +2,75 @@
 window.addEventListener("load",function(){
     var section = document.querySelector("#s11");
     var box = section.querySelector(".box");
+    var errorMessage = box.querySelector(".error-message")
+    var uploadBox = section.querySelector(".upload-box");
     
+
     box.ondragenter = function(e){
         console.log("enter")
        
     };
     box.ondragleave = function(e){
         box.classList.remove("over");
-        console.log("leave")
+        box.classList.remove("error");       
+        errorMessage.classList.add("d-none");
     };
     box.ondragover = function(e){
         box.classList.add("over");
         e.preventDefault();
         console.log("over");
-       
+
+        var valid = e.dataTransfer
+                && e.dataTransfer.types
+                && e.dataTransfer.types.indexOf("Files") >= 0;
+
+        if(!valid){
+            box.classList.add("error");       
+            errorMessage.classList.remove("d-none");
+        }
     };
     box.ondrop = function(e){
         e.preventDefault();
-        console.log("drop")
+        /*
+        파일을 하나씩만
+        이미지만 ?
+        파일크기를 10메가 */
+        
+        var files = e.dataTransfer.files;
+        if(files.length > 1){
+            alert("파일을 하나씩 전송할 수 있습니다.");
+            box.classList.remove("over"); 
+            box.classList.remove("error");       
+            errorMessage.classList.add("d-none");
+            return;
+        }
+
+        var file = files[0];
+        if(file.type.indexOf("image/") != 0){
+            alert("이미지 형식이 아닙니다.");
+            box.classList.remove("over"); 
+            box.classList.remove("error");       
+            errorMessage.classList.add("d-none");
+            return;
+        }
+
+        var size = file.size;
+        if(size > 10*1024*1024){
+            alert("죄송합니다. 10MB를 넘는 파일은 전송할 수 없습니다.");
+            box.classList.remove("over"); 
+            box.classList.remove("error");       
+            errorMessage.classList.add("d-none");
+        }
+
+        var reader = new FileReader();
+        reader.onload = function(e){
+            var img = document.createElement("img");
+            img.src = e.target.result;
+            img.style.height = "100px";
+            uploadBox.appendChild(img);
+        }
+
+        reader.readAsDataURL(file);
     };
 
 });
@@ -40,9 +91,6 @@ window.addEventListener("load", function(){
 
         current.style.left = e.pageX - box.offsetLeft -offset.x +"px";
         current.style.top = e.pageY - box.offsetTop - offset.y +"px";
-
-        console.log("x "+ offset.x );
-        console.log("y "+ offset.y );
 
     };
     section.onmousedown = function(e){
