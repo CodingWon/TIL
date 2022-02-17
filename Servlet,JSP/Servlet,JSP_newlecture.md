@@ -975,3 +975,330 @@ public class Calc2 extends HttpServlet{
 
 ```
 
+## 22. Session 객체로 상태 값 저장하기 (Application 객체와 차이점)
+
+### Application
+
+- Application의 전역에서 사용할 수 있다.
+
+### Session
+
+- Session 범주 내에서 사용할 수 있다.
+- 현재 접속한 사용자 별로 저장 공간이 달라진다.
+  - 브라우저 별로 요청을 따로 인식한다.
+- 크롬을 2개 열어 놓고 했을 때는 같은 session 으로 인식하는데  하나의 프로세스에 멀티쓰레드 환경에서 동작하기 때문이다. 
+
+> JAVA
+
+- `request.getSession();` 으로 세션 객체를 생성해서 사용한다.
+- Application 객체와 사용법은 동일하다.
+
+```java
+package com.newlecture.web;
+
+import java.io.IOException;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@WebServlet("/calc3")
+public class Calc3 extends HttpServlet{
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse respone) 
+			throws ServletException, IOException {
+	
+		//ServletContext application = request.getServletContext(); Application 객체
+		HttpSession session =  request.getSession(); // session 객체
+		
+		respone.setCharacterEncoding("UTF-8");
+		respone.setContentType("text.html; charset= UTF-8");
+		
+		String v_ = request.getParameter("v");
+		String op_ = request.getParameter("operator");
+		
+		int v =0;
+		if(!v_.equals("")) v = Integer.parseInt(v_);
+		
+		if(op_.equals("=")) {
+			
+			int x = (Integer)request.getSession().getAttribute("value");
+			int y = v;
+
+			String op = (String)session.getAttribute("op");
+			int result =0;
+			
+			if(op.equals("+"))
+				result = x + y;
+			else
+				result = x - y;
+			
+			respone.getWriter().print(result);
+			
+		}else {
+			session.setAttribute("value", v);
+			session.setAttribute("op", op_);
+		}
+	}
+}
+
+```
+
+> 결과 1 :  서로 다른 브라우저 실행 했을 때
+
+- 크롬에서 보낸 요청을 파이어폭스에서는 갖고 있지 않아서 null 오류가 발생한다.
+
+![session](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/session.png)
+
+> 결과 2 : 같은 브라우저로 실행 했을 때
+
+- 같은 크롬에서 값을 공유하고 있다.
+
+![crome](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/crome.png)
+
+## 23. 웹 서버가 현재 사용자(Session)을 구분하는 방식
+
+### 세션 ID 와 사용자 저장소 구별
+
+1. 처음 요청을 보낼 때는 사용자 ID가 없다.
+2. 사용자 ID가 없기 때문에 Application 공간에만 사용할 수 있다.
+3. respone 시 ID가 부여된다.
+4. 다음 요청때 ID를 사용해서 요청하여 session 을 사용할 수 있다.
+
+![20220217145403](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220217145403.png)
+
+- session ID 확인
+  - 서버는 Session ID를 확인해서 사용자를 구분한다.
+  - 다른 사용자가 Session을 복사해서 서버측에 요청하면 같은 사용자로 인식한다.
+
+![20220217145537](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220217145537.png)
+
+### 세션 메소드
+
+- 서버에서 세션을 계속 갖고 있는 것이 아니라 세션을 비우고 시간에 따라 정리할 수 있다.
+
+![20220217150055](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220217150055.png)
+
+## 24. Cookie 를 이용해 상태 값 유지하기
+
+### 상태 저장을 위한 값의 저장소의 특징
+
+- 클라이언트가 값을 서버에 저장하지 않고 갖고 다닐 수 있다.
+- 클라이언트가 서버에 요청할 때 값을 가져갈 수 있다.
+  1. 헤더정보 : 브라우저가 알아서 담아주는 헤더정보
+  2. 사용자 데이터 : 사용자가 보낸 데이터
+  3. 쿠기 정보 : 브라우저가 알아서 담아주는 쿠키정보
+- 서버 측에서 getHeader();  getCookies(); getParameter(); 으로 정보를 얻는다.
+- 서버에서 보낼 때는 addCookie(); 함수로 Cookie 를 심을 수 있다.
+
+![20220217150529](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220217150529.png)
+
+### 쿠키 사용하기
+
+#### 쿠기 저장하기
+
+- 서버측에서 값을 저장하려고 하는데 Application 과 session 에 저장하지 않고 클라이언트에 보내고 싶을 때
+- 브라우저가 response 을 읽고 쿠키를 갖는다.
+
+```java
+Cookie cookie = new Cookie("c", String.valueOf(result));
+response.addCookie(cookie);
+```
+
+#### 쿠키 읽기
+
+- 브라우저가 다시 서버에 요청하게 되면 서버측은 배열로 쿠키를 받는다.
+- 요청시 보냈던 쿠키를 찾기 위해서 반복문을 사용한다.
+
+```java
+Cookie[] cookies = request.getCookies();
+String _c = "";
+
+if(cookies != null)
+	for(Cookie cookie : cookies)
+		if("c".equals(cookie.getName()))
+			_c = cookie.getValue();
+```
+
+> Java - 서버에서 쿠키생성해서 클라이언트에게 보내기
+
+- 쿠키값으로는 문자열만 보낼 수 있다.
+
+```java
+Cookie valueCookie = new Cookie("value", String.valueOf(v)); // ValueCookie 를 생성한다.
+Cookie opCookie = new Cookie("op", op_);					// opCookie 를 생성한다.
+respone.addCookie(valueCookie);								// 클라이언트에게 valueCookie 쿠키를 보낸다.
+respone.addCookie(opCookie);								// 클라이언트에게 opCookie 쿠키를 보낸다.
+```
+
+- 웹 브라우저에서 쿠키를 확인 할 수 있다.
+
+![20220217153906](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220217153906.png)
+
+> Java - 쿠키 구현
+
+```java
+package com.newlecture.web;
+
+@WebServlet("/calc3")
+public class Calc3 extends HttpServlet{
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse respone) 
+			throws ServletException, IOException {
+        // 쿠키 객체를 생성한다. : 쿠키는 배열로 생성된다.
+		Cookie[] cookies =  request.getCookies();
+	
+		respone.setCharacterEncoding("UTF-8");
+		respone.setContentType("text.html; charset= UTF-8");
+		
+		String v_ = request.getParameter("v");
+		String op_ = request.getParameter("operator");
+		
+		int v =0;
+		if(!v_.equals("")) v = Integer.parseInt(v_);
+		
+		if(op_.equals("=")) {
+			int x = 0;
+			
+			for(Cookie c : cookies) 
+				if(c.getName().equals("value")) {
+					x = Integer.parseInt(c.getValue());
+					break;
+				}
+			int y = v;
+			String operator = "";
+			for(Cookie c : cookies)
+				if(c.getName().equals("op")) {
+					operator = c.getValue();
+					break;
+				}
+			int result =0;
+            
+			if(operator.equals("+"))
+				result = x + y;
+			else
+				result = x - y;
+			
+			respone.getWriter().print(result);
+		}else {
+            // 서버에서 쿠키를 생성하여 클라이언트에게 보내준다.
+			Cookie valueCookie = new Cookie("value", String.valueOf(v));
+			Cookie opCookie = new Cookie("op", op_);
+			respone.addCookie(valueCookie);
+			respone.addCookie(opCookie);
+		}
+	}
+}
+
+```
+
+## 25. Cookie의 path 옵션
+
+### 쿠키는 모든 페이지마다 동일한가?
+
+- 서블릿 마다 쿠키로 저장한다고 할때 서블릿 마다 다른 쿠키를 갖고 있다.
+- 쿠키를 설정할 때 URL 을 설정 할 수 있다. URL 을 설정하여 쿠키 충돌을 막을 수 있다.
+- `valueCookie.setPath("경로명");` 
+  - 어느 경우에 따라 사용자에게 전달 해야 되는지에 대한 경로
+  - `valueCookie.setPath("/");`으로 설정할 경우 모든 페이지를 요청할 떄마다 valueCookie를 갖고 와야한다
+  - `valueCookie.setPath("/notice");` notice가 포함된 하위 어떤 URL 을 요청할 때 valueCookie를 갖고 온다.
+
+> 서버에서 쿠키 생성해서 클라이언트에게 전달
+
+- NetWork에 Response Headers 에서 생성된 쿠키를 확인 할 수 있다.
+- Response Headers 는 서버가 클라이언트에게 돌려주는 정보
+
+```java
+Cookie valueCookie = new Cookie("value", String.valueOf(v));
+Cookie opCookie = new Cookie("op", op_);
+valueCookie.setPath("/");
+opCookie.setPath("/");
+respone.addCookie(valueCookie);
+respone.addCookie(opCookie);
+```
+
+![쿠키정보](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/%EC%BF%A0%ED%82%A4%EC%A0%95%EB%B3%B4.png)
+
+- 웹브라우저에서 쿠키를 확인할 수 있다.
+
+![쿠키](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/%EC%BF%A0%ED%82%A4.png)
+
+> 클라이언트에서 서버로 요청 하고 서버에서 쿠키 정보 읽기
+
+- 클라이언트에게 쿠키를 받는다.
+
+```java
+Cookie[] cookies =  request.getCookies();
+```
+
+![클라이언트 요청 쿠키 받음](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%20%EC%9A%94%EC%B2%AD%20%EC%BF%A0%ED%82%A4%20%EB%B0%9B%EC%9D%8C.png)
+
+> 쿠키 경로가 다를 때
+
+- 맵핑된 경로가 @WebServlet("/calc3") 인데 쿠키 경로를 add라고 할 경우
+
+```java
+@WebServlet("/calc3")
+...
+
+Cookie valueCookie = new Cookie("value", String.valueOf(v));
+Cookie opCookie = new Cookie("op", op_);
+valueCookie.setPath("/add");
+opCookie.setPath("/add");
+respone.addCookie(valueCookie);
+respone.addCookie(opCookie);
+```
+
+- 서버에서 는 응답 헤더경로로 path = /add 가 심어 졌다.![쿠키생성](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/%EC%BF%A0%ED%82%A4%EC%83%9D%EC%84%B1.png)
+
+- 클라이언트가 요청할 때 경로명 add가 포함된 하위 어떤 URL 을 요청할 때 값을 갖고 올 수 있다.
+- 현재 경로명은 calc3 이기 때문에 쿠키 경로가 일치하지 않아 서버에서 값을 제대로 받을 수 없다.
+
+![쿠키 받기](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/%EC%BF%A0%ED%82%A4%20%EB%B0%9B%EA%B8%B0.png)
+
+- 경로명을 임의로 수정하게 되면 쿠키를 받을 수 있다.
+
+## 26. Cookie의 maxAge 옵션
+
+### 브라우저가 닫혀도 유효한가?
+
+- 브라우저가 닫혔을 때 쿠키에 메시지를 설정하지 않으면 브라우저의 생존 주기와 같아진다.
+- 쿠키는 브라우저가 닫혀도 원하는 기간을 설정하여 그 기간내 값을 유지할 수 있게 해주는 특징을 갖고 있다.
+- 쿠키는 기본적으로 브라우저의 메모리에 있다가 기간 설정이 되면 그 브라우저와 상관없이 설정한 기간내에 존재 해야해서
+  영구 저장소인 외부파일에 저장하게 된다.
+
+![20220217171343](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220217171343.png)
+
+- `valueCookie.setMaxAge(24*(60*60));` 으로 만료날짜를 설정할 수 있다.
+- 초단위로 설정하기 떄문에 이처럼 설정하면 24뒤에 만료`24 * 60 * 60` 되는것으로 볼 수 있다.  
+- 기간을 설정하지 않으면 브라우저를 닫을 때 쿠키가 같이 사라진다
+- 기간을 설정하면 만료날짜까지 쿠키가 살아있다.
+
+![무제](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/%EB%AC%B4%EC%A0%9C.png)
+
+## 27. Application / Session  / Cookie 의 차이점 정리
+
+| 종류/특징   | 사용범위                            | 생명주기                                   | 저장위치                       |
+| ----------- | ----------------------------------- | ------------------------------------------ | ------------------------------ |
+| Application | 전역범위에서 사용하는 저장 공간     | WAS가 시작해서 종료할 때 까지              | WAS 서버의 메모리              |
+| Session     | 세션 범위에서 사용하는 저장 공간    | 세션이 시작해서 종료할 때 까지             | WAS 서버의 메모리              |
+| Cookie      | Web Browser별 지정한 path 범주 공간 | Browser에 전달한 시간부터 만료시간 전 까지 | Web Browser의 메모리 또는 파일 |
+
+### 오랜기간 데이터를 유지하고 싶을 때 ?
+
+1. 세션을 사용할 경우
+
+   - 세션에서는 오랜 기간동안 데이터를 갖고 있을 수 없다.
+
+   - 세션 ID가 쿠키이며 브라우저가 닫히면 쿠키정보가 사라진다.
+
+   - 사용자가 다시 요청하게 되면 새로운 쿠키를 얻어 session 에 저장하므로 sessoin 에 공간을 낭비할 수 있다.
+
+2. 특정 URL 을 사용할 때 
+   - 쿠키를 사용하면 공간을 효율적으로 활용할 수 있다.

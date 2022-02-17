@@ -160,7 +160,8 @@ html{
     border-radius: 0.25rem;
 }
 
-.list .item{
+.list .item,
+.list.empty::before{
     position: relative;
     display: block;
     padding: 0.5rem 1rem;
@@ -168,6 +169,10 @@ html{
     text-decoration: none;
     background-color: #fff;
     border: 1px solid rgba(0,0,0,.125)
+}
+.list::before{
+  content: '목록이 비어 있습니다.';
+  text-align: center;
 }
 
 /* --- component --------------------------------------------------- */

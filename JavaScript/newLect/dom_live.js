@@ -1,3 +1,79 @@
+//12-1.
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s12-1");
+    var formSection = section.querySelector(".form-section");
+    var listSection = section.querySelector(".list-section");
+
+    var unameInput = formSection.querySelector("input[name=uname");
+    var regButton = formSection.querySelector("input[name=reg-name]");
+    var listUi = listSection.querySelector(".list");
+
+    regButton.onclick = function(e){
+        e.preventDefault();
+
+        // if(listUi.children.length == 0)
+            li.classList.remove("empty");
+
+        var html = '<li class = "item">'+ unameInput.value+ '</li>';
+        listUi.insertAdjacentHTML("afterbegin",html);
+        // listUi.innerHTML += '<li class = "item">' +unameInput.value+ '</li>';
+        // var text = document.createElement(unameInput.value);
+        // li.appendChild(text);
+        // li.textContent = unameInput.value;
+        // var li = document.createElement("li");
+        // li.append(unameInput.value);
+        // li.classList.add("item");
+        // listUi.insertAdjacentElement("afterbegin",li);
+        // listUi.append(li);
+        // if(listUi.children.length == 0)
+        //     listUi.append(li);
+        // else{
+        //     // listUi.insertBefore(li, listUi.firstElementChild );   
+        //     listUi.firstElementChild.before(li);  
+        // }
+
+    };
+});
+
+// 12. 노드 조작하기(my)
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s12");
+    var memberForm = section.querySelector(".member-form");
+    var txtInput = memberForm.querySelector("input[type=text]");
+    var registerBtn = memberForm.querySelector(".register-btn");
+    var list = section.querySelector(".list");
+    var cancel = section.querySelector(".cancel");
+  
+    registerBtn.onclick = function(e){
+        e.preventDefault();
+        
+     
+
+        if(txtInput.value =="")
+            return;
+
+        list.innerHTML += '<li class = "item">' +unameInput.value+ '</li>';
+        // var li = document.createElement("li");
+        // li.classList.add("item");
+        // li.innerHTML = txtInput.value;
+
+        // list.appendChild(li);
+
+        txtInput.value = ""
+    };
+    cancel.onclick = function(e){
+        e.preventDefault();
+        
+        var lastChild = list.lastElementChild;
+
+        if(lastChild == null)
+            return;
+
+        list.removeChild(lastChild);
+    };
+
+});
+
 // --- <h1>11. 이벤트 다루기(drag and drop) : 데이터 드래그</h1> ----------------------------------
 window.addEventListener("load",function(){
     var section = document.querySelector("#s11");
