@@ -1,78 +1,158 @@
-//12-1.
+//12-1
 window.addEventListener("load",function(){
-    var section = document.querySelector("#s12-1");
+    var section = document.querySelector("#s12");
     var formSection = section.querySelector(".form-section");
     var listSection = section.querySelector(".list-section");
 
-    var unameInput = formSection.querySelector("input[name=uname");
-    var regButton = formSection.querySelector("input[name=reg-name]");
-    var listUi = listSection.querySelector(".list");
+    var unameInput = formSection.querySelector("input[name=uname]");
+    var regButton = formSection.querySelector("input[name='btn-reg']");
+    var listUl = listSection.querySelector(".list");
 
     regButton.onclick = function(e){
         e.preventDefault();
 
-        // if(listUi.children.length == 0)
-            li.classList.remove("empty");
+        //초기 비어 있는 empty 삭제
+        listUl.classList.remove("empty");
 
-        var html = '<li class = "item">'+ unameInput.value+ '</li>';
-        listUi.insertAdjacentHTML("afterbegin",html);
-        // listUi.innerHTML += '<li class = "item">' +unameInput.value+ '</li>';
-        // var text = document.createElement(unameInput.value);
+    //1. 모든 노드를 직접 만들기 : text 노드 만들어서 추가
+        // var li = document.createElement("li");
+        // var text = document.createTextNode(unameInput.value);
         // li.appendChild(text);
+        // li.classList.add("item");
+        // listUl.appendChild(li);
+
+    //2. innerText , textContent 활용하기 : 렌더링 과정이 조금 다르다.
+        // var li = document.createElement("li");
+        // // li.innerText = unameInput.value;
         // li.textContent = unameInput.value;
+        // li.classList.add("item");
+        // listUl.appendChild(li);
+        
+    /*3. append 로 textNode 바로 추가하기 
+      append는 node text를 자동으로 생성해서 추가한다.
+    */
         // var li = document.createElement("li");
         // li.append(unameInput.value);
         // li.classList.add("item");
-        // listUi.insertAdjacentElement("afterbegin",li);
-        // listUi.append(li);
-        // if(listUi.children.length == 0)
-        //     listUi.append(li);
-        // else{
-        //     // listUi.insertBefore(li, listUi.firstElementChild );   
-        //     listUi.firstElementChild.before(li);  
-        // }
+        // listUl.append(li);
 
+    /*4. 노드를 간접적으로 만들기 innerHtml 활용하기
+        : 태그를 직접 추가할 수 있다.
+        listUl 에 있는 객체 들이 += 으로 인해 문자열로 바뀌었다가 다시 객체화 된다.
+        도시 뽀개고 다시 집 짓기
+    */
+        // var li = document.createElement("li");
+        // listUl.innerHTML += '<li class= "item">'+ unameInput.value+ '</li>';
+
+    /*5.li 엘리먼트를 제일 앞에 추가하기  - .insertBefore 
+        추가 되는 내용이 맨밑에서 부터 추가했던 문제점 해결
+        mdn node interface link : (https://developer.mozilla.org/en-US/docs/Web/API/Node) 
+    */
+        // var li = document.createElement("li");
+        // li.append(unameInput.value);
+        // li.classList.add("item");
+        // // 비어 있다면 li 추가 else  li 앞에 추가
+        // if(listUl.children.length == 0)
+        //     listUl.append(li);
+        // else{
+        //     // 부모 입장 - 형 앞에 들어가라
+        //     // listUl.insertBefore(li, listUl.firstElementChild);
+        //     // 형제들 관계 
+        //     listUl.firstElementChild.before(li);
+        // }
+    /*6.엘리먼트를 추가하는 새로운 API - 
+        .insertAdjacentElement( , );  / beforebegin , afterbegin, beforeend, afterend
+        인접한 엘리먼트를 추가하기 : 조건 검사를 할 필요가 없다.
+    */
+        var li = document.createElement("li");
+        li.append(unameInput.value);
+        li.classList.add("item");
+
+        listUl.insertAdjacentElement("afterbegin",li);
+    
+    /*7.문자열로 엘리먼트를 생성하고 추가하는 새로운 API
+        대입을 통해 추가하는 것이라서 += 와 생성되는 과정이 다르다.
+    */
+       var html = '<li class="item">' + unameInput.value+ '</li>';
+       listUl.insertAdjacentHTML("afterbegin",html);
     };
 });
 
+// //12-1.
+// window.addEventListener("load",function(){
+//     var section = document.querySelector("#s12-1");
+//     var formSection = section.querySelector(".form-section");
+//     var listSection = section.querySelector(".list-section");
+
+//     var unameInput = formSection.querySelector("input[name=uname");
+//     var regButton = formSection.querySelector("input[name=reg-name]");
+//     var listUi = listSection.querySelector(".list");
+
+//     regButton.onclick = function(e){
+//         e.preventDefault();
+
+//         // if(listUi.children.length == 0)
+//             li.classList.remove("empty");
+
+//         var html = '<li class = "item">'+ unameInput.value+ '</li>';
+//         listUi.insertAdjacentHTML("afterbegin",html);
+//         // listUi.innerHTML += '<li class = "item">' +unameInput.value+ '</li>';
+//         // var text = document.createElement(unameInput.value);
+//         // li.appendChild(text);
+//         // li.textContent = unameInput.value;
+//         // var li = document.createElement("li");
+//         // li.append(unameInput.value);
+//         // li.classList.add("item");
+//         // listUi.insertAdjacentElement("afterbegin",li);
+//         // listUi.append(li);
+//         // if(listUi.children.length == 0)
+//         //     listUi.append(li);
+//         // else{
+//         //     // listUi.insertBefore(li, listUi.firstElementChild );   
+//         //     listUi.firstElementChild.before(li);  
+//         // }
+
+//     };
+// });
+
 // 12. 노드 조작하기(my)
-window.addEventListener("load",function(){
-    var section = document.querySelector("#s12");
-    var memberForm = section.querySelector(".member-form");
-    var txtInput = memberForm.querySelector("input[type=text]");
-    var registerBtn = memberForm.querySelector(".register-btn");
-    var list = section.querySelector(".list");
-    var cancel = section.querySelector(".cancel");
+// window.addEventListener("load",function(){
+//     var section = document.querySelector("#s12");
+//     var memberForm = section.querySelector(".member-form");
+//     var txtInput = memberForm.querySelector("input[type=text]");
+//     var registerBtn = memberForm.querySelector(".register-btn");
+//     var list = section.querySelector(".list");
+//     var cancel = section.querySelector(".cancel");
   
-    registerBtn.onclick = function(e){
-        e.preventDefault();
+//     registerBtn.onclick = function(e){
+//         e.preventDefault();
         
      
 
-        if(txtInput.value =="")
-            return;
+//         if(txtInput.value =="")
+//             return;
 
-        list.innerHTML += '<li class = "item">' +unameInput.value+ '</li>';
-        // var li = document.createElement("li");
-        // li.classList.add("item");
-        // li.innerHTML = txtInput.value;
+//         list.innerHTML += '<li class = "item">' +unameInput.value+ '</li>';
+//         // var li = document.createElement("li");
+//         // li.classList.add("item");
+//         // li.innerHTML = txtInput.value;
 
-        // list.appendChild(li);
+//         // list.appendChild(li);
 
-        txtInput.value = ""
-    };
-    cancel.onclick = function(e){
-        e.preventDefault();
+//         txtInput.value = ""
+//     };
+//     cancel.onclick = function(e){
+//         e.preventDefault();
         
-        var lastChild = list.lastElementChild;
+//         var lastChild = list.lastElementChild;
 
-        if(lastChild == null)
-            return;
+//         if(lastChild == null)
+//             return;
 
-        list.removeChild(lastChild);
-    };
+//         list.removeChild(lastChild);
+//     };
 
-});
+// });
 
 // --- <h1>11. 이벤트 다루기(drag and drop) : 데이터 드래그</h1> ----------------------------------
 window.addEventListener("load",function(){

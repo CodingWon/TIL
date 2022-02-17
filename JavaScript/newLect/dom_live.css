@@ -159,7 +159,7 @@ html{
     margin-bottom: 0;
     border-radius: 0.25rem;
 }
-
+/* shdow 엘리먼트를 사용하여 목록이 비었을 때 표시 */
 .list .item,
 .list.empty::before{
     position: relative;
@@ -170,7 +170,8 @@ html{
     background-color: #fff;
     border: 1px solid rgba(0,0,0,.125)
 }
-.list::before{
+
+.list.empty::before{
   content: '목록이 비어 있습니다.';
   text-align: center;
 }
