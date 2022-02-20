@@ -1,3 +1,11 @@
+/* --- reset ---------------------------------------------------- */
+ul{
+    margin:0;
+    padding: 0;
+}
+
+/* --- variable ---------------------------------------------------- */
+
 :root{
     --color-bd-light:lightyellow;
     --color-bd:#aaa;
@@ -27,6 +35,10 @@ html{
 
 .d-inline-block{
     display: inline-block !important;
+}
+
+.d-flex{
+    display: flex !important;
 }
 
 /* text-align */
@@ -98,6 +110,22 @@ html{
     margin-top: 1rem !important;
 }
 
+.mr-0{
+    margin-right: 0 !important;
+}
+
+.mr-1{
+    margin-right: .25rem !important;    
+}
+
+.mr-2{
+    margin-right: .5rem !important;
+}
+
+.mr-3{
+    margin-right: 1rem !important;
+}
+
 .mb-0{
     margin-bottom: 0 !important;
 }
@@ -114,9 +142,16 @@ html{
     margin-bottom: 1rem !important;
 }
 
+.ml-auto{
+    margin-left: auto !important;
+}
+
 /* --- content-block ---------------------------------------------- */
 
-
+.section-header{
+    display: flex;
+    align-items: center;
+}
 /* form */
 
 .form{
@@ -158,8 +193,9 @@ html{
     padding-left: 0;
     margin-bottom: 0;
     border-radius: 0.25rem;
+
 }
-/* shdow 엘리먼트를 사용하여 목록이 비었을 때 표시 */
+
 .list .item,
 .list.empty::before{
     position: relative;
@@ -172,8 +208,22 @@ html{
 }
 
 .list.empty::before{
-  content: '목록이 비어 있습니다.';
-  text-align: center;
+    display: block;
+    content: '목록이 비어 있습니다.';
+    text-align: center;
+    height: 20px;
+}
+
+.icon{
+    display: inline-block;
+    width:20px;
+    height: 20px;
+    text-indent: -999px;
+    overflow: hidden;
+}
+
+.icon-close{
+    background: url(imgs/close.svg) no-repeat center;
 }
 
 /* --- component --------------------------------------------------- */

@@ -1,4 +1,4 @@
-# [2020 Servlet&JSP 프로그래밍](https://www.youtube.com/watch?v=drCj2k50j_k&list=PLq8wAnVUcTFVOtENMsujSgtv2TOsMy8zd)
+2020 Servlet&JSP 프로그래밍](https://www.youtube.com/watch?v=drCj2k50j_k&list=PLq8wAnVUcTFVOtENMsujSgtv2TOsMy8zd)
 
 - YouTube 에서 뉴렉처 강의를 듣고 정리한 글입니다.
 
@@ -674,7 +674,7 @@ request.setCharacterEncoding("UTF-8");
 - servlet 설정 하기 방법 2 :  어노테이션 설정하기
   - 필터 클래스에 `@WebFilter("/*")`을 추가한다.
 
-```
+```java
 @WebFilter("/*")
 public class CharacterEncodingFilter implements Filter {
 
@@ -767,7 +767,7 @@ public class Calc extends HttpServlet{
 		int x = 0;
 		int y = 0;
 		
-		if(x_ !=null && !x_.equals("") && x_ !=null && !x_.equals("")) {
+		if( !x_.equals("") &&  !y_.equals("")) {
 			x = Integer.parseInt(x_);
 			y = Integer.parseInt(y_);
 		}
@@ -1302,3 +1302,890 @@ respone.addCookie(opCookie);
 
 2. 특정 URL 을 사용할 때 
    - 쿠키를 사용하면 공간을 효율적으로 활용할 수 있다.
+
+## 28. 서버에서 페이지 전환해주기(redirect)
+
+- 이전까지 예제에서 숫자를 입력 하고 나서 뒤로 가기를 눌러 다시 요청 하는 방법으로 했다.
+- 페이지 전환은 서버에서 페이지를 다시 요청한 것 처럼 보여준다
+
+![20220220144738](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220144738.png)
+
+- `respone.sendRedirect("calc3.html");` 를 추가하면 redirection 을 사용할 수 있다.
+
+## 29. 동적인 페이지(서버 페이지)
+
+- 사용자의 요청을 받아서 출력한 문서를 만들어서 응답해준다.
+
+> Servlet 으로 동적인 페이지 구현 - CalcPage
+
+- Servelt에 html을 삽입해서 출력한다.
+- 계산기 구현 하기
+  - CalcPage.java 에서 입력되는 내용을 Calc3.java 로 POST 한다.
+  - CalcPage.java 에서 쿠키로 받은 값을 `out.printf("<td class = \"output\" colspan =\"4\">%s</td>",exp);`으로 출력한다.
+
+```java
+@WebServlet("/calcpage")
+public class CalcPage extends HttpServlet{
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse respone) 
+			throws ServletException, IOException {
+		
+		Cookie[] cookies =  request.getCookies();
+		String exp ="0";
+		if(cookies != null)
+			for(Cookie c : cookies)
+				if(c.getName().equals("exp")) {
+					exp = c.getValue();
+					break;
+				}
+		
+		PrintWriter out = respone.getWriter();
+		out.write("<!DOCTYPE html>");
+		out.write("<html>");
+		out.write("	<head>");
+		out.write("		<meta charset=\"UTF-8\">");
+		out.write("		<title>Insert title here</title>");
+		out.write("	<style>");
+		out.write("		input{");
+		out.write("			width:50px;");
+		out.write("			height:50px;");
+		out.write("		}");
+		out.write("		.output{");
+		out.write("			height : 50px;");
+		out.write("		background : #e9e9e9;");
+		out.write("		font-size : 24px;");
+		out.write("			font-weight: bold;");
+		out.write("		text-align: right;");
+		out.write("		padding: 0px 5px;");
+		out.write("	}");
+		out.write("	</style>");
+		out.write("	</head>");
+		out.write("<body>");
+		out.write("	<form action=\"calc3\" method = \"POST\">");
+		out.write("		<table>");
+		out.write("			<tr>");
+		out.printf("				<td class = \"output\" colspan =\"4\">%s</td>",exp);
+		out.write("			</tr>");
+		out.write("			<tr>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"CE\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"C\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"BS\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"/\"></td>");
+		out.write("			</tr>");
+		out.write("			<tr>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"7\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"8\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"9\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"*\"></td>");
+		out.write("			</tr>");
+		out.write("			<tr>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"4\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"5\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"6\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"-\"></td>");
+		out.write("			</tr>");
+		out.write("			<tr>");
+		out.write("			<td><input type = \"submit\" name = \"value\" value =\"1\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"2\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"3\"></td>");
+		out.write("			<td><input type = \"submit\" name = \"operator\" value =\"+\"></td>");
+		out.write("		</tr>");
+		out.write("		<tr>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"0\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"dot\" value =\".\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"=\"></td>");
+		out.write("			</tr>");
+		out.write("		</table>");
+		out.write("	</form>");
+		out.write("	</body>");
+		out.write("</html>");
+	}
+}
+
+```
+
+> Servlet 으로 동적인 페이지 구현 - Calc3
+
+- CalcPage.java 에서 요청 받은 값을 저장하고 exp 에 누적하여 쿠키를 생성해서 요청한 페이지로 돌려준다.
+
+```java
+@WebServlet("/calc3")
+public class Calc3 extends HttpServlet{
+
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse respone) 
+			throws ServletException, IOException {
+        
+		Cookie[] cookies =  request.getCookies();
+		
+		String value = request.getParameter("value");
+		String operator = request.getParameter("operator");
+		String dot = request.getParameter("dot");
+		String exp = "";
+		
+		if(cookies != null)
+			for(Cookie c : cookies)
+				if(c.getName().equals("exp")) {
+					exp = c.getValue();
+					break;
+				}
+		
+		if(operator != null && operator.equals("=")) {
+			ScriptEngine engine =  new ScriptEngineManager().getEngineByName("graal.js");
+			try {
+				exp =String.valueOf(engine.eval(exp));
+			} catch (ScriptException e) {
+				e.printStackTrace();
+			}
+			
+		}else {
+			exp += (value == null)? "" : value ;
+			exp += (operator == null)? "" : operator ;
+			exp += (dot == null)? "" : dot ;
+		}
+		
+ 		Cookie expCookie = new Cookie("exp",exp);
+		
+		respone.addCookie(expCookie);
+		respone.sendRedirect("calcpage");
+	}
+}
+```
+
+## 30. 쿠키 삭제하기
+
+- `expCookie.setMaxAge(0);`으로 설정하면 쿠키를 삭제해준다.
+- 계산기 예제에서 'C'를 클릭하면 초기화 되야하는데 else if문으로 빈문자열로 초기화 시켜주고
+  쿠키 생성하는 곳 아래에 조건식 안에 쿠키를 삭제하는 코드를 작성해준다.
+
+```JAVA
+		...(생략)
+		if(operator != null && operator.equals("=")) {
+			ScriptEngine engine =  new ScriptEngineManager().getEngineByName("graal.js");
+			try {
+				exp =String.valueOf(engine.eval(exp));
+			} catch (ScriptException e) {
+			
+				e.printStackTrace();
+			}
+			
+		}else if(operator != null && operator.equals("C")) {
+			exp = "";
+		}
+		else {
+			exp += (value == null)? "" : value ;
+			exp += (operator == null)? "" : operator ;
+			exp += (dot == null)? "" : dot ;
+		}
+		
+ 		Cookie expCookie = new Cookie("exp",exp);
+ 		
+ 		if(operator != null && operator.equals("C")) 
+ 			expCookie.setMaxAge(0);
+ 		
+		respone.addCookie(expCookie);
+		respone.sendRedirect("calcpage");
+```
+
+## 31. GET/POST에 특화된 서비스 함수
+
+### GET, POST 선택적으로 받기
+
+#### 방법1 if문 사용
+
+> HTML
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action ="submit" method = "GET/POST">
+		<input type ="submit" value ="요청">
+	</form>
+</body>
+</html>
+```
+
+> JAVA
+
+```java
+package com.newlecture.web;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/calculator")
+public class Calculator extends HttpServlet {
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) 
+        throws ServletException, IOException {
+		
+		if(request.getMethod().equals("GET")) {
+			System.out.println("GET 요청이 왔습니다.");
+			
+		}else if(request.getMethod().equals("POST")) {
+			System.out.println("POST 요청이 왔습니다.");
+		}
+	}
+}
+ 
+```
+
+#### 방법 2. super.service(request, response) , doGet () 와 doPost()
+
+- 부모의 service 함수는 요청을 받아서 선택적으로 doGet(...) , doPost(...) 를 호출한다.
+
+> JAVA
+
+```JAVA
+package com.newlecture.web;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/calculator")
+public class Calculator extends HttpServlet {
+
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		if(request.getMethod().equals("GET")) {
+			System.out.println("GET 요청이 왔습니다.");
+			
+		}else if(request.getMethod().equals("POST")) {
+			System.out.println("POST 요청이 왔습니다.");
+		}
+		//POST , GET 에 따라 doGet, doPost 함수를 호출한다.
+		super.service(request, response);
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("doGET 요청이 왔습니다.");
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("doPOST 요청이 왔습니다.");
+	}
+	
+}
+ 
+```
+
+- 공통으로 사용되는 service가 필요 없을 경우에는 service 함수를 삭제하고 doGet 과 doPost 함수를 사용한다.
+
+  (service 함수를 통해 doGet, doPost 가 호출되므로 service 영역을 지워도 된다.)
+
+```java
+package com.newlecture.web;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/calculator")
+public class Calculator extends HttpServlet {
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("doGET 요청이 왔습니다.");
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("doPOST 요청이 왔습니다.");
+	}
+	
+}
+ 
+```
+
+## 32. 계산기 프로그램 하나의 서블릿으로 합치기
+
+### 문제점
+
+- GET 요청과 POST 요청이 분리 되있다.
+- 분리 되 있을 경우 쿠키 경로를 절대 경로("/") 가 아닌 한정된 경로("calc3")를 설정 하면 calcpage에서 접근 할 수 없게 된다.
+
+![20220220190145](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220190145.png)
+
+### 서블릿 합치기
+
+- Calculator 의 서블릿에 Calcpage와 Calc3를 합친다.
+- doGet 함수에 Calcpage 내용을 담는다.
+  - 현재 페이지(calculator) 여서 `<form method>`에서 `action`을 지정하지 않아도 된다.
+- doPost 함수에 calc3 내용을 담는다.
+  - 쿠키 경로를 `expCookie.setPath("/calculator");` 현재 페이지(calculator)으로 한정 할 수 있다.
+  - `respone.sendRedirect("calculator");` 로 수정
+
+```java
+package com.newlecture.web;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/calculator")
+public class Calculator extends HttpServlet {
+
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse respone) 
+        throws ServletException, IOException {
+        
+		Cookie[] cookies = request.getCookies();
+		String exp = "0";
+		
+		if(cookies != null)
+			for(Cookie c : cookies)
+					if(c.getName().equals("exp")) {
+						exp = c.getValue();
+						break;
+					}
+		
+		PrintWriter out = respone.getWriter();
+		
+		out.write("<!DOCTYPE html>");
+		out.write("<html>");
+		out.write("	<head>");
+		out.write("		<meta charset=\"UTF-8\">");
+		out.write("		<title>Insert title here</title>");
+		out.write("	<style>");
+		out.write("		input{");
+		out.write("			width:50px;");
+		out.write("			height:50px;");
+		out.write("		}");
+		out.write("		.output{");
+		out.write("			height : 50px;");
+		out.write("		background : #e9e9e9;");
+		out.write("		font-size : 24px;");
+		out.write("			font-weight: bold;");
+		out.write("		text-align: right;");
+		out.write("		padding: 0px 5px;");
+		out.write("	}");
+		out.write("	</style>");
+		out.write("	</head>");
+		out.write("<body>");
+		out.write("	<form method = \"POST\">");
+		out.write("		<table>");
+		out.write("			<tr>");
+		out.printf("				<td class = \"output\" colspan =\"4\">%s</td>",exp);
+		out.write("			</tr>");
+		out.write("			<tr>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"CE\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"C\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"BS\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"/\"></td>");
+		out.write("			</tr>");
+		out.write("			<tr>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"7\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"8\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"9\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"*\"></td>");
+		out.write("			</tr>");
+		out.write("			<tr>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"4\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"5\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"6\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"-\"></td>");
+		out.write("			</tr>");
+		out.write("			<tr>");
+		out.write("			<td><input type = \"submit\" name = \"value\" value =\"1\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"2\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"3\"></td>");
+		out.write("			<td><input type = \"submit\" name = \"operator\" value =\"+\"></td>");
+		out.write("		</tr>");
+		out.write("		<tr>");
+		out.write("				<td><input type = \"submit\" name = \"value\" value =\"0\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"dot\" value =\".\"></td>");
+		out.write("				<td><input type = \"submit\" name = \"operator\" value =\"=\"></td>");
+		out.write("			</tr>");
+		out.write("		</table>");
+		out.write("	</form>");
+		out.write("	</body>");
+		out.write("</html>");
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse respone) 
+        throws ServletException, IOException {
+        
+		Cookie[] cookies = request.getCookies();
+		String value = request.getParameter("value");
+		String operator = request.getParameter("operator");
+		String dot = request.getParameter("dot");
+		
+		String exp = "";
+		
+		if(cookies != null)
+			for(Cookie c : cookies)
+				if(c.getName().equals("exp")) {
+					exp = c.getValue();
+					break;
+				}
+				
+		if(operator != null && operator.equals("=")) {
+			ScriptEngine engine =  new ScriptEngineManager().getEngineByName("graal.js");
+			try {
+				exp =String.valueOf(engine.eval(exp));
+			} catch (ScriptException e) {
+				e.printStackTrace();
+			}
+			
+		}else if(operator != null && operator.equals("C")) {
+			exp = "";
+			
+		}else {
+			exp += (value == null) ? "" : value;
+			exp += (operator == null) ? "" : operator;
+			exp +=(dot == null) ? "" : dot;
+		}
+			
+		Cookie expCookie = new Cookie("exp", exp);
+		if(operator != null && operator.equals("C"))
+			expCookie.setMaxAge(0);
+		
+		expCookie.setPath("/calculator");
+		respone.addCookie(expCookie);
+		respone.sendRedirect("calculator");
+	}
+}
+ 
+```
+
+## 33. JSP를 이용한 자바 웹 프로그래밍
+
+- 동적인 웹페이지를 만들 때 Servlet 안에 html의 내용을 담는다. 그런데 번거롭게 out.wirter 으로 출력을 해줘야 했다.
+- out.writer를 하는 번거로운 일을 없애기 위해 Jsp 등장 했다.
+-  파일의 확장자에 .jsp 를 붙여서 사용하고 jsp 가 출력의 형태고 바꿔준다.
+- jsp 는 사용자가 페이지를 요청할 때 만들어지고 URL 맵핑은 파일명 그대로 된다.
+
+> JSP
+
+- `${3+4}` 으로 값을 변경할 수 있다.
+
+```JSP
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	<style>
+		input{
+			width:50px;
+			height:50px;
+		}
+		.output{
+			height : 50px;
+			background : #e9e9e9;
+			font-size : 24px;
+			font-weight: bold;
+			text-align: right;
+			padding: 0px 5px;
+		}
+	</style>
+	</head>
+	<body>
+		<form action="calc3" method = "POST">
+			<table>
+				<tr>
+					<td class = "output" colspan ="4">${3+4}</td>
+				</tr>
+				<tr>
+					<td><input type = "submit" name = "operator" value ="CE"></td>
+					<td><input type = "submit" name = "operator" value ="C"></td>
+					<td><input type = "submit" name = "operator" value ="BS"></td>
+					<td><input type = "submit" name = "operator" value ="÷"></td>
+				</tr>
+				<tr>
+					<td><input type = "submit" name = "value" value ="7"></td>
+					<td><input type = "submit" name = "value" value ="8"></td>
+					<td><input type = "submit" name = "value" value ="9"></td>
+					<td><input type = "submit" name = "operator" value ="X"></td>
+				</tr>
+				<tr>
+					<td><input type = "submit" name = "value" value ="4"></td>
+					<td><input type = "submit" name = "value" value ="5"></td>
+					<td><input type = "submit" name = "value" value ="6"></td>
+					<td><input type = "submit" name = "operator" value ="-"></td>
+				</tr>
+				<tr>
+					<td><input type = "submit" name = "value" value ="1"></td>
+					<td><input type = "submit" name = "value" value ="2"></td>
+					<td><input type = "submit" name = "value" value ="3"></td>
+					<td><input type = "submit" name = "operator" value ="+"></td>
+				</tr>
+				<tr>
+					<td><input type = "submit" name = "value" value ="0"></td>
+					<td><input type = "submit" name = "dot" value ="."></td>
+					<td><input type = "submit" name = "operator" value ="="></td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>
+```
+
+- 브라우저가 프로젝트의 디렉토리를 홈디렉토리를 사용하는 것이 아니다. 배포할 때 디렉토리가 톰켓의 홈디렉토리로 옮겨진다. 다른 서비스와 충돌이 있을 수 있으므로 work 디렉토리가 아닌 이클립스가 관리하고 서비스를 위한 별도의 공간을 마련한다.
+
+경로(.metadata\.plugins\org.eclipse.wst.server.core)
+
+![20220220194220](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220194220.png)
+
+- jsp 의 작업 디렉토리에서 jsp파일이 어떻게 변환 되는지 알 수 있다.(tmp0\work\Catalina\localhost\ROOT\org\apache\jsp)
+
+### JSP 변환 파일
+
+```java
+/*
+ * Generated by the Jasper component of Apache Tomcat
+ * Version: Apache Tomcat/9.0.58
+ * Generated at: 2022-02-20 10:31:59 UTC
+ * Note: The last modified time of this file was set to
+ *       the last modified time of the source file after
+ *       generation to assist with modification tracking.
+ */
+package org.apache.jsp;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.jsp.*;
+
+public final class calculator_jsp extends org.apache.jasper.runtime.HttpJspBase
+    implements org.apache.jasper.runtime.JspSourceDependent,
+                 org.apache.jasper.runtime.JspSourceImports {
+
+  private static final javax.servlet.jsp.JspFactory _jspxFactory =
+          javax.servlet.jsp.JspFactory.getDefaultFactory();
+
+  private static java.util.Map<java.lang.String,java.lang.Long> _jspx_dependants;
+
+  private static final java.util.Set<java.lang.String> _jspx_imports_packages;
+
+  private static final java.util.Set<java.lang.String> _jspx_imports_classes;
+
+  static {
+    _jspx_imports_packages = new java.util.HashSet<>();
+    _jspx_imports_packages.add("javax.servlet");
+    _jspx_imports_packages.add("javax.servlet.http");
+    _jspx_imports_packages.add("javax.servlet.jsp");
+    _jspx_imports_classes = null;
+  }
+
+  private volatile javax.el.ExpressionFactory _el_expressionfactory;
+  private volatile org.apache.tomcat.InstanceManager _jsp_instancemanager;
+
+  public java.util.Map<java.lang.String,java.lang.Long> getDependants() {
+    return _jspx_dependants;
+  }
+
+  public java.util.Set<java.lang.String> getPackageImports() {
+    return _jspx_imports_packages;
+  }
+
+  public java.util.Set<java.lang.String> getClassImports() {
+    return _jspx_imports_classes;
+  }
+
+  public javax.el.ExpressionFactory _jsp_getExpressionFactory() {
+    if (_el_expressionfactory == null) {
+      synchronized (this) {
+        if (_el_expressionfactory == null) {
+          _el_expressionfactory = _jspxFactory.getJspApplicationContext(getServletConfig().getServletContext()).getExpressionFactory();
+        }
+      }
+    }
+    return _el_expressionfactory;
+  }
+
+  public org.apache.tomcat.InstanceManager _jsp_getInstanceManager() {
+    if (_jsp_instancemanager == null) {
+      synchronized (this) {
+        if (_jsp_instancemanager == null) {
+          _jsp_instancemanager = org.apache.jasper.runtime.InstanceManagerFactory.getInstanceManager(getServletConfig());
+        }
+      }
+    }
+    return _jsp_instancemanager;
+  }
+
+  public void _jspInit() {
+  }
+
+  public void _jspDestroy() {
+  }
+
+  public void _jspService(final javax.servlet.http.HttpServletRequest request, final javax.servlet.http.HttpServletResponse response)
+      throws java.io.IOException, javax.servlet.ServletException {
+
+    if (!javax.servlet.DispatcherType.ERROR.equals(request.getDispatcherType())) {
+      final java.lang.String _jspx_method = request.getMethod();
+      if ("OPTIONS".equals(_jspx_method)) {
+        response.setHeader("Allow","GET, HEAD, POST, OPTIONS");
+        return;
+      }
+      if (!"GET".equals(_jspx_method) && !"POST".equals(_jspx_method) && !"HEAD".equals(_jspx_method)) {
+        response.setHeader("Allow","GET, HEAD, POST, OPTIONS");
+        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "JSP들은 오직 GET, POST 또는 HEAD 메소드만을 허용합니다. Jasper는 OPTIONS 메소드 또한 허용합니다.");
+        return;
+      }
+    }
+
+    final javax.servlet.jsp.PageContext pageContext;
+    javax.servlet.http.HttpSession session = null;
+    final javax.servlet.ServletContext application;
+    final javax.servlet.ServletConfig config;
+    javax.servlet.jsp.JspWriter out = null;
+    final java.lang.Object page = this;
+    javax.servlet.jsp.JspWriter _jspx_out = null;
+    javax.servlet.jsp.PageContext _jspx_page_context = null;
+
+
+    try {
+      response.setContentType("text/html");
+      pageContext = _jspxFactory.getPageContext(this, request, response,
+      			null, true, 8192, true);
+      _jspx_page_context = pageContext;
+      application = pageContext.getServletContext();
+      config = pageContext.getServletConfig();
+      session = pageContext.getSession();
+      out = pageContext.getOut();
+      _jspx_out = out;
+
+      out.write("<!DOCTYPE html>\r\n");
+      out.write("<html>\r\n");
+      out.write("	<head>\r\n");
+      out.write("		<meta charset=\"UTF-8\">\r\n");
+      out.write("		<title>Insert title here</title>\r\n");
+      out.write("	<style>\r\n");
+      out.write("		input{\r\n");
+      out.write("			width:50px;\r\n");
+      out.write("			height:50px;\r\n");
+      out.write("		}\r\n");
+      out.write("		.output{\r\n");
+      out.write("			height : 50px;\r\n");
+      out.write("			background : #e9e9e9;\r\n");
+      out.write("			font-size : 24px;\r\n");
+      out.write("			font-weight: bold;\r\n");
+      out.write("			text-align: right;\r\n");
+      out.write("			padding: 0px 5px;\r\n");
+      out.write("		}\r\n");
+      out.write("	</style>\r\n");
+      out.write("	</head>\r\n");
+      out.write("	<body>\r\n");
+      out.write("		<form action=\"calc3\" method = \"POST\">\r\n");
+      out.write("			<table>\r\n");
+      out.write("				<tr>\r\n");
+      out.write("					<td class = \"output\" colspan =\"4\">");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${3+4}", java.lang.String.class, (javax.servlet.jsp.PageContext)_jspx_page_context, null));
+      out.write("</td>\r\n");
+      out.write("				</tr>\r\n");
+      out.write("				<tr>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"operator\" value =\"CE\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"operator\" value =\"C\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"operator\" value =\"BS\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"operator\" value =\"Ã·\"></td>\r\n");
+      out.write("				</tr>\r\n");
+      out.write("				<tr>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"value\" value =\"7\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"value\" value =\"8\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"value\" value =\"9\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"operator\" value =\"X\"></td>\r\n");
+      out.write("				</tr>\r\n");
+      out.write("				<tr>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"value\" value =\"4\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"value\" value =\"5\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"value\" value =\"6\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"operator\" value =\"-\"></td>\r\n");
+      out.write("				</tr>\r\n");
+      out.write("				<tr>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"value\" value =\"1\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"value\" value =\"2\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"value\" value =\"3\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"operator\" value =\"+\"></td>\r\n");
+      out.write("				</tr>\r\n");
+      out.write("				<tr>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"value\" value =\"0\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"dot\" value =\".\"></td>\r\n");
+      out.write("					<td><input type = \"submit\" name = \"operator\" value =\"=\"></td>\r\n");
+      out.write("				</tr>\r\n");
+      out.write("			</table>\r\n");
+      out.write("		</form>\r\n");
+      out.write("	</body>\r\n");
+      out.write("</html>");
+    } catch (java.lang.Throwable t) {
+      if (!(t instanceof javax.servlet.jsp.SkipPageException)){
+        out = _jspx_out;
+        if (out != null && out.getBufferSize() != 0)
+          try {
+            if (response.isCommitted()) {
+              out.flush();
+            } else {
+              out.clearBuffer();
+            }
+          } catch (java.io.IOException e) {}
+        if (_jspx_page_context != null) _jspx_page_context.handlePageException(t);
+        else throw new ServletException(t);
+      }
+    } finally {
+      _jspxFactory.releasePageContext(_jspx_page_context);
+    }
+  }
+}
+
+```
+
+### JSP 코드 블록
+
+- <% %> 으로 jsp 에게 코드 블록을 인식 시켜준다.
+
+```jsp
+<% 
+int x = 3;
+int y = 4;
+%>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	<style>
+		input{
+			width:50px;
+			height:50px;
+		}
+		.output{
+			height : 50px;
+			background : #e9e9e9;
+			font-size : 24px;
+			font-weight: bold;
+			text-align: right;
+			padding: 0px 5px;
+		}
+	</style>
+	</head>
+	<body>
+		<form action="calc3" method = "POST">
+			<table>
+				<tr>
+					<td class = "output" colspan ="4"></td>
+				</tr>
+				<tr>
+					<td><input type = "submit" name = "operator" value ="CE"></td>
+					<td><input type = "submit" name = "operator" value ="C"></td>
+					<td><input type = "submit" name = "operator" value ="BS"></td>
+					<td><input type = "submit" name = "operator" value ="÷"></td>
+				</tr>
+				<tr>
+					<td><input type = "submit" name = "value" value ="7"></td>
+					<td><input type = "submit" name = "value" value ="8"></td>
+					<td><input type = "submit" name = "value" value ="9"></td>
+					<td><input type = "submit" name = "operator" value ="X"></td>
+				</tr>
+				<tr>
+					<td><input type = "submit" name = "value" value ="4"></td>
+					<td><input type = "submit" name = "value" value ="5"></td>
+					<td><input type = "submit" name = "value" value ="6"></td>
+					<td><input type = "submit" name = "operator" value ="-"></td>
+				</tr>
+				<tr>
+					<td><input type = "submit" name = "value" value ="1"></td>
+					<td><input type = "submit" name = "value" value ="2"></td>
+					<td><input type = "submit" name = "value" value ="3"></td>
+					<td><input type = "submit" name = "operator" value ="+"></td>
+				</tr>
+				<tr>
+					<td><input type = "submit" name = "value" value ="0"></td>
+					<td><input type = "submit" name = "dot" value ="."></td>
+					<td><input type = "submit" name = "operator" value ="="></td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>
+```
+
+## 34. JSP 코드 블록
+
+### 출력코드
+
+- service 함수에 출력 코드를 입력하여 화면에 출력한다.
+
+![20220220201559](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220201559.png)
+
+### 코드 블록
+
+![20220220201833](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220201833.png)
+
+![20220220201941](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220201941.png)
+
+- <%=y%>  print를 생략할 수 있다.
+
+![20220220202033](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220202033.png)
+
+### 선언부
+
+- ! 를 붙여서 멤버 영역에 함수를 작성할 수 있다.
+
+![20220220202315](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220202315.png)
+
+### 초기 설정을 위한 Page 지시자
+
+![20220220202435](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220202435.png)
+
+## 35. jsp 내장 객체
+
+- jsp 내부에 있는 내장 객체들이 존재한다.
+
+![20220220221940](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220221940.png)
+
+### request
+
+![20220220222036](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220222036.png)
+
+### response
+
+![20220220222127](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220222127.png)
+
+### out
+
+![20220220222211](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220222211.png)
+
+### session
+
+![20220220222226](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220222226.png)
+
+### application
+
+![20220220222426](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220222426.png)
