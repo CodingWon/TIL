@@ -2189,3 +2189,240 @@ int y = 4;
 ### application
 
 ![20220220222426](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220220222426.png)
+
+## 36. JSP MVC model1
+
+- Model : 출력 데이터
+- View : 출력 담당
+- Controller : 입력과 제어를 담당
+
+![20220222144618](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222144618.png)
+
+> Jsp
+
+- MVC 로 코드를 분리해서 작성
+
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	int num = 0;
+	String num_ = request.getParameter("n");
+	if(num_ != null && !num_.equals(""))
+			num = Integer.parseInt(num_);
+	
+	String result ="";
+	
+	if(num%2 != 0)
+		result = "홀수";
+	else
+		result = "짝수";
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<%=result%>입니다.
+</body>
+</html>
+```
+
+## 37. JSP MVC model1 vs model2
+
+### model1 컨트롤러와 뷰가 물리적으로 분리되지 않는 방식
+
+![20220222145601](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222145601.png)
+
+### model2 컨트롤러와 뷰가 물리적으로 분리된 방식
+
+- Controller 와 Model 은 사용자 요청이 있을 때 만들어지는 것이 아니라 View 가 사용자의 요청이 있을 때 만들어진다.
+- Controller 와 Model 부분을 미리 컴파일해 놓을 수 있다.
+
+![20220222145645](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222145645.png)
+
+### MVC  model2 : Dispatcher 를 집중화 하기 전의 모델
+
+- Controll 에서 View 와 연결하기 위해서 포워딩 하게 된다.
+- 서블릿 에서 서블릿으로 흐름을 연결 받아 진행하는 것을 포워딩이라고 한다.
+
+![20220222150637](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222150637.png)
+
+### MVC  model 2 : Dispatcher 를 집중화 한 후의 모델
+
+- Controller 을 모아놓는 곳과 Dispatcher 를 따로 둔다.
+- Dispatcher 하는 서블릿과 업무 로직을 담당하는 Controller 두고 사용자의 요청이 오면 Dispatcher 서블릿이 적절한 컨트롤러를 선택해서 수행하게 한다.
+- Controller 는 Dispatcher 에게 관련된 내용을 알려준다.
+
+![20220222150815](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222150815.png)
+
+### MVC model2 예제
+
+> Jsp
+
+- request 에 담긴 result를 사용할 수 있다. 
+
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<%=request.getAttribute("result")%>입니다.
+</body>
+</html>
+```
+
+> Java
+
+- spag.jsp 로 연결 하기 위한 저장소가 필요 하다.
+- redirect 와 forword
+  - forword : 현재 작업한 내용을 이어갈 수 있게한다.
+  - redirect : 현재 작업한 내용과 상관없이 새로운 요청을 한다.
+- 서블릿 페이지로 요청이 왔을 때 `request.getRequestDispatcher("spag.jsp");`으로 spag.jsp 에 전달을 한다.
+- `forward(request, response);` 포워드 방법으로 서블릿의 requeset 와 response 을 전달받으면  jsp 에서 사용할 수 있다.
+- 포워드 방법에서 전달 하기 위해 저장소 request가 사용된다.  `request.setAttribute("result", result);` 으로 result를 담을 수 있다.
+
+```java
+package com.newlecture.web;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/spag")
+public class Spag extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+        throws ServletException, IOException {
+		int num = 0;
+		String num_ = request.getParameter("n");
+		if(num_ != null && !num_.equals(""))
+				num = Integer.parseInt(num_);
+		
+		String result ="";
+		
+		if(num%2 != 0)
+			result = "홀수";
+		else
+			result = "짝수";
+		
+		request.setAttribute("result", result);
+		
+		//redirect : 새로운 요청
+		//forward : 문맥을 이어가게 함
+		RequestDispatcher dispatcher = request.getRequestDispatcher("spag.jsp");
+		dispatcher.forward(request, response);
+		
+	}
+}
+
+```
+
+## 38. View를 위한 데이터 추출 표현식 EL(Expression Language)
+
+### 저장 객체에서 값을 추출해서 출력하는 표현식
+
+- `<%=request.getAttribute("result")%>`을 `${cnt}`로 표현할 수 있다.
+
+![20220222153825](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222153825.png)
+
+### 컬렉션, 배열 값 출력하는 표현식
+
+![20220222154222](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222154222.png)
+
+- Controller
+
+```java
+String [] names = {"newlec" , "dragon"};
+request.setAttribute("names", names);
+```
+
+- View
+
+```jsp
+${names[0]}<br>
+${names[1]}
+```
+
+### Map  
+
+![20220222154734](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222154734.png)
+
+- Controller
+
+```jsp
+Map <String, Object> notice = new HashMap<String, Object>();
+notice.put("id",1);
+notice.put("title","EL좋아요");
+
+request.setAttribute("notice", notice);
+```
+
+- View
+
+```jsp
+${notice.title}
+```
+
+## 39. EL 의 데이터 저장소
+
+### 저장 객체에서 값을 추출하는 순서
+
+#### 서버 저장소
+
+- page 
+  - jsp 가 만들어낸 객체 중에서 pageContext 가 있는데 page 내에서 사용할 수 있는 서블릿 객체들을 모아 놓은 것
+  - request 처럼 저장소 역할도 한다.
+- request
+- session
+- application
+
+### 저장소 순서
+
+- 묵시적 순서는 page - > request -> session -> application 이다
+- ...Scope로 특정 저장소에 있는 내용을 꺼내서 쓸 수 있다.
+
+![20220222160234](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222160234.png)
+
+### 클라이언트의 입력 값 출력
+
+![20220222160659](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222160659.png)
+
+- EL 표기법
+
+![20220222160748](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222160748.png)
+
+![20220222161301](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222161301.png)
+
+## 40.EL의 연산자
+
+### EL 연산
+
+- 엄격한 Html 구문으로 파악하게 될 때 < 에 연산으로 인해 오류가 생길 수 있다.
+
+![20220222161736](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222161736.png)
+
+![20220222161554](https://raw.githubusercontent.com/CodingWon/TIL/master/imgs/20220222161554.png)
+
+#### empty
+
+- null, 과 빈 문자열일 때 true를 반환한다.
+
+```
+{empty param.cnt? "빈문자열 입니다." : param.cnt};
+```
+

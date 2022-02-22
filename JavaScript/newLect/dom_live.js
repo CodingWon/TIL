@@ -9,20 +9,51 @@ window.addEventListener("load", function(){
     var listUl = listSection.querySelector(".list");
     var delFirstButton = listSection.querySelector(".btn-del-first");
     var delAllButton = listSection.querySelector(".btn-del-all");
+    var changeButton = listSection.querySelector(".btn-change");
+
+    delFirstButton.onclick = function(e){
+        e.preventDefault();
+
+        var selectdList = Array.from(listUl.querySelectorAll(":checked")).map(function(input){
+            return input.parentElement;
+        });
+
+        var existingLis =disabledUl.children;
+
+        disabledUl.replaceChildren(...selectdList, ...existingLis);
+
+        for(var i=0; i<selectdList.length; i++)
+            disabledUl.append(selectdList[i]);
+
+    };
+
+    changeButton.onclick = function(e){
+        e.preventDefault();
+       
+        var inputs = Array.from(listUl.querySelectorAll("input:checked"));
+        var lis = inputs.map(function(input){
+            return input.parentElement;
+        });
+        
+        var first = lis[0];
+        var second = lis[1];
+
+        var next = first.nextElementSibling;
+        second.replaceWith(first);
+        next.before(second);
+
+     
+        // var detached = listUl.removeChild(second);
+        // listUl.insertBefore(detached,first);
+    };
 
     delAllButton.onclick = function(e){
         e.preventDefault();
 
 
-        var lis = listUl.children;
-        var size = lis.length;
-        //var arr = Array.from(lis);
-
-        for(var i=0; i<size; i++){ //  0,1,2,3,4 : 5개 -> size
-            var checkbox = lis[size-1-i].querySelector("input[type=checkbox]");
-
-            if(checkbox.checked)
-                lis[size-1-i].remove();
+        var inputs = listUl.querySelectorAll("input:not(:checked)");
+        for(var i=0; i<inputs.length; i++){ //  0,1,2,3,4 : 5개 -> size
+            inputs[i].parentElement.remove();
         }
 
         // -------------------------------------------
