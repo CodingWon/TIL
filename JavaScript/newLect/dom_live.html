@@ -9,10 +9,18 @@
         <script src="dom_live.js"></script>
     </head>
     <body>
-        <!-- autocomplete="off" 자동완성 기능 끄기 -->
+        <section id = "s13">
+            <h1>13. DND API를 이용한 노드 자리 바꾸기 </h1> 
+            <div class="box">
+                <div class="row" draggable="true"><div>item1</div></div>
+                <div class="row" draggable="true"><div>item2</div></div>
+                <div class="row" draggable="true"><div>item3</div></div>
+                <div class="row" draggable="true"><div>item4</div></div>
+                <div class="row" draggable="true"><div>item5</div></div>
+            </div>
+        </section>
         <section id="s12">
             <h1>12. 노드 조작하기 </h1>
-            
             <section class="form-section">
                 <h1>회원 등록 폼</h1>
                 <form class="form">
@@ -32,8 +40,8 @@
             <section class="list-section">
                 <header class="section-header">
                     <h1>회원목록</h1>
-                    <a class="btn btn-del-first" href="">첫항목 삭제하기</a>
-                    <a class="btn ml-auto btn-del-all" href="">일괄삭제</a>
+                    <a class="btn ml-auto btn-del-first" href="">첫항목 삭제하기</a>
+                    <a class="btn btn-del-all" href="">일괄삭제</a>
                     <a class="btn btn-change" href="">바꾸기</a>
                     <a class="btn btn-disable" href="">비활성 회원으로</a>
                 </header>
@@ -49,7 +57,7 @@
                 </section>
                 <section>
                     <h1>비활성회원</h1>
-                    <ul>
+                    <ul class="list disabled-list">
                         <li class="item"><input class="mr-2" type="checkbox">홍길동<a class="btn-close icon icon-close ml-auto" href="">삭제</a></li>
                     </ul>
                 </section>

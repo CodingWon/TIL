@@ -1,60 +1,127 @@
-//12-2 유효성 검사하기
+// 13
+e.pageY - box.offsetTop - offset.y
+
+window.addEventListener("load",function(){
+    var section = document.querySelector("#s13");
+    var box = section.querySelector(".box");
+    var dragged = null;
+
+    box.ondrag = function(e){};
+    box.ondragstart = function(e){
+        dragged = e.target;
+        e.target.classList.add("dragged");
+        
+    };
+    box.ondragend = function(e){
+        dragged.classList.remove("dragging");
+
+        var items = box.querySelectorAll(".row");
+        for (var i = 0; i<items.length; i++)
+            items[i].classList.remove("drop-item");
+
+    };
+
+  
+    box.ondragenter = function(e){
+        e.preventDefault();
+        var items = box.querySelectorAll(".row:not(.dragging)");
+        var top = e.clientY - box.offsetTop;
+
+        for(var i = 0; i<items.length; i++){
+            if(items[i].offsetTop < top && top < items[i].offsetTop + items[i].offsetHeight)
+                items[i].classList.add("drop-item");
+            else
+                items[i].classList.remove("drop-item");
+        }
+    };
+    box.ondragleave = function(e){
+        e.target.classList.remove("drop-item");
+    };
+    box.ondragover = function(e){
+        e.preventDefault();
+       
+    };
+    box.ondrop = function(e){};
+});
+
+// --- <h1>12. 노드 조작하기 </h1>------------------------
 window.addEventListener("load", function(){
-    var section = document.querySelector("#s12");    
+    var section = document.querySelector("#s12");
     var formSection = section.querySelector(".form-section");
     var listSection = section.querySelector(".list-section");
 
     var unameInput = formSection.querySelector("input[name=uname]");
     var regButton = formSection.querySelector("input[name='btn-reg']");
     var listUl = listSection.querySelector(".list");
+    var disabledUl = listSection.querySelector(".disabled-list");
     var delFirstButton = listSection.querySelector(".btn-del-first");
     var delAllButton = listSection.querySelector(".btn-del-all");
     var changeButton = listSection.querySelector(".btn-change");
+    var disableButton = listSection.querySelector(".btn-disable");
 
-    delFirstButton.onclick = function(e){
+    disableButton.onclick = function(e){
         e.preventDefault();
 
-        var selectdList = Array.from(listUl.querySelectorAll(":checked")).map(function(input){
+        var selectedLis = Array.from(listUl.querySelectorAll("input:checked")).map(function(input){
             return input.parentElement;
         });
 
-        var existingLis =disabledUl.children;
+        var existingLis = disabledUl.children;
 
-        disabledUl.replaceChildren(...selectdList, ...existingLis);
-
-        for(var i=0; i<selectdList.length; i++)
-            disabledUl.append(selectdList[i]);
-
+        disabledUl.replaceChildren(...selectedLis, ...existingLis);
+        // spread 연산자가 없던 시절에는..
+        for(var i=0; i<selectedLis.length; i++)
+            disabledUl.append(selectedLis[i]);            
+        // for(var i=0; i<existingLis.length; i++)
+        //     disabledUl.append(existingLis[i]);
     };
 
     changeButton.onclick = function(e){
         e.preventDefault();
-       
+
         var inputs = Array.from(listUl.querySelectorAll("input:checked"));
         var lis = inputs.map(function(input){
             return input.parentElement;
         });
-        
         var first = lis[0];
         var second = lis[1];
+        // var first = listUl.children[0];
+        // var second = listUl.children[1];
+
 
         var next = first.nextElementSibling;
+        //var detached = listUl.replaceChild(first, second); // detached == second
         second.replaceWith(first);
         next.before(second);
 
-     
-        // var detached = listUl.removeChild(second);
-        // listUl.insertBefore(detached,first);
+        // 버그를 포함하는 자리바꾸기 : 두 행이 이웃한 경우에만 올바르게 동작함.
+        // //var detached = listUl.removeChild(second);
+        // second.remove();
+        // //listUl.insertBefore(detached, first);
+        // first.before(second);
+
     };
 
     delAllButton.onclick = function(e){
         e.preventDefault();
 
-
+        // 방법 2 : 삭제할 항목만 미리 선택한 후에 일괄삭제한다.
         var inputs = listUl.querySelectorAll("input:not(:checked)");
-        for(var i=0; i<inputs.length; i++){ //  0,1,2,3,4 : 5개 -> size
+        for(var i=0; i<inputs.length; i++)
             inputs[i].parentElement.remove();
-        }
+
+
+        // 방법 1 : 전체 노드를 돌면서 삭제할 항목을 비교하면서 삭제한다.
+        // var lis = listUl.children;
+        // var size = lis.length;
+        // //var arr = Array.from(lis);
+
+        // for(var i=0; i<size; i++){ //  0,1,2,3,4 : 5개 -> size
+        //     var checkbox = lis[size-1-i].querySelector("input[type=checkbox]");
+
+        //     if(checkbox.checked)
+        //         lis[size-1-i].remove();
+        // }
 
         // -------------------------------------------
         
@@ -68,7 +135,7 @@ window.addEventListener("load", function(){
         // }
     };
 
-  // 2. 이벤트 처리와 대상이 목록일 때
+    // 2. 이벤트 처리와 대상이 목록일 때
     listUl.onclick = function(e){
         if(!e.target.classList.contains("btn-close"))
             return;
@@ -82,45 +149,49 @@ window.addEventListener("load", function(){
         if(listUl.children.length == 0)
             listUl.classList.add("empty");
 
-    };
+    }
 
-
+    // 1. 이벤트 처리와 대상이 하나 일 때
     delFirstButton.onclick = function(e){
         e.preventDefault();
         
-    // 부모 객체로 삭제하기
-        // var li = listUl.firstElementChild;
-        // listUl.removeChild(li);
+        //section.removeChild(formSection);
+        //var li =listUl.firstElementChild;
+        //listUl.removeChild(li);
 
-    //자기 자신으로 삭제하기
-        if(listUl.children.length == 0)
-            listUl.classList.add("empty");
-        
-          
-        if(listUl.children.length > 0){
-            listUl.firstElementChild.remove();
-        }
+        listUl.firstElementChild.remove();
     };
 
     regButton.onclick = function(e){
-        //유효성 검사
-        if(!unameInput.checkValidity()){
-            // alert("이름 입력 오류" + unameInput.value);
-            return
-        }
-        e.preventDefault();
 
-        listUl.classList.remove("empty");
+        if(!unameInput.checkValidity()) {
+            // alert("이름 입력오류 : " + unameInput.validationMessage);
+            return;
+        }
+        e.preventDefault();        
+
+        var html = '<li class="item"><input class="mr-2" type="checkbox">'+unameInput.value+'<a class="btn-close icon icon-close ml-auto" href="">삭제</a></li>';
+        listUl.insertAdjacentHTML("afterbegin", html);        
+
 
         // var li = document.createElement("li");
         // li.append(unameInput.value);
         // li.classList.add("item");
+        
+        //listUl.insertAdjacentElement("afterbegin", li);
+        //listUl.append(li);
 
-        // listUl.insertAdjacentElement("afterbegin",li);
-        var html = '<li class="item"><input class="mr-2" type="checkbox">'+unameInput.value+'<a class="btn-close icon icon-close ml-auto" href="">삭제</a></li>';
-        listUl.insertAdjacentHTML("afterbegin", html);      
-    
+        // if(listUl.children.length == 0)
+        //     listUl.append(li);
+        // else
+        //     //listUl.insertBefore(li, listUl.firstElementChild);
+        //     listUl.firstElementChild.before(li);
+        
+        if(listUl.children.length > 0)
+            listUl.classList.remove("empty");
     };
+
+
 });
 
 // //12-1

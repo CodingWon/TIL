@@ -4,6 +4,10 @@ ul{
     padding: 0;
 }
 
+li{
+    list-style: none;
+}
+
 /* --- variable ---------------------------------------------------- */
 
 :root{
@@ -263,23 +267,35 @@ html{
 
 
 /* --- <h1>14. 종합 1 : DND로 노드 순서 바꾸기</h1> --- */
-#s14 .box{
+#s13 .box{
     background-color: gray;
     width: 100%;
     height: 300px;
     padding:10px;
 }
 
-#s14 .row {
+#s13 .row {
+    box-sizing: border-box;
     width: 200px;
-    height: 20px;
+    height: 40px;
     text-align: center;
     background-color: #fff;
     margin-top: 1px;
     padding:10px;
     cursor: move;
-    
 }
+
+
+#s13 .row.dragging{
+    background-color: coral;
+}
+
+
+#s13 .row.drop-item{
+    background-color: coral;
+}
+
+/*11  */
 
 #s11 .d-none{
     display: none;

@@ -1,0 +1,44 @@
+/* reset */
+body,html{
+    margin: 0px;
+    padding: 0px;
+}
+
+#progress{
+    width: 100%;
+    height: 300px;
+    background-color: gray;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0.5;
+    transition: opacity 500ms;
+}
+
+#progress .box{
+    width: 100px;
+    height: 100px;
+    background-color: green;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    
+}
+
+#progress .box .item{
+    color: white;
+}
+
+#progress .box .bar{
+    width: 100%;
+    height: 10px;
+    background-color: rebeccapurple;
+
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
