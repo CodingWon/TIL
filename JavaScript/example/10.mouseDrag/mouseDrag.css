@@ -1,3 +1,13 @@
+/* reset */
+/* html,body{
+    margin: 0;
+    padding: 0;
+} */
+
+#s10{
+    margin: 20px;
+}
+
 #s10 .box{
     height: 300px;
     background-color: gray;
@@ -5,15 +15,13 @@
     position: relative;
     overflow: auto;
 
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
 }
 
 #s10 .item{
     font-size: 30px;
     font-weight: bold;
     color:#fff;
+
     position: absolute;
     box-sizing: border-box;
     width: 100px;

@@ -1,45 +1,131 @@
-// 13
-e.pageY - box.offsetTop - offset.y
+// var animals = [
+//     {species:'Lion', name:'King'},
+//     {species:'Whale', name:'Fail'}
+// ];
 
-window.addEventListener("load",function(){
+// var print = function(i){
+//     console.log('#' + i + ' ' + this.species + ': ' + this.name);
+// };
+
+// var onclick = print.bind(animals[0]);
+// onclick(0);
+
+// print(0);
+// print.call(animals[0], 0);
+
+Array.prototype.aa = function(){
+    console.log("메록");
+}
+
+var arr = [];
+console.log(arr.aa());
+
+window.addEventListener("load", function(){
+    var section = document.querySelector("#s14");
+    var delButton = section.querySelector(".btn-del");
+
+    delButton.onclick = function(e){
+        e.preventDefault();
+        
+        var dlg = new Dialog();
+        //dlg.show("입력값이 잘못되었습니다.");
+        if(dlg.confirm("정말 삭제하시겠습니까?"))
+            console.log("삭제되었습니다.");
+    };
+
+});
+
+// --- <h1>12. 노드 조작하기 </h1>------------------------
+window.addEventListener("load", function(){
     var section = document.querySelector("#s13");
     var box = section.querySelector(".box");
+
     var dragged = null;
 
-    box.ondrag = function(e){};
+    box.ondrag = function(e){
+        
+    };
     box.ondragstart = function(e){
         dragged = e.target;
-        e.target.classList.add("dragged");
-        
+        dragged.classList.add("dragging");
     };
     box.ondragend = function(e){
         dragged.classList.remove("dragging");
 
         var items = box.querySelectorAll(".row");
-        for (var i = 0; i<items.length; i++)
+        for(var i=0; i<items.length; i++)
             items[i].classList.remove("drop-item");
 
     };
-
-  
     box.ondragenter = function(e){
-        e.preventDefault();
-        var items = box.querySelectorAll(".row:not(.dragging)");
-        var top = e.clientY - box.offsetTop;
 
-        for(var i = 0; i<items.length; i++){
+        e.preventDefault();
+
+        var top = e.pageY-box.offsetTop;
+
+        var items = box.querySelectorAll(".row:not(.dragging)");
+        
+        for(var i=0; i<items.length; i++)
             if(items[i].offsetTop < top && top < items[i].offsetTop + items[i].offsetHeight)
-                items[i].classList.add("drop-item");
+                items[i].classList.add("drop-item");   
             else
                 items[i].classList.remove("drop-item");
-        }
+
+        
+
     };
     box.ondragleave = function(e){
-        e.target.classList.remove("drop-item");
+        
     };
     box.ondragover = function(e){
         e.preventDefault();
-       
+    };
+    box.ondrop = function(e){};
+});
+// --- <h1>13. 노드 조작하기 </h1>------------------------
+window.addEventListener("load", function(){
+    var section = document.querySelector("#s13");
+    var box = section.querySelector(".box");
+
+    var dragged = null;
+
+    box.ondrag = function(e){
+        
+    };
+    box.ondragstart = function(e){
+        dragged = e.target;
+        dragged.classList.add("dragging");
+    };
+    box.ondragend = function(e){
+        dragged.classList.remove("dragging");
+
+        var items = box.querySelectorAll(".row");
+        for(var i=0; i<items.length; i++)
+            items[i].classList.remove("drop-item");
+
+    };
+    box.ondragenter = function(e){
+
+        e.preventDefault();
+
+        var top = e.pageY-box.offsetTop;
+
+        var items = box.querySelectorAll(".row:not(.dragging)");
+        
+        for(var i=0; i<items.length; i++)
+            if(items[i].offsetTop < top && top < items[i].offsetTop + items[i].offsetHeight)
+                items[i].classList.add("drop-item");   
+            else
+                items[i].classList.remove("drop-item");
+
+        
+
+    };
+    box.ondragleave = function(e){
+        
+    };
+    box.ondragover = function(e){
+        e.preventDefault();
     };
     box.ondrop = function(e){};
 });
@@ -71,7 +157,7 @@ window.addEventListener("load", function(){
         disabledUl.replaceChildren(...selectedLis, ...existingLis);
         // spread 연산자가 없던 시절에는..
         for(var i=0; i<selectedLis.length; i++)
-            disabledUl.append(selectedLis[i]);            
+            disabledUl.append(selectedLis[i]);
         // for(var i=0; i<existingLis.length; i++)
         //     disabledUl.append(existingLis[i]);
     };
@@ -80,25 +166,25 @@ window.addEventListener("load", function(){
         e.preventDefault();
 
         var inputs = Array.from(listUl.querySelectorAll("input:checked"));
+        if(inputs.length != 2){
+            alert("아이템은 두 개를 선택하셔야 합니다.");
+            return;
+        }
+
         var lis = inputs.map(function(input){
             return input.parentElement;
         });
         var first = lis[0];
         var second = lis[1];
-        // var first = listUl.children[0];
-        // var second = listUl.children[1];
 
 
-        var next = first.nextElementSibling;
-        //var detached = listUl.replaceChild(first, second); // detached == second
+        var next = first.nextElementSibling;        
         second.replaceWith(first);
-        next.before(second);
+        if(next === second) // 인접한 경우
+            first.before(second);
+        else    // 떨어져 있는 경우
+            next.before(second);
 
-        // 버그를 포함하는 자리바꾸기 : 두 행이 이웃한 경우에만 올바르게 동작함.
-        // //var detached = listUl.removeChild(second);
-        // second.remove();
-        // //listUl.insertBefore(detached, first);
-        // first.before(second);
 
     };
 
@@ -193,6 +279,8 @@ window.addEventListener("load", function(){
 
 
 });
+
+
 
 // //12-1
 // window.addEventListener("load",function(){
@@ -360,12 +448,12 @@ window.addEventListener("load",function(){
 
     box.ondragenter = function(e){
         console.log("enter")
-       
     };
     box.ondragleave = function(e){
         box.classList.remove("over");
         box.classList.remove("error");       
         errorMessage.classList.add("d-none");
+        console.log("leave")
     };
     box.ondragover = function(e){
         box.classList.add("over");
@@ -839,8 +927,6 @@ window.addEventListener("load",function(){
     var box = section.querySelector(".box");
     var divInput = box.querySelector(".divide");
   
-    
-
     divInput.onclick = function(e){
         e.preventDefault();
       

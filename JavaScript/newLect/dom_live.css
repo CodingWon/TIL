@@ -114,6 +114,24 @@ html{
     margin-top: 1rem !important;
 }
 
+
+.ml-0{
+    margin-left: 0 !important;
+}
+
+.ml-1{
+    margin-left: .25rem !important;    
+}
+
+.ml-2{
+    margin-left: .5rem !important;
+}
+
+.ml-3{
+    margin-left: 1rem !important;
+}
+
+
 .mr-0{
     margin-right: 0 !important;
 }
@@ -218,18 +236,6 @@ html{
     height: 20px;
 }
 
-.icon{
-    display: inline-block;
-    width:20px;
-    height: 20px;
-    text-indent: -999px;
-    overflow: hidden;
-}
-
-.icon-close{
-    background: url(imgs/close.svg) no-repeat center;
-}
-
 /* --- component --------------------------------------------------- */
 
 .btn {
@@ -265,34 +271,94 @@ html{
     border-color: #67921e;
 }
 
+.btn-inline{
+    padding: 0 .35rem;
+    height: 100%;
+}
 
-/* --- <h1>14. 종합 1 : DND로 노드 순서 바꾸기</h1> --- */
+.icon{
+    display: inline-block;
+    width:20px;
+    height: 20px;
+    text-indent: -999px;
+    overflow: hidden;
+}
+
+.icon-close{
+    background: url(images/close.svg) no-repeat center;
+}
+
+/* --- <h1>14. 대화상자 띄우기</h1> =--- */
+#s14 .screen{
+    position: absolute;
+    left:0;
+    top:0;
+    background-color: rgba(0, 0, 0, 0.486);
+    width:100vw;
+    height: 100vh;
+    z-index: 100;
+    /* opacity: .7; */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#s14 .dlg{
+    background-color: #fff;
+    /* padding:20px; */
+    position: relative;
+    top:-100px;
+    border-radius: 10px;
+}
+
+#s14 .title{
+    background-color: blue;
+    padding: 10px;
+    border-radius: 10px 10px  0 0;
+    color: white;
+}
+
+#s14 .view{
+    padding: 20px;
+}
+
+#s14 .action-panel{
+    border-top: 1px solid gray;
+    padding: 10px;
+    border-radius: 0 0 10px 10px;
+    display: flex;
+    justify-content: center;
+}
+
+/* --- <h1>13. : DND로 노드 순서 바꾸기</h1> --- */
 #s13 .box{
     background-color: gray;
     width: 100%;
     height: 300px;
     padding:10px;
+    position: relative;
 }
 
 #s13 .row {
-    box-sizing: border-box;
     width: 200px;
-    height: 40px;
+    height: 20px;
     text-align: center;
     background-color: #fff;
     margin-top: 1px;
     padding:10px;
-    cursor: move;
+    cursor: move;    
+
+    transition: background-color .5s;
 }
 
-
-#s13 .row.dragging{
-    background-color: coral;
+#s13 .row.dragging {
+    border: 1px solid black;
+    opacity: .7;    
 }
 
-
-#s13 .row.drop-item{
-    background-color: coral;
+#s13 .row.drop-item {
+    background-color: lightcoral;
 }
 
 /*11  */
